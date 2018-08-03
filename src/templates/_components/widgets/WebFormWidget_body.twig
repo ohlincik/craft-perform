@@ -1,0 +1,20 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * WebForm plugin for Craft CMS
+ *
+ * WebFormWidget Widget Body
+ *
+ * @author    Tungsten Creative
+ * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      http://atomic74.com
+ * @package   WebForm
+ * @since     1.0.0
+ */
+#}
+
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@tungsten/webform/assetbundles/webformwidgetwidget/dist', true) ~ '/img/WebFormWidget-icon.svg' %}
+
+<img src="{{ iconUrl }}" height="64" width="64" />
+
+<p>{{ message }}</p>

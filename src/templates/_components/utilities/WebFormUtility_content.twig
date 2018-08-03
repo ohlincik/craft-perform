@@ -1,0 +1,24 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * WebForm plugin for Craft CMS
+ *
+ * WebFormUtility Utility Content
+ *
+ * @author    Tungsten Creative
+ * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      http://atomic74.com
+ * @package   WebForm
+ * @since     1.0.0
+ */
+#}
+
+<h1>WebFormUtility</h1>
+
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@tungsten/webform/assetbundles/webformutilityutility/dist', true) ~ '/img/WebFormUtility-icon.svg' %}
+
+<img src="{{ iconUrl }}" height="64" width="64" />
+
+<p>Your Utility content goes here</p>
+
+<p>{{ someVar }}</p>

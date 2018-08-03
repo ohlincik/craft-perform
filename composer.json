@@ -1,0 +1,43 @@
+{
+    "name": "tungsten/webform",
+    "description": "Online form builder and submissions",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "web form"
+    ],
+    "support": {
+        "docs": "https://github.com/ohlincik/craft3-webform/blob/master/README.md",
+        "issues": "https://github.com/ohlincik/craft3-webform/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tungsten Creative",
+            "homepage": "http://atomic74.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "tungsten\\webform\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "WebForm",
+        "handle": "webform",
+        "hasCpSettings": true,
+        "hasCpSection": true,
+        "changelogUrl": "https://raw.githubusercontent.com/ohlincik/craft3-webform/master/CHANGELOG.md",
+        "components": {
+            "webFormService": "tungsten\\webform\\services\\WebFormService"
+        },
+        "class": "tungsten\\webform\\WebForm"
+    }
+}
