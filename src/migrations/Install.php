@@ -61,7 +61,7 @@ class Install extends Migration
             $this->addForeignKeys();
             // Refresh the db schema caches
             Craft::$app->db->schema->refresh();
-            $this->insertDefaultData();
+            // $this->insertDefaultData();
         }
 
         return true;
@@ -97,20 +97,21 @@ class Install extends Migration
     {
         $tablesCreated = false;
 
-    // webform_webformrecord table
-        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%webform_webformrecord}}');
+        // webform_submissions table
+        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%webform_submissions}}');
         if ($tableSchema === null) {
             $tablesCreated = true;
             $this->createTable(
-                '{{%webform_webformrecord}}',
+                '{{%webform_submissions}}',
                 [
                     'id' => $this->primaryKey(),
+                    'handle' => $this->string(255)->notNull()->defaultValue(''),
+                    'recipients' => $this->string(255)->notNull()->defaultValue(''),
+                    'subject' => $this->string(255)->notNull()->defaultValue(''),
+                    'content' => $this->text(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime()->notNull(),
                     'uid' => $this->uid(),
-                // Custom columns in the table
-                    'siteId' => $this->integer()->notNull(),
-                    'some_field' => $this->string(255)->notNull()->defaultValue(''),
                 ]
             );
         }
@@ -125,15 +126,15 @@ class Install extends Migration
      */
     protected function createIndexes()
     {
-    // webform_webformrecord table
+        // webform_submissions table
         $this->createIndex(
             $this->db->getIndexName(
-                '{{%webform_webformrecord}}',
-                'some_field',
+                '{{%webform_submissions}}',
+                'id',
                 true
             ),
-            '{{%webform_webformrecord}}',
-            'some_field',
+            '{{%webform_submissions}}',
+            'id',
             true
         );
         // Additional commands depending on the db driver
@@ -152,15 +153,15 @@ class Install extends Migration
      */
     protected function addForeignKeys()
     {
-    // webform_webformrecord table
+        // webform_submissions table
         $this->addForeignKey(
-            $this->db->getForeignKeyName('{{%webform_webformrecord}}', 'siteId'),
-            '{{%webform_webformrecord}}',
-            'siteId',
-            '{{%sites}}',
+            $this->db->getForeignKeyName('{{%webform_submissions}}', 'id'),
+            '{{%webform_submissions}}',
+            'id',
+            '{{%elements}}',
             'id',
             'CASCADE',
-            'CASCADE'
+            null
         );
     }
 
@@ -180,7 +181,7 @@ class Install extends Migration
      */
     protected function removeTables()
     {
-    // webform_webformrecord table
-        $this->dropTableIfExists('{{%webform_webformrecord}}');
+    // webform_submissions table
+        $this->dropTableIfExists('{{%webform_submissions}}');
     }
 }
