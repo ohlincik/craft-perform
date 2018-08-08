@@ -11,6 +11,8 @@
 namespace tungsten\webform\variables;
 
 use tungsten\webform\WebForm;
+use craft\helpers\Template;
+use craft\web\View;
 
 use Craft;
 
@@ -45,12 +47,26 @@ class WebFormVariable
      * @param null $optional
      * @return string
      */
-    public function exampleVariable($optional = null)
+    public function formTag($options = array())
     {
-        $result = "And away we go to the Twig template...";
-        if ($optional) {
-            $result = "I'm feeling optional today...";
-        }
-        return $result;
+      // Minimum requirements
+      if (!array_key_exists('entryId', $options) || !$options['entryId'])
+        return "The Entry ID must be provided.";
+      else
+        $entryId = $options['entryId'];
+
+      $frontEndMode = \Craft::$app->view->getTemplateMode();
+      \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
+
+      // Render the form tag template
+      $formTag = \Craft::$app->view->renderTemplate('webform/formTag', [
+        'entryId' => $entryId
+      ]);
+
+      \Craft::$app->view->setTemplateMode($frontEndMode);
+
+
+      // return TemplateHelper::getRaw($formTag);
+      return Template::raw($formTag);
     }
 }
