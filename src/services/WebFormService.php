@@ -14,6 +14,7 @@ use tungsten\webform\WebForm;
 
 use Craft;
 use craft\base\Component;
+use tungsten\webform\elements\Submission;
 
 /**
  * WebFormService Service
@@ -51,5 +52,20 @@ class WebFormService extends Component
         }
 
         return $result;
+    }
+
+    public function getSubmissionById(int $submissionId, int $siteId = null)
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return Craft::$app->getElements()->getElementById($submissionId, Submission::class, $siteId);
+    }
+
+    public function addFormSubmission() {
+        $submission = new Submission();
+        $submission->formHandle = 'formSubmission';
+        $submission->subject = 'Form Subject';
+        $submission->recipients = 'oto@me.com';
+        $submission->content = 'Here is some content';
+        $res = Craft::$app->getElements()->saveElement($submission, true, false);
     }
 }

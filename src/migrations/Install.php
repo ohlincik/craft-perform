@@ -57,11 +57,9 @@ class Install extends Migration
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
         if ($this->createTables()) {
-            $this->createIndexes();
             $this->addForeignKeys();
             // Refresh the db schema caches
             Craft::$app->db->schema->refresh();
-            // $this->insertDefaultData();
         }
 
         return true;
@@ -81,6 +79,7 @@ class Install extends Migration
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
         $this->removeTables();
+        $this->removeRecordsFromElementsTable();
 
         return true;
     }
@@ -105,9 +104,9 @@ class Install extends Migration
                 '{{%webform_submissions}}',
                 [
                     'id' => $this->primaryKey(),
-                    'handle' => $this->string(255)->notNull()->defaultValue(''),
-                    'recipients' => $this->string(255)->notNull()->defaultValue(''),
+                    'formHandle' => $this->string(255)->notNull()->defaultValue(''),
                     'subject' => $this->string(255)->notNull()->defaultValue(''),
+                    'recipients' => $this->string(255)->notNull()->defaultValue(''),
                     'content' => $this->text(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime()->notNull(),
@@ -117,33 +116,6 @@ class Install extends Migration
         }
 
         return $tablesCreated;
-    }
-
-    /**
-     * Creates the indexes needed for the Records used by the plugin
-     *
-     * @return void
-     */
-    protected function createIndexes()
-    {
-        // webform_submissions table
-        $this->createIndex(
-            $this->db->getIndexName(
-                '{{%webform_submissions}}',
-                'id',
-                true
-            ),
-            '{{%webform_submissions}}',
-            'id',
-            true
-        );
-        // Additional commands depending on the db driver
-        switch ($this->driver) {
-            case DbConfig::DRIVER_MYSQL:
-                break;
-            case DbConfig::DRIVER_PGSQL:
-                break;
-        }
     }
 
     /**
@@ -165,13 +137,9 @@ class Install extends Migration
         );
     }
 
-    /**
-     * Populates the DB with the default data.
-     *
-     * @return void
-     */
-    protected function insertDefaultData()
+    protected function removeRecordsFromElementsTable()
     {
+        $this->delete('{{%elements}}', ['type' => 'tungsten\webform\elements\Submission']);
     }
 
     /**

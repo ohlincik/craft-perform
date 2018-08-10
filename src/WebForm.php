@@ -106,7 +106,7 @@ class WebForm extends Plugin
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules['cpActionTrigger1'] = 'webform/default/do-something';
+                $event->rules['webform/<submissionId:\d+>'] = 'webform/default/show-submission';
             }
         );
 

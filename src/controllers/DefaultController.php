@@ -14,6 +14,8 @@ use tungsten\webform\WebForm;
 
 use Craft;
 use craft\web\Controller;
+use craft\helpers\UrlHelper;
+use tungsten\webform\elements\Submission;
 
 /**
  * Default Controller
@@ -70,10 +72,40 @@ class DefaultController extends Controller
      *
      * @return mixed
      */
-    public function actionDoSomething()
+    public function actionShowSubmission(int $submissionId = null): craft\web\Response
     {
-        $result = 'Welcome to the DefaultController actionDoSomething() method';
-
-        return $result;
+        $variables = [];
+        // Breadcrumbs
+        $variables['crumbs'] = [
+            [
+                'label' => Craft::t('webform', 'WebForm Submissions'),
+                'url' => UrlHelper::url('webform')
+            ]
+        ];
+        // $editableSitesOptions = [
+        // ];
+        // foreach (Craft::$app->getSites()->getAllSites() as $site) {
+        //     $editableSitesOptions[$site['id']] = $site->name;
+        // }
+        if ($submissionId !== null)
+        {
+            $siteId = Craft::$app->request->get('siteId');
+            if ($siteId == null) {
+                $siteId = Craft::$app->getSites()->currentSite->id;
+            }
+            $submission = WebForm::$plugin->webFormService->getSubmissionById($submissionId, $siteId);
+            if (!$submission) {
+                throw new NotFoundHttpException('Submission not found');
+            }
+            $variables['subject'] = $submission->subject;
+            $variables['recipients'] = $submission->recipients;
+            $variables['content'] = $submission->content;
+        }
+        else
+        {
+            throw new NotFoundHttpException('Submission id was not provided');
+        }
+        // $variables['currentSiteId'] = $redirect->siteId;
+        return $this->renderTemplate('webform/show', $variables);
     }
 }
