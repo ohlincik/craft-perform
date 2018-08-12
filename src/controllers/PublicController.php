@@ -18,19 +18,6 @@ use craft\web\Controller;
 /**
  * Public Controller
  *
- * Generally speaking, controllers are the middlemen between the front end of
- * the CP/website and your plugin’s services. They contain action methods which
- * handle individual tasks.
- *
- * A common pattern used throughout Craft involves a controller action gathering
- * post data, saving it on a model, passing the model off to a service, and then
- * responding to the request appropriately depending on the service method’s response.
- *
- * Action methods begin with the prefix “action”, followed by a description of what
- * the method does (for example, actionSaveIngredient()).
- *
- * https://craftcms.com/docs/plugins/controllers
- *
  * @author    Tungsten Creative
  * @package   WebForm
  * @since     1.0.0
@@ -63,25 +50,14 @@ class PublicController extends Controller
         $entryId = \Craft::$app->request->post('entry_id');
         $fields = \Craft::$app->request->post('fields');
 
-        // Validate the submitted params
+        $entry = \Craft::$app->entries->getEntryById($entryId);
 
-        // Store the form submission
-        WebForm::$plugin->webFormService->addFormSubmission();
-        // echo('<pre>');
-        // var_dump($result);
-        // echo('</pre>');
-        exit();
-
-        // $entry = \Craft::$app->entries->getEntryById($entryId);
-
-        // $formHandle = $entry->formHandle;
-
-        // // If captcha is enabled, verify that the request included the correct solution
+        // Validate captcha if enabled
         // if ($captcha) {
-        //   $gRecaptchaResponse = craft()->request->getPost('g-recaptcha-response');
-        //   $remoteIp = craft()->request->ipAddress;
+        //     $gRecaptchaResponse = \Craft::$app->request->post('g-recaptcha-response');
+        //     $remoteIp = \Craft::$app->request->remoteIp;
 
-        //   if (!$this->validateCaptcha($gRecaptchaResponse, $remoteIp))
+        //   if (!WebForm::$plugin->webFormService->validateCaptcha($gRecaptchaResponse, $remoteIp))
         //   {
         //     // Captcha verification failed!
         //     header($_SERVER['SERVER_PROTOCOL'].' 418 I\'m a teapot');
@@ -89,82 +65,29 @@ class PublicController extends Controller
         //   }
         // }
 
-        // $recipients = $entry->notificationRecipients;
-        // $subject = $entry->notificationSubject;
-        // $template = $template_dir.$formHandle.'-notification';
-        $redirect_url = $entry->url."/?success=✓";
+        $submissionParams = $this->prepareSubmissionParams($fields, $entry);
 
-        // // If custom email template does not exist use the default template
-        // if (!craft()->templates->doesTemplateExist($template))
-        // {
-        //   $template = $default_template;
-        // }
+        // Store the submission element in the CMS if the setting is enabled
+        $success = WebForm::$plugin->webFormService->addFormSubmission($submissionParams);
 
-        // // Build the email message
-        // $message = new EmailModel();
-        // $message->subject = $subject;
+        $redirectUrl = $entry->url."/?success=✓";
 
-        // // Populate the Reply To setting if it exists
-        // $replyTo = craft()->templates->renderString($entry->notificationReplyTo, $fields);
-        // $replyTo = empty($replyTo) ? false : $replyTo;
+        // Redirect back to the form page
+        $this->redirect($redirectUrl);
+    }
 
-        // // Create the html version of the content
-        // $message->htmlBody = craft()->templates->render($template, array(
-        //   'subject' => $subject,
-        //   'fields'  => $fields
-        // ));
+    /**
+    * Package the submitted data for Submission element
+    */
+    private function prepareSubmissionParams($fields, $entry)
+    {
+        $formSubject = \Craft::$app->view->renderString($entry->formSubject, $fields);
 
-        // // Save the form in the CMS if the setting is enabled
-        // if ($saveInCms)
-        // {
-        //   $webFormModel = new WebFormModel();
-
-        //   $webFormModel->handle = $formHandle;
-        //   $webFormModel->recipients = $testMode ? '[-- test --], '.$recipients : $recipients;
-        //   $webFormModel->subject = craft()->templates->renderString($entry->formSubject, $fields);
-        //   $webFormModel->content = $message->htmlBody;
-
-        //   craft()->webForm->addWebForm($webFormModel);
-        // }
-
-        // // If testMode mode is ON, display the form information on screen
-        // if ($testMode)
-        // {
-        //   $pluginTemplatesPath = craft()->path->getPluginsPath().'webform/templates';
-        //   craft()->path->setTemplatesPath($pluginTemplatesPath);
-        //   echo craft()->templates->render('test-mode', array(
-        //     'recipients' => $recipients,
-        //     'subject' => $subject,
-        //     'replyTo' => $replyTo ? $replyTo : '-- NOT SET --',
-        //     'content' => $message->htmlBody
-        //   ));
-        //   exit();
-        // }
-        // else
-        // {
-        //   // Send email message to each recipient individually
-        //   foreach (explode(',',$recipients) as $recipient)
-        //   {
-        //     try
-        //     {
-        //       $message->toEmail = trim($recipient);
-        //       if ($replyTo)
-        //       {
-        //         $message->replyTo = $replyTo;
-        //       }
-        //       if (!craft()->email->sendEmail($message))
-        //       {
-        //         WebFormPlugin::log("Failed to send email for {$formHandle} form.", LogLevel::Error);
-        //       }
-        //     }
-        //     catch (\Exception $e)
-        //     {
-        //       WebFormPlugin::log("Failed to send email for {$formHandle} form. Reason: ".$e->getMessage(), LogLevel::Error);
-        //     }
-        //   }
-
-        //   // Redirect back to the form page
-        //   $this->redirect($redirect_url);
-        // }
+        return [
+            'formHandle' => $entry->formHandle,
+            'subject'    => $formSubject,
+            'recipients' => $entry->notificationRecipients,
+            'content'    => serialize($fields)
+        ];
     }
 }

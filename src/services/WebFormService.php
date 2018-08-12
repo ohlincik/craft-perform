@@ -60,12 +60,24 @@ class WebFormService extends Component
         return Craft::$app->getElements()->getElementById($submissionId, Submission::class, $siteId);
     }
 
-    public function addFormSubmission() {
+    public function addFormSubmission($submissionParams)
+    {
         $submission = new Submission();
-        $submission->formHandle = 'formSubmission';
-        $submission->subject = 'Form Subject';
-        $submission->recipients = 'oto@me.com';
-        $submission->content = 'Here is some content';
-        $res = Craft::$app->getElements()->saveElement($submission, true, false);
+
+        $submission->formHandle = $submissionParams['formHandle'];
+        $submission->subject    = $submissionParams['subject'];
+        $submission->recipients = $submissionParams['recipients'];
+        $submission->content    = $submissionParams['content'];
+
+        $success = Craft::$app->getElements()->saveElement($submission, true, false);
+
+        if (!$success) {
+            Craft::error('Couldn’t save the form submission "'.$submission->formHandle.'"', __METHOD__);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
