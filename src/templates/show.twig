@@ -1,10 +1,42 @@
 {% extends "_layouts/cp" %}
 
-{% set fullPageForm = false %}
+{% do view.registerAssetBundle("tungsten\\webform\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
 {% set title = subject %}
 
-{% block content %}
-    <p>{{ recipients }}</p>
-    <p>{{ content }}</p>
+{% block actionButton %}
+
 {% endblock %}
 
+{% block content %}
+    {% for field in fields %}
+      {% if field.value == '__section__' %}
+        <h2 class="webform--section-heading">{{ field.label }}</h2>
+      {% else %}
+        <p>
+          <strong>{{ field.label }}</strong><br>
+          {{ field.value }}
+        </p>
+      {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block details %}
+    <div class="meta">
+      <h3>Form</h3>
+      <p>{{ handle }}</p>
+      <hr>
+      <h3>Recipients</h3>
+      <ul>
+        {% for recipient in recipients|split(',') %}
+          <li>{{ recipient }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="meta read-only">
+        <div class="data">
+            <h5 class="heading">{{ "Submitted"|t('webform') }}</h5>
+            <div class="value">{{ submitted|datetime('short') }}</div>
+        </div>
+    </div>
+{% endblock %}

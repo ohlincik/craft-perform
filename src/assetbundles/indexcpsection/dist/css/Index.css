@@ -9,3 +9,12 @@
  * @package   WebForm
  * @since     1.0.0
  */
+
+.webform--section-heading {
+  font-size: 1.8em;
+  border-bottom: 3px solid #e7eef3;
+  line-height: 1.2;
+  margin-top: 1.5em;
+  margin-bottom: .8em;
+  padding-bottom: .2em;
+}
