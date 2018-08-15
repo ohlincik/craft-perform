@@ -70,6 +70,10 @@ class PublicController extends Controller
         // Store the submission element in the CMS if the setting is enabled
         $success = WebForm::$plugin->webFormService->addFormSubmission($submissionParams);
 
+        $emailMessageParams = $this->prepareEmailMessageParams($fields, $entry);
+
+        $emailSent = WebForm::$plugin->emailService->deliver($emailMessageParams);
+
         $redirectUrl = $entry->url."/?success=✓";
 
         // Redirect back to the form page
@@ -88,6 +92,20 @@ class PublicController extends Controller
             'subject'    => $formSubject,
             'recipients' => $entry->notificationRecipients,
             'content'    => serialize($fields)
+        ];
+    }
+
+    /**
+    * Package the submitted data for Email delivery
+    */
+    private function prepareEmailMessageParams($fields, $entry)
+    {
+        $notificationSubject = \Craft::$app->view->renderString($entry->notificationSubject, $fields);
+
+        return [
+            'subject'    => $notificationSubject,
+            'recipients' => explode(',', str_replace(' ', '', $entry->notificationRecipients)),
+            'fields'     => $fields
         ];
     }
 }

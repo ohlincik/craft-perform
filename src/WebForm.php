@@ -10,7 +10,7 @@
 
 namespace tungsten\webform;
 
-use tungsten\webform\services\WebFormService as WebFormServiceService;
+// use tungsten\webform\services\WebFormService as WebFormServiceService;
 use tungsten\webform\variables\WebFormVariable;
 use tungsten\webform\models\Settings;
 use tungsten\webform\fields\WebFormField as WebFormFieldField;
@@ -166,6 +166,11 @@ class WebForm extends Plugin
                 }
             }
         );
+
+        $this->setComponents([
+            'webFormService' => \tungsten\webform\services\WebFormService::class,
+            'emailService' => \tungsten\webform\services\EmailService::class,
+        ]);
 
 /**
  * Logging in Craft involves using one of the following methods:

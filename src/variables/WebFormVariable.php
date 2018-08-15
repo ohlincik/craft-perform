@@ -55,7 +55,6 @@ class WebFormVariable
       else
         $entryId = $options['entryId'];
 
-      $frontEndMode = \Craft::$app->view->getTemplateMode();
       \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
 
       // Render the form tag template
@@ -63,7 +62,7 @@ class WebFormVariable
         'entryId' => $entryId
       ]);
 
-      \Craft::$app->view->setTemplateMode($frontEndMode);
+      \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);
 
 
       // return TemplateHelper::getRaw($formTag);
