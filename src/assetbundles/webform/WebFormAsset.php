@@ -12,7 +12,7 @@ namespace tungsten\webform\assetbundles\WebForm;
 
 use Craft;
 use craft\web\AssetBundle;
-use craft\web\assets\cp\CpAsset;
+// use craft\web\assets\cp\CpAsset;
 
 /**
  * WebFormAsset AssetBundle
@@ -46,19 +46,20 @@ class WebFormAsset extends AssetBundle
         $this->sourcePath = "@tungsten/webform/assetbundles/webform/dist";
 
         // define the dependencies
-        $this->depends = [
-            CpAsset::class,
-        ];
+        // $this->depends = [
+        //     CpAsset::class,
+        // ];
 
         // define the relative path to CSS/JS files that should be registered with the page
         // when this asset bundle is registered
         $this->js = [
-            'js/WebForm.js',
+            // 'js/WebForm.js',
+            'js/hyperform.0.9.14.min.js',
         ];
 
-        $this->css = [
-            'css/WebForm.css',
-        ];
+        // $this->css = [
+        //     'css/WebForm.css',
+        // ];
 
         parent::init();
     }

@@ -1,4 +1,10 @@
-<form role="form" id="submission-form" method="post" action="" accept-charset="UTF-8">
+{% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
+<form role="form" id="webform-submission" method="post" action="" accept-charset="UTF-8">
   <input type="hidden" name="action" value="webform/public/submit-form">
   <input type="hidden" name="entry_id" value="{{ entryId }}">
   {{ csrfInput() }}
+
+
+{% js %}
+  hyperform(document.getElementById('webform-submission'));
+{% endjs %}
