@@ -105,6 +105,7 @@ class Install extends Migration
                 [
                     'id' => $this->primaryKey(),
                     'formHandle' => $this->string(255)->notNull()->defaultValue(''),
+                    'formTitle' => $this->string(255)->notNull()->defaultValue(''),
                     'subject' => $this->string(255)->notNull()->defaultValue(''),
                     'recipients' => $this->string(255)->notNull()->defaultValue(''),
                     'content' => $this->text(),

@@ -65,6 +65,7 @@ class WebFormService extends Component
         $submission = new Submission();
 
         $submission->formHandle = $submissionParams['formHandle'];
+        $submission->formTitle  = $submissionParams['formTitle'];
         $submission->subject    = $submissionParams['subject'];
         $submission->recipients = $submissionParams['recipients'];
         $submission->content    = $submissionParams['content'];

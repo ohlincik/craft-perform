@@ -97,11 +97,15 @@ class DefaultController extends Controller
             if (!$submission) {
                 throw new NotFoundHttpException('Submission not found');
             }
-            $variables['handle'] = $submission->formHandle;
-            $variables['subject'] = $submission->subject;
-            $variables['recipients'] = $submission->recipients;
-            $variables['fields'] = unserialize($submission->content);
-            $variables['submitted'] = $submission->dateCreated;
+
+            $variables = [
+                'formHandle' => $submission->formHandle,
+                'formTitle' => $submission->formTitle,
+                'subject' => $submission->subject,
+                'recipients' => $submission->recipients,
+                'fields' => unserialize($submission->content),
+                'submitted' => $submission->dateCreated,
+            ];
         }
         else
         {

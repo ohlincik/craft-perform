@@ -89,6 +89,7 @@ class PublicController extends Controller
 
         return [
             'formHandle' => $entry->formHandle,
+            'formTitle'  => $entry->formTitle,
             'subject'    => $formSubject,
             'recipients' => $entry->notificationRecipients,
             'content'    => serialize($fields)
@@ -100,10 +101,10 @@ class PublicController extends Controller
     */
     private function prepareEmailMessageParams($fields, $entry)
     {
-        $notificationSubject = \Craft::$app->view->renderString($entry->notificationSubject, $fields);
+        $formSubject = \Craft::$app->view->renderString($entry->formSubject, $fields);
 
         return [
-            'subject'    => $notificationSubject,
+            'subject'    => $formSubject,
             'recipients' => explode(',', str_replace(' ', '', $entry->notificationRecipients)),
             'fields'     => $fields
         ];

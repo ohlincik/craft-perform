@@ -33,6 +33,13 @@ class SubmissionQuery extends ElementQuery
         return $this;
     }
 
+    public function formTitle($value)
+    {
+        $this->formTitle = $value;
+
+        return $this;
+    }
+
     public function subject($value)
     {
         $this->subject = $value;
@@ -60,6 +67,7 @@ class SubmissionQuery extends ElementQuery
 
         $this->query->select([
             'webform_submissions.formHandle',
+            'webform_submissions.formTitle',
             'webform_submissions.subject',
             'webform_submissions.recipients',
             'webform_submissions.content',
@@ -67,6 +75,10 @@ class SubmissionQuery extends ElementQuery
 
         if ($this->formHandle) {
             $this->subQuery->andWhere(Db::parseParam('webform_submissions.formHandle', $this->formHandle));
+        }
+
+        if ($this->formTitle) {
+            $this->subQuery->andWhere(Db::parseParam('webform_submissions.formTitle', $this->formTitle));
         }
 
         if ($this->subject) {

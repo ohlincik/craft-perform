@@ -57,36 +57,42 @@ class Submission extends Element
 
     public function getName(): string
     {
-        return (string)$this->formHandle;
+        return (string)$this->subject;
     }
 
     protected static function defineTableAttributes(): array
     {
         return [
-            'formHandle' => \Craft::t('webform', 'Form'),
             'subject' => \Craft::t('webform', 'Subject'),
             'dateCreated' => \Craft::t('webform', 'Submitted'),
+            'formTitle' => \Craft::t('webform', 'Form Title'),
+            'formHandle' => \Craft::t('webform', 'Form Handle'),
         ];
     }
 
     protected static function defineDefaultTableAttributes(string $source): array
     {
-        $attributes = ['formHandle', 'subject', 'dateCreated'];
+        $attributes = ['subject', 'dateCreated', 'formTitle', 'formHandle'];
 
         return $attributes;
     }
 
     protected static function defineSearchableAttributes(): array
     {
-        return ['formHandle', 'subject'];
+        return ['subject', 'formTitle', 'formHandle'];
     }
 
     protected static function defineSortOptions(): array
     {
         return [
-            'formHandle' => \Craft::t('webform', 'Form'),
+            [
+                'label' => Craft::t('webform', 'Submitted'),
+                'orderBy' => 'elements.dateCreated',
+                'attribute' => 'dateCreated'
+            ],
             'subject' => \Craft::t('webform', 'Subject'),
-            'elements.dateCreated' => \Craft::t('webform', 'Submitted'),
+            'formTitle' => \Craft::t('webform', 'Form Title'),
+            'formHandle' => \Craft::t('webform', 'Form Handle'),
         ];
     }
 
@@ -128,6 +134,7 @@ class Submission extends Element
             $record->id = $this->id;
         }
         $record->formHandle = $this->formHandle;
+        $record->formTitle = $this->formTitle;
         $record->subject = $this->subject;
         $record->recipients = $this->recipients;
         $record->content = $this->content;
@@ -156,6 +163,7 @@ class Submission extends Element
     // =========================================================================
 
     public $formHandle;
+    public $formTitle;
     public $subject;
     public $recipients;
     public $content;
