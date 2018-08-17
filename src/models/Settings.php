@@ -35,11 +35,25 @@ class Settings extends Model
     // =========================================================================
 
     /**
-     * Some field model attribute
+     * Use Mailtrap service for testing email is true
+     *
+     * @var boolean
+     */
+    public $testWithMailtrap = false;
+
+    /**
+     * Username for sending test email submission
      *
      * @var string
      */
-    public $someAttribute = 'Some Default';
+    public $testUsername = '';
+
+    /**
+     * Password for sending test email submission
+     *
+     * @var string
+     */
+    public $testPassword = '';
 
     // Public Methods
     // =========================================================================
@@ -57,8 +71,8 @@ class Settings extends Model
     public function rules()
     {
         return [
-            ['someAttribute', 'string'],
-            ['someAttribute', 'default', 'value' => 'Some Default'],
+            ['testWithMailtrap', 'boolean'],
+            ['testWithMailtrap', 'default', 'value' => false],
         ];
     }
 }

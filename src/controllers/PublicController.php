@@ -65,14 +65,16 @@ class PublicController extends Controller
         //   }
         // }
 
-        $submissionParams = $this->prepareSubmissionParams($fields, $entry);
-
         // Store the submission element in the CMS if the setting is enabled
-        $success = WebForm::$plugin->webFormService->addFormSubmission($submissionParams);
+        $success = WebForm::$plugin->webFormService->addFormSubmission(
+            $this->submissionParams($fields, $entry)
+        );
 
-        $emailMessageParams = $this->prepareEmailMessageParams($fields, $entry);
-
-        $emailSent = WebForm::$plugin->emailService->deliver($emailMessageParams);
+        // Deliver the notification to the recipients
+        $emailSent = WebForm::$plugin->emailService->deliver(
+            $this->messageParams($fields, $entry),
+            $entry->testModeEnabled
+        );
 
         $redirectUrl = $entry->url."/?success=✓";
 
@@ -83,14 +85,12 @@ class PublicController extends Controller
     /**
     * Package the submitted data for Submission element
     */
-    private function prepareSubmissionParams($fields, $entry)
+    private function submissionParams($fields, $entry)
     {
-        $formSubject = \Craft::$app->view->renderString($entry->formSubject, $fields);
-
         return [
             'formHandle' => $entry->formHandle,
             'formTitle'  => $entry->formTitle,
-            'subject'    => $formSubject,
+            'subject'    => $this->renderFormSubject($entry->formSubject, $fields),
             'recipients' => $entry->notificationRecipients,
             'content'    => serialize($fields)
         ];
@@ -99,14 +99,16 @@ class PublicController extends Controller
     /**
     * Package the submitted data for Email delivery
     */
-    private function prepareEmailMessageParams($fields, $entry)
+    private function messageParams($fields, $entry)
     {
-        $formSubject = \Craft::$app->view->renderString($entry->formSubject, $fields);
-
         return [
-            'subject'    => $formSubject,
+            'subject'    => $this->renderFormSubject($entry->formSubject, $fields),
             'recipients' => explode(',', str_replace(' ', '', $entry->notificationRecipients)),
             'fields'     => $fields
         ];
+    }
+
+    private function renderFormSubject($template, $fields) {
+        return \Craft::$app->view->renderString($template, $fields);
     }
 }

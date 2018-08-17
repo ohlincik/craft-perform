@@ -14,7 +14,6 @@ use tungsten\webform\WebForm;
 
 use Craft;
 use craft\base\Component;
-// use craft\helpers\App;
 use craft\helpers\MailerHelper;
 use craft\helpers\Template;
 use craft\mail\Message;
@@ -44,50 +43,74 @@ class EmailService extends Component
      *
      * From any other plugin file, call it like this:
      *
-     *     WebForm::$plugin->emailService->exampleService()
+     *     WebForm::$plugin->emailService->deliver()
      *
      * @param $html
      * @param $subject
      * @param null $recipients
      * @return bool
      */
-    public function deliver($emailMessageParams): bool
+    public function deliver($messageParams, $useTestMailer = false): bool
     {
-        $settings = \Craft::$app->systemSettings->getEmailSettings();
+        $mailerSettings = \Craft::$app->systemSettings->getEmailSettings();
 
-        $settings->transportSettings = [
-            'host' => 'smtp.mailtrap.io',
-            'port' => '2525',
-            'useAuthentication' => '1',
-            'username' => '9406d2a013cc9b',
-            'password' => 'base64:Y3J5cHQ6TFEQgm1Fk3Orfw8LgM/dxTNjNWNiYmM1MzIxM2QyNDBlOTNiZTY2ZWEyYjEyNzMyZDNkOTg1M2VjMTgxOTY4MDBkOWNiODVmZGMzYWY0MDF+B/mplL0ZFLqiQmqdeZD1q2fT7y/A0E+9NsHwtjqacQ==',
-        ];
+        $message = $this->prepareMessage($messageParams, $mailerSettings);
 
-        // Use this method of creating Mailer as of Craft 3.0.18
-        // $mailer = App::mailerConfig($settings);
+        if ($useTestMailer)
+        {
+            $mailer = $this->getTestMailer($mailerSettings);
 
-        // This method of creating Mailer is deprecated as of Craft 3.0.18
-        $mailer = MailerHelper::createMailer($settings);
-
-        $message = new Message();
-
-        $message->setFrom([$settings['fromEmail'] => $settings['fromName']]);
-        $message->setTo($emailMessageParams['recipients']);
-        $message->setSubject($emailMessageParams['subject']);
-        $message->setHtmlBody($this->renderHtmlBody($emailMessageParams));
-
-        return Craft::$app->mailer->send($message);
-        // return $mailer->send($message);
+            return $mailer->send($message);
+        }
+        else
+        {
+            return Craft::$app->mailer->send($message);
+        }
     }
 
-    private function renderHtmlBody($emailMessageParams) {
+    private function prepareMessage($messageParams, $mailerSettings)
+    {
+        $message = new Message();
+
+        $message->setFrom([$mailerSettings['fromEmail'] => $mailerSettings['fromName']]);
+        $message->setTo($messageParams['recipients']);
+        $message->setSubject($messageParams['subject']);
+        $message->setHtmlBody($this->renderHtmlBody($messageParams));
+
+        return $message;
+    }
+
+    private function renderHtmlBody($messageParams) {
         \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
 
         // Render the default email template
-        $htmlBody = \Craft::$app->view->renderTemplate('webform/_email/default', $emailMessageParams);
+        $htmlBody = \Craft::$app->view->renderTemplate('webform/_email/default', $messageParams);
 
         \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);
 
         return Template::raw($htmlBody);
+    }
+
+    private function getTestMailer($mailerSettings) {
+        $pluginSettings = WebForm::$plugin->getSettings();
+
+        if ($pluginSettings->testWithMailtrap)
+        {
+            $mailerSettings->transportSettings = [
+                'host' => 'smtp.mailtrap.io',
+                'port' => '2525',
+                'useAuthentication' => true,
+                'username' => $pluginSettings->testUsername,
+                'password' => $pluginSettings->testPassword,
+            ];
+
+            // Use this method of creating Mailer as of Craft 3.0.18
+            // $mailer = App::mailerConfig($mailerSettings);
+
+            // This method of creating Mailer is deprecated as of Craft 3.0.18
+            return MailerHelper::createMailer($mailerSettings);
+        } else {
+            return null;
+        }
     }
 }

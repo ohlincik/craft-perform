@@ -15,12 +15,32 @@
 
 {% import "_includes/forms" as forms %}
 
-{% do view.registerAssetBundle("tungsten\\webform\\assetbundles\\webform\\WebFormAsset") %}
+{% do view.registerAssetBundle("tungsten\\webform\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
 
-{{ forms.textField({
-    label: 'Some Field',
-    instructions: 'Enter some setting here.',
-    id: 'someAttribute',
-    name: 'someAttribute',
-    value: settings['someAttribute']})
-}}
+<h2>Test Email Delivery Settings</h2>
+
+<p>You can test your email delivery templates and form submission using the Mailtrap.</p>
+
+{{ forms.checkboxField({
+    label: "Use Mailtrap"|t('app'),
+    id: 'testWithMailtrap',
+    name: 'testWithMailtrap',
+    checked: settings['testWithMailtrap'],
+    toggle: 'auth-credentials'
+}) }}
+
+<div id="auth-credentials" class="nested-fields{% if not settings['testWithMailtrap'] %} hidden{% endif %}">
+    {{ forms.textField({
+        label: "Username"|t('app'),
+        id: 'testUsername',
+        name: 'testUsername',
+        value: settings['testUsername']
+    }) }}
+
+    {{ forms.passwordField({
+        label: "Password"|t('app'),
+        id: 'testPassword',
+        name: 'testPassword',
+        value: settings['testPassword'] ? settings['testPassword']|encenc
+    }) }}
+</div>
