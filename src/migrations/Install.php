@@ -104,6 +104,7 @@ class Install extends Migration
                 '{{%webform_submissions}}',
                 [
                     'id' => $this->primaryKey(),
+                    'statusType' => $this->string(255)->notNull()->defaultValue('new'),
                     'formHandle' => $this->string(255)->notNull()->defaultValue(''),
                     'formTitle' => $this->string(255)->notNull()->defaultValue(''),
                     'subject' => $this->string(255)->notNull()->defaultValue(''),

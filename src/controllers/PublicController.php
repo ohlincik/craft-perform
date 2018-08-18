@@ -66,8 +66,9 @@ class PublicController extends Controller
         // }
 
         // Store the submission element in the CMS if the setting is enabled
-        $success = WebForm::$plugin->webFormService->addFormSubmission(
-            $this->submissionParams($fields, $entry)
+        $success = WebForm::$plugin->webFormService->addSubmission(
+            $this->submissionParams($fields, $entry),
+            $entry->testModeEnabled
         );
 
         // Deliver the notification to the recipients
@@ -82,9 +83,6 @@ class PublicController extends Controller
         $this->redirect($redirectUrl);
     }
 
-    /**
-    * Package the submitted data for Submission element
-    */
     private function submissionParams($fields, $entry)
     {
         return [
@@ -96,9 +94,6 @@ class PublicController extends Controller
         ];
     }
 
-    /**
-    * Package the submitted data for Email delivery
-    */
     private function messageParams($fields, $entry)
     {
         return [

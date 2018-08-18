@@ -18,13 +18,19 @@ use tungsten\webform\elements\Submission;
 
 class SubmissionQuery extends ElementQuery
 {
-    /**
-     * @var string|string[]|null The handle(s) that the resulting global sets must have.
-     */
+    public $statusType;
     public $formHandle;
+    public $formTitle;
     public $subject;
     public $recipients;
     public $content;
+
+    public function statusType($value)
+    {
+        $this->statusType = $value;
+
+        return $this;
+    }
 
     public function formHandle($value)
     {
@@ -66,12 +72,17 @@ class SubmissionQuery extends ElementQuery
         $this->joinElementTable('webform_submissions');
 
         $this->query->select([
+            'webform_submissions.statusType',
             'webform_submissions.formHandle',
             'webform_submissions.formTitle',
             'webform_submissions.subject',
             'webform_submissions.recipients',
             'webform_submissions.content',
         ]);
+
+        if ($this->statusType) {
+            $this->subQuery->andWhere(Db::parseParam('webform_submissions.statusType', $this->statusType));
+        }
 
         if ($this->formHandle) {
             $this->subQuery->andWhere(Db::parseParam('webform_submissions.formHandle', $this->formHandle));

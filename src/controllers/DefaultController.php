@@ -87,18 +87,26 @@ class DefaultController extends Controller
         // foreach (Craft::$app->getSites()->getAllSites() as $site) {
         //     $editableSitesOptions[$site['id']] = $site->name;
         // }
-        if ($submissionId !== null)
-        {
+        if ($submissionId !== null) {
             $siteId = Craft::$app->request->get('siteId');
+
             if ($siteId == null) {
                 $siteId = Craft::$app->getSites()->currentSite->id;
             }
+
             $submission = WebForm::$plugin->webFormService->getSubmissionById($submissionId, $siteId);
+
             if (!$submission) {
                 throw new NotFoundHttpException('Submission not found');
             }
 
+            if ($submission->statusType === 'new') {
+                WebForm::$plugin->webFormService->setSubmissionStatusType($submission, 'read');
+            }
+
             $variables = [
+                'submissionId' => $submission->id,
+                'statusType' => $submission->status,
                 'formHandle' => $submission->formHandle,
                 'formTitle' => $submission->formTitle,
                 'subject' => $submission->subject,
@@ -106,9 +114,7 @@ class DefaultController extends Controller
                 'fields' => unserialize($submission->content),
                 'submitted' => $submission->dateCreated,
             ];
-        }
-        else
-        {
+        } else {
             throw new NotFoundHttpException('Submission id was not provided');
         }
         // $variables['currentSiteId'] = $redirect->siteId;

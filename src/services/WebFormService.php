@@ -35,35 +35,28 @@ class WebFormService extends Component
     // =========================================================================
 
     /**
-     * This function can literally be anything you want, and you can have as many service
-     * functions as you want
+     * Get a submission
      *
-     * From any other plugin file, call it like this:
-     *
-     *     WebForm::$plugin->webFormService->exampleService()
-     *
-     * @return mixed
+     * @return submission
      */
-    public function exampleService()
-    {
-        $result = 'something';
-        // Check our Plugin's settings for `someAttribute`
-        if (WebForm::$plugin->getSettings()->someAttribute) {
-        }
-
-        return $result;
-    }
-
     public function getSubmissionById(int $submissionId, int $siteId = null)
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return Craft::$app->getElements()->getElementById($submissionId, Submission::class, $siteId);
     }
 
-    public function addFormSubmission($submissionParams)
+    /**
+     * Add a submission
+     *
+     * @param array
+     * @param boolean
+     * @return boolean
+     */
+    public function addSubmission($submissionParams, $isTestSubmission = false)
     {
         $submission = new Submission();
 
+        $submission->statusType = $isTestSubmission ? 'test' : 'new';
         $submission->formHandle = $submissionParams['formHandle'];
         $submission->formTitle  = $submissionParams['formTitle'];
         $submission->subject    = $submissionParams['subject'];
@@ -75,10 +68,20 @@ class WebFormService extends Component
         if (!$success) {
             Craft::error('Couldn’t save the form submission "'.$submission->formHandle.'"', __METHOD__);
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
+    }
+
+    /**
+     * Set a submission status
+     *
+     * @param submission
+     * @param string
+     * @return boolean
+     */
+    public function setSubmissionStatusType($submission, $statusType) {
+        $submission->statusType = $statusType;
+        return Craft::$app->getElements()->saveElement($submission, true, false);
     }
 }

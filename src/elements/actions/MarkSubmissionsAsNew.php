@@ -2,13 +2,15 @@
 
 namespace tungsten\webform\elements\actions;
 
+use tungsten\webform\WebForm;
+
 use Craft;
 use craft\base\ElementAction;
 use tungsten\webform\elements\Submission;
 use craft\elements\db\ElementQueryInterface;
 use yii\base\Exception;
 
-class DeleteSubmissions extends ElementAction
+class MarkSubmissionsAsNew extends ElementAction
 {
     // Public Methods
     // =========================================================================
@@ -18,7 +20,7 @@ class DeleteSubmissions extends ElementAction
      */
     public function getTriggerLabel(): string
     {
-        return Craft::t('app', 'Delete…');
+        return Craft::t('app', 'Mark as New…');
     }
 
     /**
@@ -26,15 +28,7 @@ class DeleteSubmissions extends ElementAction
      */
     public static function isDestructive(): bool
     {
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getConfirmationMessage()
-    {
-        return Craft::t('webform', 'Are you sure you want to delete the selected submissions?');
+        return false;
     }
 
     /**
@@ -48,9 +42,9 @@ class DeleteSubmissions extends ElementAction
     {
         try {
             foreach ($query->all() as $submission) {
-
-            Craft::$app->getElements()->deleteElement($submission);
-
+                if ($submission->statusType !== 'test') {
+                    WebForm::$plugin->webFormService->setSubmissionStatusType($submission, 'new');
+                }
             }
         } catch (Exception $exception) {
             $this->setMessage($exception->getMessage());
@@ -58,7 +52,7 @@ class DeleteSubmissions extends ElementAction
             return false;
         }
 
-        $this->setMessage(Craft::t('webform', 'Submissions deleted.'));
+        $this->setMessage(Craft::t('webform', 'Submissions marked as New.'));
 
         return true;
     }

@@ -8,12 +8,19 @@ use craft\base\Element;
 use craft\elements\db\ElementQueryInterface;
 use tungsten\webform\records\SubmissionRecord;
 use tungsten\webform\elements\actions\DeleteSubmissions;
+use tungsten\webform\elements\actions\MarkSubmissionsAsNew;
 use craft\helpers\UrlHelper;
 
 class Submission extends Element
 {
     // Static
     // =========================================================================
+
+    public static $statusColor = [
+        'new'     => 'green',
+        'read'    => 'grey',
+        'test'    => 'orange',
+    ];
 
     public static function displayName(): string
     {
@@ -64,6 +71,7 @@ class Submission extends Element
     {
         return [
             'subject' => \Craft::t('webform', 'Subject'),
+            'statusType' => \Craft::t('webform', 'Status'),
             'dateCreated' => \Craft::t('webform', 'Submitted'),
             'formTitle' => \Craft::t('webform', 'Form Title'),
             'formHandle' => \Craft::t('webform', 'Form Handle'),
@@ -72,14 +80,22 @@ class Submission extends Element
 
     protected static function defineDefaultTableAttributes(string $source): array
     {
-        $attributes = ['subject', 'dateCreated', 'formTitle', 'formHandle'];
-
-        return $attributes;
+        return [
+            'subject',
+            'statusType',
+            'dateCreated',
+            'formTitle',
+            'formHandle',
+        ];
     }
 
     protected static function defineSearchableAttributes(): array
     {
-        return ['subject', 'formTitle', 'formHandle'];
+        return [
+            'subject',
+            'formTitle',
+            'formHandle',
+        ];
     }
 
     protected static function defineSortOptions(): array
@@ -91,6 +107,7 @@ class Submission extends Element
                 'attribute' => 'dateCreated'
             ],
             'subject' => \Craft::t('webform', 'Subject'),
+            'statusType' => \Craft::t('webform', 'Status'),
             'formTitle' => \Craft::t('webform', 'Form Title'),
             'formHandle' => \Craft::t('webform', 'Form Handle'),
         ];
@@ -98,28 +115,55 @@ class Submission extends Element
 
     protected static function defineSources(string $context = null): array
     {
-
-
         return [
             [
                 'key' => '*',
-                'label' => Craft::t('webform', 'All Forms'),
+                'label' => Craft::t('webform', 'All Submissions'),
                 'criteria' => []
-            ]
+            ],
+            [
+                'key' => 'new',
+                'label' => Craft::t('webform', 'NEW Submissions'),
+                'criteria' => [
+                    'statusType' => 'new',
+                ]
+            ],
+            [
+                'key' => 'read',
+                'label' => Craft::t('webform', 'Read Submissions'),
+                'criteria' => [
+                    'statusType' => 'read',
+                ]
+            ],
         ];
     }
 
     protected static function defineActions(string $source = null): array
     {
-        // Delete
-        $actions[] = DeleteSubmissions::class;
-        return $actions;
+        return [
+            DeleteSubmissions::class,
+            MarkSubmissionsAsNew::class,
+        ];
     }
 
     public function getCpEditUrl()
     {
         return UrlHelper::cpUrl('webform/' . $this->id . '?siteId=' . $this->siteId);
-        return $url;
+    }
+
+    protected function tableAttributeHtml(string $attribute): string
+    {
+        if ($attribute === 'statusType') {
+            return \Craft::$app->view->renderString(
+                '<span class="status {{ color }}"></span> {{ label|capitalize }}',
+                [
+                    'color' => self::$statusColor[$this->statusType],
+                    'label' => $this->statusType,
+                ]
+            );
+        }
+
+        return parent::tableAttributeHtml($attribute);
     }
 
     public function afterSave(bool $isNew)
@@ -133,6 +177,8 @@ class Submission extends Element
             $record = new SubmissionRecord();
             $record->id = $this->id;
         }
+
+        $record->statusType = $this->statusType;
         $record->formHandle = $this->formHandle;
         $record->formTitle = $this->formTitle;
         $record->subject = $this->subject;
@@ -162,6 +208,7 @@ class Submission extends Element
     // Properties
     // =========================================================================
 
+    public $statusType;
     public $formHandle;
     public $formTitle;
     public $subject;
