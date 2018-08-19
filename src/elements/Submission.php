@@ -116,7 +116,7 @@ class Submission extends Element
 
     protected static function defineSources(string $context = null): array
     {
-        return [
+        $sources = [
             [
                 'key' => '*',
                 'label' => Craft::t('webform', 'All Submissions'),
@@ -137,6 +137,20 @@ class Submission extends Element
                 ]
             ],
         ];
+
+        $testSubmissionsCount = WebForm::$plugin->webFormService->getSubmissionsCount('test');
+
+        if ($testSubmissionsCount > 0) {
+            $sources[] = [
+                'key' => 'test',
+                'label' => Craft::t('webform', 'Test Submissions'),
+                'criteria' => [
+                    'statusType' => 'test',
+                ]
+            ];
+        }
+
+        return $sources;
     }
 
     protected static function defineActions(string $source = null): array
