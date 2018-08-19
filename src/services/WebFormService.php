@@ -13,6 +13,7 @@ namespace tungsten\webform\services;
 use tungsten\webform\WebForm;
 
 use Craft;
+use craft\db\Query;
 use craft\base\Component;
 use tungsten\webform\elements\Submission;
 
@@ -83,5 +84,28 @@ class WebFormService extends Component
     public function setSubmissionStatusType($submission, $statusType) {
         $submission->statusType = $statusType;
         return Craft::$app->getElements()->saveElement($submission, true, false);
+    }
+
+    /**
+     * Returns the number of submissions of the specified $statusType.
+     *
+     * @param string $statusType
+     * @return integer
+     */
+    public function getSubmissionsCount($statusType = null): int {
+        if ($statusType === null) {
+            $submissionsCount = (new Query())
+                ->select('COUNT(*)')
+                ->from('webform_submissions')
+                ->scalar();
+        } else {
+            $submissionsCount = (new Query())
+                ->select('COUNT(*)')
+                ->from('webform_submissions')
+                ->where(['statusType' => $statusType])
+                ->scalar();
+        }
+
+        return (int) $submissionsCount;
     }
 }

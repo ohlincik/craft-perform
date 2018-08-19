@@ -200,6 +200,16 @@ class WebForm extends Plugin
         );
     }
 
+    /**
+     * Sets the badge count in the CP nav item to number of NEW submissions
+     */
+    public function getCpNavItem()
+    {
+        $item = parent::getCpNavItem();
+        $item['badgeCount'] = WebForm::$plugin->webFormService->getSubmissionsCount('new');
+        return $item;
+    }
+
     // Protected Methods
     // =========================================================================
 
