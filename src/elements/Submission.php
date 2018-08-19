@@ -9,6 +9,7 @@ use craft\elements\db\ElementQueryInterface;
 use tungsten\webform\records\SubmissionRecord;
 use tungsten\webform\elements\actions\DeleteSubmissions;
 use tungsten\webform\elements\actions\MarkSubmissionsAsNew;
+use tungsten\webform\elements\actions\MarkSubmissionsAsRead;
 use craft\helpers\UrlHelper;
 
 class Submission extends Element
@@ -143,6 +144,7 @@ class Submission extends Element
         return [
             DeleteSubmissions::class,
             MarkSubmissionsAsNew::class,
+            MarkSubmissionsAsRead::class,
         ];
     }
 
