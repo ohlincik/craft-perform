@@ -39,7 +39,7 @@ class WebFormUtility extends Utility
      */
     public static function displayName(): string
     {
-        return Craft::t('webform', 'WebFormUtility');
+        return Craft::t('webform', 'WebForm');
     }
 
     /**
@@ -51,7 +51,7 @@ class WebFormUtility extends Utility
      */
     public static function id(): string
     {
-        return 'webform-webform-utility';
+        return 'webform-utility';
     }
 
     /**
@@ -73,7 +73,7 @@ class WebFormUtility extends Utility
      */
     public static function badgeCount(): int
     {
-        return 0;
+        return WebForm::$plugin->webFormService->getSubmissionsCount('test');
     }
 
     /**
@@ -83,13 +83,15 @@ class WebFormUtility extends Utility
      */
     public static function contentHtml(): string
     {
-        Craft::$app->getView()->registerAssetBundle(WebFormUtilityUtilityAsset::class);
 
-        $someVar = 'Have a nice day!';
-        return Craft::$app->getView()->renderTemplate(
+        $view = Craft::$app->getView();
+
+        $testSubmissionsCount = WebForm::$plugin->webFormService->getSubmissionsCount('test');
+
+        return $view->renderTemplate(
             'webform/_components/utilities/WebFormUtility_content',
             [
-                'someVar' => $someVar
+                'testSubmissionsCount' => $testSubmissionsCount
             ]
         );
     }

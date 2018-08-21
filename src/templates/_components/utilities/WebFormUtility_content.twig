@@ -13,12 +13,27 @@
  */
 #}
 
-<h1>WebFormUtility</h1>
+<h1>Test Submissions</h1>
 
-{% set iconUrl = view.getAssetManager().getPublishedUrl('@tungsten/webform/assetbundles/webformutilityutility/dist', true) ~ '/img/WebFormUtility-icon.svg' %}
-
-<img src="{{ iconUrl }}" height="64" width="64" />
-
-<p>Your Utility content goes here</p>
-
-<p>{{ someVar }}</p>
+{% if testSubmissionsCount > 0 %}
+  <div class="readable">
+    {% if testSubmissionsCount > 1 %}
+      <p>There are <strong>{{ testSubmissionsCount }} test submissions</strong>.</p>
+    {% else %}
+      <p>There is <strong>{{ testSubmissionsCount }} test submission</strong>.</p>
+    {% endif %}
+  </div>
+  <form id="delete-test-submissions" class="utility" method="post" accept-charset="UTF-8">
+    {{ csrfInput() }}
+    <input type="hidden" name="action" value="webform/utilities/delete-test-submissions">
+    {{ redirectInput('utilities/webform-utility') }}
+    <div class="buttons">
+      <input type="submit" class="btn submit" value="{{ 'Delete All'|t('webform') }}">
+      <div class="utility-status"></div>
+    </div>
+  </form>
+{% else %}
+  <div class="readable">
+    <p>Thre are no test submissions.</p>
+  </div>
+{% endif %}

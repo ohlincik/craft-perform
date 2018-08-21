@@ -92,20 +92,27 @@ class WebFormService extends Component
      * @param string $statusType
      * @return integer
      */
-    public function getSubmissionsCount($statusType = null): int {
+    public function getSubmissionsCount($statusType = null): int
+    {
         if ($statusType === null) {
-            $submissionsCount = (new Query())
-                ->select('COUNT(*)')
-                ->from('webform_submissions')
-                ->scalar();
+            $submissionsCount = Submission::find()->count();
         } else {
-            $submissionsCount = (new Query())
-                ->select('COUNT(*)')
-                ->from('webform_submissions')
-                ->where(['statusType' => $statusType])
-                ->scalar();
+            $submissionsCount = Submission::find()
+                ->statusType($statusType)
+                ->count();
         }
 
         return (int) $submissionsCount;
+    }
+
+    public function deleteAllTestSubmissions()
+    {
+        $submissions = Submission::find()
+            ->statusType('test')
+            ->all();
+
+        foreach ($submissions as $submission) {
+            Craft::$app->getElements()->deleteElement($submission);
+        }
     }
 }
