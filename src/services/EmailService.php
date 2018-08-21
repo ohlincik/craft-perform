@@ -75,6 +75,9 @@ class EmailService extends Component
         $message->setFrom([$mailerSettings['fromEmail'] => $mailerSettings['fromName']]);
         $message->setTo($messageParams['recipients']);
         $message->setSubject($messageParams['subject']);
+        if ($messageParams['replyTo']) {
+            $message->setReplyTo($messageParams['replyTo']);
+        }
         $message->setHtmlBody($this->renderHtmlBody($messageParams));
 
         return $message;

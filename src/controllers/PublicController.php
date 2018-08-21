@@ -90,7 +90,7 @@ class PublicController extends Controller
             'formTitle'  => $entry->formTitle,
             'subject'    => $this->renderFormSubject($entry->formSubject, $fields),
             'recipients' => $entry->notificationRecipients,
-            'content'    => serialize($fields)
+            'content'    => serialize($fields),
         ];
     }
 
@@ -99,11 +99,26 @@ class PublicController extends Controller
         return [
             'subject'    => $this->renderFormSubject($entry->formSubject, $fields),
             'recipients' => explode(',', str_replace(' ', '', $entry->notificationRecipients)),
-            'fields'     => $fields
+            'replyTo'    => $this->processReplyTo($entry->notificationReplyTo, $fields),
+            'fields'     => $fields,
         ];
     }
 
-    private function renderFormSubject($template, $fields) {
+    private function renderFormSubject($template, $fields)
+    {
+        $subject = \Craft::$app->view->renderString($template, $fields);
+        $subject = empty($subject) ? 'Website Form Submission' : $subject;
+
+        return $subject;
+    }
+
+    private function processReplyTo($template, $fields)
+    {
+
+        if (empty($template)) {
+            return false;
+        }
+
         return \Craft::$app->view->renderString($template, $fields);
     }
 }
