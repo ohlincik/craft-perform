@@ -9,9 +9,9 @@
 
 {% block body %}
   {% for field in fields %}
-    {% if field.value is defined and field.value == "__section__" %}
+    {% if field.label == "__section__" %}
       <p>&nbsp;</p>
-      <h2>{{ eh.formFieldLabel(field) }}</h2>
+      <h2>{{ eh.formFieldValue(field) }}</h2>
     {% else %}
       {% if field.value is defined and field.value is not empty %}
         <p>

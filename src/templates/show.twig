@@ -10,12 +10,24 @@
 
 {% block content %}
     {% for field in fields %}
-      {% if field.value == '__section__' %}
-        <h2 class="webform--section-heading">{{ field.label }}</h2>
+      {% if field.label == '__section__' %}
+        <h2 class="webform--section-heading">{{ field.value }}</h2>
       {% else %}
         <p>
           <strong>{{ field.label }}</strong><br>
-          {{ field.value }}
+          {% if field.value is not defined %}
+            -- n/a --
+          {% elseif field.value is empty %}
+            -- n/a --
+          {% else %}
+            {% if field.value[0] is not defined and field.value is not empty %}
+              {{- field.value -}}
+            {% else %}
+              {% for option in field.value %}
+                {{- option }}{% if not loop.last %},{% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endif %}
         </p>
       {% endif %}
     {% endfor %}

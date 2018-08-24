@@ -11,11 +11,12 @@
 namespace tungsten\webform\services;
 
 use tungsten\webform\WebForm;
+use tungsten\webform\elements\Submission;
+use tungsten\webform\models\SubmissionModel;
 
 use Craft;
 use craft\db\Query;
 use craft\base\Component;
-use tungsten\webform\elements\Submission;
 
 /**
  * WebFormService Service
@@ -43,7 +44,7 @@ class WebFormService extends Component
     public function getSubmissionById(int $submissionId, int $siteId = null)
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return Craft::$app->getElements()->getElementById($submissionId, Submission::class, $siteId);
+        return \Craft::$app->getElements()->getElementById($submissionId, Submission::class, $siteId);
     }
 
     /**
@@ -53,18 +54,18 @@ class WebFormService extends Component
      * @param boolean
      * @return boolean
      */
-    public function addSubmission($submissionParams, $isTestSubmission = false)
+    public function addSubmission($submissionData, $isTestSubmission = false)
     {
         $submission = new Submission();
 
         $submission->statusType = $isTestSubmission ? 'test' : 'new';
-        $submission->formHandle = $submissionParams['formHandle'];
-        $submission->formTitle  = $submissionParams['formTitle'];
-        $submission->subject    = $submissionParams['subject'];
-        $submission->recipients = $submissionParams['recipients'];
-        $submission->content    = $submissionParams['content'];
+        $submission->formHandle = $submissionData->formHandle;
+        $submission->formTitle  = $submissionData->formTitle;
+        $submission->subject    = $submissionData->getSubject();
+        $submission->recipients = $submissionData->recipients;
+        $submission->content    = $submissionData->getSerializedFields();
 
-        $success = Craft::$app->getElements()->saveElement($submission, true, false);
+        $success = \Craft::$app->getElements()->saveElement($submission, true, false);
 
         if (!$success) {
             Craft::error('Couldn’t save the form submission "'.$submission->formHandle.'"', __METHOD__);
@@ -83,7 +84,7 @@ class WebFormService extends Component
      */
     public function setSubmissionStatusType($submission, $statusType) {
         $submission->statusType = $statusType;
-        return Craft::$app->getElements()->saveElement($submission, true, false);
+        return \Craft::$app->getElements()->saveElement($submission, true, false);
     }
 
     /**
@@ -112,7 +113,7 @@ class WebFormService extends Component
             ->all();
 
         foreach ($submissions as $submission) {
-            Craft::$app->getElements()->deleteElement($submission);
+            \Craft::$app->getElements()->deleteElement($submission);
         }
     }
 }

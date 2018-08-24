@@ -11,6 +11,7 @@
 namespace tungsten\webform\services;
 
 use tungsten\webform\WebForm;
+use tungsten\webform\models\SubmissionModel;
 
 use Craft;
 use craft\base\Component;
@@ -50,11 +51,11 @@ class EmailService extends Component
      * @param null $recipients
      * @return bool
      */
-    public function deliver($messageParams, $useTestMailer = false): bool
+    public function deliver($submissionData, $useTestMailer = false): bool
     {
         $mailerSettings = \Craft::$app->systemSettings->getEmailSettings();
 
-        $message = $this->prepareMessage($messageParams, $mailerSettings);
+        $message = $this->prepareMessage($submissionData, $mailerSettings);
 
         if ($useTestMailer)
         {
@@ -64,30 +65,33 @@ class EmailService extends Component
         }
         else
         {
-            return Craft::$app->mailer->send($message);
+            return \Craft::$app->mailer->send($message);
         }
     }
 
-    private function prepareMessage($messageParams, $mailerSettings)
+    private function prepareMessage($submissionData, $mailerSettings)
     {
         $message = new Message();
 
         $message->setFrom([$mailerSettings['fromEmail'] => $mailerSettings['fromName']]);
-        $message->setTo($messageParams['recipients']);
-        $message->setSubject($messageParams['subject']);
-        if ($messageParams['replyTo']) {
-            $message->setReplyTo($messageParams['replyTo']);
+        $message->setTo($submissionData->getRecipients());
+        $message->setSubject($submissionData->getSubject());
+        if ($submissionData->getReplyTo()) {
+            $message->setReplyTo($submissionData->getReplyTo());
         }
-        $message->setHtmlBody($this->renderHtmlBody($messageParams));
+        $message->setHtmlBody($this->renderHtmlBody($submissionData));
 
         return $message;
     }
 
-    private function renderHtmlBody($messageParams) {
+    private function renderHtmlBody($submissionData) {
         \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
 
         // Render the default email template
-        $htmlBody = \Craft::$app->view->renderTemplate('webform/_email/default', $messageParams);
+        $htmlBody = \Craft::$app->view->renderTemplate(
+            'webform/_email/default',
+            $submissionData->getVariablesForEmailContent()
+        );
 
         \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);
 

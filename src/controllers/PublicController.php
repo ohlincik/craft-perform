@@ -11,6 +11,7 @@
 namespace tungsten\webform\controllers;
 
 use tungsten\webform\WebForm;
+use tungsten\webform\models\SubmissionModel;
 
 use Craft;
 use craft\web\Controller;
@@ -65,15 +66,25 @@ class PublicController extends Controller
         //   }
         // }
 
+        $submissionData = new SubmissionModel();
+        $submissionData->setAttributes([
+            'formHandle'      => $entry->formHandle,
+            'formTitle'       => $entry->formTitle,
+            'subjectTemplate' => $entry->formSubject,
+            'replyTo'         => $entry->notificationReplyTo,
+            'recipients'      => $entry->notificationRecipients,
+            'fields'          => $fields,
+        ], false);
+
         // Store the submission element in the CMS if the setting is enabled
         $success = WebForm::$plugin->webFormService->addSubmission(
-            $this->submissionParams($fields, $entry),
+            $submissionData,
             $entry->testModeEnabled
         );
 
         // Deliver the notification to the recipients
         $emailSent = WebForm::$plugin->emailService->deliver(
-            $this->messageParams($fields, $entry),
+            $submissionData,
             $entry->testModeEnabled
         );
 
@@ -81,44 +92,5 @@ class PublicController extends Controller
 
         // Redirect back to the form page
         $this->redirect($redirectUrl);
-    }
-
-    private function submissionParams($fields, $entry)
-    {
-        return [
-            'formHandle' => $entry->formHandle,
-            'formTitle'  => $entry->formTitle,
-            'subject'    => $this->renderFormSubject($entry->formSubject, $fields),
-            'recipients' => $entry->notificationRecipients,
-            'content'    => serialize($fields),
-        ];
-    }
-
-    private function messageParams($fields, $entry)
-    {
-        return [
-            'subject'    => $this->renderFormSubject($entry->formSubject, $fields),
-            'recipients' => explode(',', str_replace(' ', '', $entry->notificationRecipients)),
-            'replyTo'    => $this->processReplyTo($entry->notificationReplyTo, $fields),
-            'fields'     => $fields,
-        ];
-    }
-
-    private function renderFormSubject($template, $fields)
-    {
-        $subject = \Craft::$app->view->renderString($template, $fields);
-        $subject = empty($subject) ? 'Website Form Submission' : $subject;
-
-        return $subject;
-    }
-
-    private function processReplyTo($template, $fields)
-    {
-
-        if (empty($template)) {
-            return false;
-        }
-
-        return \Craft::$app->view->renderString($template, $fields);
     }
 }
