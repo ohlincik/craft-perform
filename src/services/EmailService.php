@@ -117,7 +117,8 @@ class EmailService extends Component
             // This method of creating Mailer is deprecated as of Craft 3.0.18
             return MailerHelper::createMailer($mailerSettings);
         } else {
-            return null;
+            // WebForm Plugin exception
+            exit("Test Mailer could not be initiated. Please make sure that it is enabled in the Plugin Settings and the proper credentials are supplied.");
         }
     }
 }
