@@ -26,15 +26,15 @@ use craft\web\Controller;
 class PublicController extends Controller
 {
 
-    // Protected Properties
+    // Properties
     // =========================================================================
 
     /**
      * @var    bool|array Allows anonymous access to this controller's actions.
      *         The actions must be in 'kebab-case'
-     * @access protected
+     * @access public
      */
-    protected $allowAnonymous = ['submit-form'];
+    public $allowAnonymous;
 
     // Public Methods
     // =========================================================================
@@ -43,24 +43,27 @@ class PublicController extends Controller
      * Handle a request going to our plugin's actionSubmitForm URL,
      * e.g.: actions/webform/public/submit-form
      *
-     * @return mixed
+     * @return Response|null
      */
     public function actionSubmitForm()
     {
         $this->requirePostRequest();
-        $entryId = \Craft::$app->request->post('entry_id');
-        $fields = \Craft::$app->request->post('fields');
+        $plugin = WebForm::getInstance();
+        $request = \Craft::$app->getRequest();
+        $pluginSettings = $plugin->getSettings();
+
+        $entryId = $request->getBodyParam('entry_id');
+        $fields = $request->getBodyParam('fields');
 
         $entry = \Craft::$app->entries->getEntryById($entryId);
-
-        $pluginSettings = WebForm::$plugin->getSettings();
+        $testModeEnabled = $entry->testModeEnabled;
 
         // Validate captcha if enabled
         if ($pluginSettings->googleInvisibleCaptcha) {
             $gRecaptchaResponse = \Craft::$app->request->post('g-recaptcha-response');
             $remoteIp = \Craft::$app->request->remoteIp;
 
-          if (!WebForm::$plugin->webFormService->validateCaptcha($gRecaptchaResponse, $remoteIp)) {
+          if (!$plugin->webFormService->validateCaptcha($gRecaptchaResponse, $remoteIp)) {
             // Captcha verification failed!
             header($_SERVER['SERVER_PROTOCOL'].' 418 I\'m a teapot');
             exit;
@@ -78,20 +81,19 @@ class PublicController extends Controller
         ], false);
 
         // Store the submission element in the CMS if the setting is enabled
-        $success = WebForm::$plugin->webFormService->addSubmission(
-            $submissionData,
-            $entry->testModeEnabled
-        );
+        $success = $plugin->webFormService->addSubmission($submissionData, $testModeEnabled);
 
         // Deliver the notification to the recipients
-        $emailSent = WebForm::$plugin->emailService->deliver(
-            $submissionData,
-            $entry->testModeEnabled
-        );
+        if (!$plugin->emailService->deliver($submissionData, $testModeEnabled)) {
+            \Craft::$app->getSession()->setError(Craft::t('webform', 'The WebForm submission email could not be delivered.'));
+            \Craft::$app->getUrlManager()->setRouteParams([
+                'variables' => ['payload' => $submissionData]
+            ]);
 
-        $redirectUrl = $entry->url."/?success=✓";
+            return null;
+        }
 
-        // Redirect back to the form page
-        $this->redirect($redirectUrl);
+        \Craft::$app->getSession()->setNotice(Craft::t('webform', 'WebForm submission was successfully completed'));
+        return $this->redirectToPostedUrl($submissionData, $entry->url."/?success=✓");
     }
 }
