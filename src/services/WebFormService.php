@@ -116,4 +116,24 @@ class WebFormService extends Component
             \Craft::$app->getElements()->deleteElement($submission);
         }
     }
+
+    public function validateCaptcha($gRecaptchaResponse, $remoteIp) {
+      $url = 'https://www.google.com/recaptcha/api/siteverify';
+
+      $pluginSettings = WebForm::$plugin->getSettings();
+
+      $data = array(
+        "secret" => $pluginSettings->googleCaptchaSecretKey,
+        "response" => $gRecaptchaResponse,
+        "remoteip" => $remoteIp
+      );
+
+      $ch = curl_init($url);
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+      $response = json_decode(curl_exec($ch));
+      return $response->success;
+    }
 }

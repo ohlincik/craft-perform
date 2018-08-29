@@ -1,4 +1,3 @@
-{% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
 {% if parsleyClientSideValidation %}
   {% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
   {% js %}
@@ -8,12 +7,47 @@
   {% endjs %}
 {% endif %}
 
+{% if googleInvisibleCaptcha %}
+  {% do view.registerJsFile('https://www.google.com/recaptcha/api.js', {
+    async: true,
+    defer: true
+  }) %}
+
+  {% js %}
+    $(document).ready(function() {
+      $('#webform-submission').on('submit', function() {
+        var token = grecaptcha.getResponse();
+
+        // if there is no token, the user is not validated yet
+        if (!token) {
+          // trigger validation
+          grecaptcha.execute();
+          // interrupt the form submission, the captcha callback will run
+          // and submit the form again
+          return false;
+        }
+      });
+
+      captchaCallback = function (token) {
+        // submit the form after the captcha was completed
+        $('#webform-submission').submit();
+      };
+    });
+  {% endjs %}
+{% endif %}
+
 <form role="form" id="webform-submission" method="post" action="" accept-charset="UTF-8">
   <input type="hidden" name="action" value="webform/public/submit-form">
   <input type="hidden" name="entry_id" value="{{ entryId }}">
   {{ csrfInput() }}
 
+  {% if googleInvisibleCaptcha %}
+    <div
+      id="recaptcha"
+      class="g-recaptcha"
+      data-sitekey="{{ googleCaptchaSiteKey|default('missing') }}"
+      data-callback="captchaCallback"
+      data-size="invisible">
+    </div>
+  {% endif %}
 
-{% js %}
-  hyperform(document.getElementById('webform-submission'));
-{% endjs %}

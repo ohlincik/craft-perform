@@ -22,22 +22,18 @@
 <p>You can test your email delivery templates and form submission using the Mailtrap.</p>
 
 {{ forms.checkboxField({
-    label: "Use Mailtrap"|t('app'),
     label: "Use Mailtrap"|t('webform'),
     id: 'testWithMailtrap',
     name: 'testWithMailtrap',
-    checked: settings['testWithMailtrap'],
     checked: settings.testWithMailtrap,
     toggle: 'auth-credentials'
 }) }}
 
-<div id="auth-credentials" class="nested-fields{% if not settings['testWithMailtrap'] %} hidden{% endif %}">
 <div id="auth-credentials" class="nested-fields{% if not settings.testWithMailtrap %} hidden{% endif %}">
     {{ forms.textField({
         label: "Username"|t('app'),
         id: 'testUsername',
         name: 'testUsername',
-        value: settings['testUsername']
         value: (settings.testUsername is defined) ? settings.testUsername : '',
         errors: (settings.testUsername is defined) ? settings.getErrors('testUsername') : ''
     }) }}
@@ -46,7 +42,6 @@
         label: "Password"|t('app'),
         id: 'testPassword',
         name: 'testPassword',
-        value: settings['testPassword'] ? settings['testPassword']|encenc
         value: (settings.testPassword is defined) ? settings.testPassword : '',
         errors: (settings.testPassword is defined) ? settings.getErrors('testPassword') : ''
     }) }}
@@ -65,5 +60,36 @@
     checked: settings.parsleyClientSideValidation
 }) }}
 
+<hr>
+
+<h2>Google Invisible reCAPTCHA Configuration</h2>
+
+<p>You will need to create the API Key for this site by logging into the <a href="https://www.google.com/recaptcha/admin#list" target="_blank">Google reCAPTCHA</a>.</p>
+
+{{ forms.checkboxField({
+    label: "Use Google Invisible reCAPTCHA"|t('webform'),
+    id: 'googleInvisibleCaptcha',
+    name: 'googleInvisibleCaptcha',
+    checked: settings.googleInvisibleCaptcha,
+    toggle: 'captcha-credentials'
+}) }}
+
+<div id="captcha-credentials" class="nested-fields{% if not settings.googleInvisibleCaptcha %} hidden{% endif %}">
+    {{ forms.textField({
+      label: "Captcha Site Key"|t('webform'),
+      id: 'googleCaptchaSiteKey',
+      name: 'googleCaptchaSiteKey',
+      instructions: 'Input the Google reCaptcha **Site key**.',
+      value: (settings.googleCaptchaSiteKey is defined) ? settings.googleCaptchaSiteKey : '',
+      errors: (settings.googleCaptchaSiteKey is defined) ? settings.getErrors('googleCaptchaSiteKey') : ''
+    }) }}
+
+    {{ forms.passwordField({
+      label: "Captcha Secret Key"|t,
+      id: 'googleCaptchaSecretKey',
+      name: 'googleCaptchaSecretKey',
+      instructions: 'Input the Google reCaptcha **Secret key**.',
+      value: (settings.googleCaptchaSecretKey is defined) ? settings.googleCaptchaSecretKey : '',
+      errors: (settings.googleCaptchaSecretKey is defined) ? settings.getErrors('googleCaptchaSecretKey') : ''
     }) }}
 </div>

@@ -70,6 +70,8 @@ class WebFormVariable
             'entryId' => $entryId,
             'parsleyClientSideValidation' => $pluginSettings->parsleyClientSideValidation,
             'parsleyValidationJsOptions' => $parsleyValidationJsOptions,
+            'googleInvisibleCaptcha' => $pluginSettings->googleInvisibleCaptcha,
+            'googleCaptchaSiteKey' => $pluginSettings->googleCaptchaSiteKey,
         ]);
 
         \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);

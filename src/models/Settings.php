@@ -62,6 +62,27 @@ class Settings extends Model
      */
     public $parsleyClientSideValidation = true;
 
+    /**
+     * Enable/Disable Google Invisible reCAPTCHA
+     *
+     * @var boolean
+     */
+    public $googleInvisibleCaptcha = false;
+
+    /**
+     * Google reCAPTCHA Site Key
+     *
+     * @var string
+     */
+    public $googleCaptchaSiteKey = '';
+
+    /**
+     * Google reCAPTCHA Secret Key
+     *
+     * @var string
+     */
+    public $googleCaptchaSecretKey = '';
+
     // Public Methods
     // =========================================================================
 

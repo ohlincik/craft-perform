@@ -53,18 +53,19 @@ class PublicController extends Controller
 
         $entry = \Craft::$app->entries->getEntryById($entryId);
 
-        // Validate captcha if enabled
-        // if ($captcha) {
-        //     $gRecaptchaResponse = \Craft::$app->request->post('g-recaptcha-response');
-        //     $remoteIp = \Craft::$app->request->remoteIp;
+        $pluginSettings = WebForm::$plugin->getSettings();
 
-        //   if (!WebForm::$plugin->webFormService->validateCaptcha($gRecaptchaResponse, $remoteIp))
-        //   {
-        //     // Captcha verification failed!
-        //     header($_SERVER['SERVER_PROTOCOL'].' 418 I\'m a teapot');
-        //     exit;
-        //   }
-        // }
+        // Validate captcha if enabled
+        if ($pluginSettings->googleInvisibleCaptcha) {
+            $gRecaptchaResponse = \Craft::$app->request->post('g-recaptcha-response');
+            $remoteIp = \Craft::$app->request->remoteIp;
+
+          if (!WebForm::$plugin->webFormService->validateCaptcha($gRecaptchaResponse, $remoteIp)) {
+            // Captcha verification failed!
+            header($_SERVER['SERVER_PROTOCOL'].' 418 I\'m a teapot');
+            exit;
+          }
+        }
 
         $submissionData = new SubmissionModel();
         $submissionData->setAttributes([
