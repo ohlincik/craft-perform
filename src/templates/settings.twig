@@ -23,18 +23,23 @@
 
 {{ forms.checkboxField({
     label: "Use Mailtrap"|t('app'),
+    label: "Use Mailtrap"|t('webform'),
     id: 'testWithMailtrap',
     name: 'testWithMailtrap',
     checked: settings['testWithMailtrap'],
+    checked: settings.testWithMailtrap,
     toggle: 'auth-credentials'
 }) }}
 
 <div id="auth-credentials" class="nested-fields{% if not settings['testWithMailtrap'] %} hidden{% endif %}">
+<div id="auth-credentials" class="nested-fields{% if not settings.testWithMailtrap %} hidden{% endif %}">
     {{ forms.textField({
         label: "Username"|t('app'),
         id: 'testUsername',
         name: 'testUsername',
         value: settings['testUsername']
+        value: (settings.testUsername is defined) ? settings.testUsername : '',
+        errors: (settings.testUsername is defined) ? settings.getErrors('testUsername') : ''
     }) }}
 
     {{ forms.passwordField({
@@ -42,6 +47,10 @@
         id: 'testPassword',
         name: 'testPassword',
         value: settings['testPassword'] ? settings['testPassword']|encenc
+        value: (settings.testPassword is defined) ? settings.testPassword : '',
+        errors: (settings.testPassword is defined) ? settings.getErrors('testPassword') : ''
+    }) }}
+</div>
 
 <hr>
 
