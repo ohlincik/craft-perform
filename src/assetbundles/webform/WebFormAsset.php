@@ -54,7 +54,7 @@ class WebFormAsset extends AssetBundle
         // when this asset bundle is registered
         $this->js = [
             // 'js/WebForm.js',
-            'js/hyperform.0.9.14.min.js',
+            'js/parsley.2.8.1.min.js',
         ];
 
         // $this->css = [

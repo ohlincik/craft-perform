@@ -49,23 +49,32 @@ class WebFormVariable
      */
     public function formTag($options = array())
     {
-      // Minimum requirements
-      if (!array_key_exists('entryId', $options) || !$options['entryId'])
-        return "The Entry ID must be provided.";
-      else
-        $entryId = $options['entryId'];
+        // Minimum requirements
+        if (!array_key_exists('entryId', $options) || !$options['entryId'])
+            return "The Entry ID must be provided.";
+        else
+            $entryId = $options['entryId'];
 
-      \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
+        if (array_key_exists('parsleyValidationJsOptions', $options) && $options['parsleyValidationJsOptions']) {
+            $parsleyValidationJsOptions = $options['parsleyValidationJsOptions'];
+        } else {
+            $parsleyValidationJsOptions = '';
+        }
 
-      // Render the form tag template
-      $formTag = \Craft::$app->view->renderTemplate('webform/formTag', [
-        'entryId' => $entryId
-      ]);
+        $pluginSettings = WebForm::$plugin->getSettings();
 
-      \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);
+        \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
 
+        // Render the form tag template
+        $formTag = \Craft::$app->view->renderTemplate('webform/formTag', [
+            'entryId' => $entryId,
+            'parsleyClientSideValidation' => $pluginSettings->parsleyClientSideValidation,
+            'parsleyValidationJsOptions' => $parsleyValidationJsOptions,
+        ]);
 
-      // return TemplateHelper::getRaw($formTag);
-      return Template::raw($formTag);
+        \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);
+
+        // return TemplateHelper::getRaw($formTag);
+        return Template::raw($formTag);
     }
 }

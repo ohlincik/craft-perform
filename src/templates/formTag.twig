@@ -1,4 +1,13 @@
 {% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
+{% if parsleyClientSideValidation %}
+  {% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
+  {% js %}
+    $(document).ready(function() {
+      $('#webform-submission').parsley({{ parsleyValidationJsOptions|raw }});
+    });
+  {% endjs %}
+{% endif %}
+
 <form role="form" id="webform-submission" method="post" action="" accept-charset="UTF-8">
   <input type="hidden" name="action" value="webform/public/submit-form">
   <input type="hidden" name="entry_id" value="{{ entryId }}">

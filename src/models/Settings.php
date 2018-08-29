@@ -55,6 +55,13 @@ class Settings extends Model
      */
     public $testPassword = '';
 
+    /**
+     * Enable/Disable client side Parsley JS Validation
+     *
+     * @var boolean
+     */
+    public $parsleyClientSideValidation = true;
+
     // Public Methods
     // =========================================================================
 

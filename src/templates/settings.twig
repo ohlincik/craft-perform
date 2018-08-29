@@ -42,5 +42,19 @@
         id: 'testPassword',
         name: 'testPassword',
         value: settings['testPassword'] ? settings['testPassword']|encenc
+
+<hr>
+
+<h2>Client Side Validation</h2>
+
+<p>You can use Parsley for client side form submission validation.</p>
+
+{{ forms.checkboxField({
+    label: "Use Parsley Client Side JS Validation"|t('webform'),
+    id: 'parsleyClientSideValidation',
+    name: 'parsleyClientSideValidation',
+    checked: settings.parsleyClientSideValidation
+}) }}
+
     }) }}
 </div>
