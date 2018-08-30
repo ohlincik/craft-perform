@@ -66,7 +66,7 @@ class WebFormVariable
         \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
 
         // Render the form tag template
-        $formTag = \Craft::$app->view->renderTemplate('webform/formTag', [
+        $formTag = \Craft::$app->view->renderTemplate('webform/_components/variables/formTag', [
             'entryId' => $entryId,
             'parsleyClientSideValidation' => $pluginSettings->parsleyClientSideValidation,
             'parsleyValidationJsOptions' => $parsleyValidationJsOptions,

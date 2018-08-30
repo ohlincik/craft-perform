@@ -1,5 +1,19 @@
+{% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
+
+<noscript>
+{#
+  JavaScript must be endabled. Otherwise the form is hidden and message to enable JavaScript is displayed.
+#}
+  <style type="text/css">
+      #webform-submission {display:none;}
+  </style>
+  <p class="webform--warning-js-disabled">
+    <strong>You don't have JavaScript enabled.</strong><br>
+    To continue, please <a href="http://enable-javascript.com/" target="_blank">enable JavaScript in your browser</a>.
+  </p>
+</noscript>
+
 {% if parsleyClientSideValidation %}
-  {% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
   {% js %}
     $(document).ready(function() {
       $('#webform-submission').parsley({{ parsleyValidationJsOptions|raw }});

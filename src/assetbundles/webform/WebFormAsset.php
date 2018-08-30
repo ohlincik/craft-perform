@@ -10,6 +10,8 @@
 
 namespace tungsten\webform\assetbundles\WebForm;
 
+use tungsten\webform\WebForm;
+
 use Craft;
 use craft\web\AssetBundle;
 // use craft\web\assets\cp\CpAsset;
@@ -52,14 +54,16 @@ class WebFormAsset extends AssetBundle
 
         // define the relative path to CSS/JS files that should be registered with the page
         // when this asset bundle is registered
-        $this->js = [
-            // 'js/WebForm.js',
-            'js/parsley.2.8.1.min.js',
-        ];
+        if (WebForm::$plugin->getSettings()->parsleyClientSideValidation) {
+            $this->js = [
+                // 'js/WebForm.js',
+                'js/parsley.2.8.1.min.js',
+            ];
+        }
 
-        // $this->css = [
-        //     'css/WebForm.css',
-        // ];
+        $this->css = [
+            'css/WebForm.css',
+        ];
 
         parent::init();
     }
