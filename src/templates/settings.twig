@@ -93,3 +93,18 @@
       errors: (settings.googleCaptchaSecretKey is defined) ? settings.getErrors('googleCaptchaSecretKey') : ''
     }) }}
 </div>
+
+<hr>
+
+<h2>Custom Email Templates</h2>
+
+<p>You can utilize custom templates for the email</p>
+
+{{ forms.textField({
+  label: "Custom Email Templates Path"|t('webform'),
+  id: 'customEmailTemplatesPath',
+  name: 'customEmailTemplatesPath',
+  instructions: 'Specify a path relative to your front-end templates folder where your custom Email templates are located.',
+  value: (settings.customEmailTemplatesPath is defined) ? settings.customEmailTemplatesPath : '',
+  errors: (settings.customEmailTemplatesPath is defined) ? settings.getErrors('customEmailTemplatesPath') : ''
+}) }}

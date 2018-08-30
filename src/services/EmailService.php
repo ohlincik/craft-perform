@@ -84,21 +84,33 @@ class EmailService extends Component
         return $message;
     }
 
-    private function renderHtmlBody($submissionData) {
-        \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
+    private function renderHtmlBody($submissionData)
+    {
+        $customEmailTemplate = $this->customEmailTemplate($submissionData->formHandle);
 
-        // Render the default email template
-        $htmlBody = \Craft::$app->view->renderTemplate(
-            'webform/_email/default',
-            $submissionData->getVariablesForEmailContent()
-        );
+        if ($customEmailTemplate) {
+            // Render the front-end email template
+            $htmlBody = \Craft::$app->view->renderTemplate(
+                $customEmailTemplate,
+                $submissionData->getVariablesForEmailContent()
+            );
+        } else {
+            \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_CP);
 
-        \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);
+            // Render the default plugin email template
+            $htmlBody = \Craft::$app->view->renderTemplate(
+                'webform/_email/default',
+                $submissionData->getVariablesForEmailContent()
+            );
+
+            \Craft::$app->view->setTemplateMode(View::TEMPLATE_MODE_SITE);
+        }
 
         return Template::raw($htmlBody);
     }
 
-    private function getTestMailer($mailerSettings) {
+    private function getTestMailer($mailerSettings)
+    {
         $pluginSettings = WebForm::$plugin->getSettings();
 
         if ($pluginSettings->testWithMailtrap)
@@ -120,5 +132,27 @@ class EmailService extends Component
             // WebForm Plugin exception
             exit("Test Mailer could not be initiated. Please make sure that it is enabled in the Plugin Settings and the proper credentials are supplied.");
         }
+    }
+
+    private function customEmailTemplate($formHandle)
+    {
+        $customEmailTemplatesPath = WebForm::$plugin->getSettings()->customEmailTemplatesPath;
+
+        // Is the custom email template path set?
+        if (!$customEmailTemplatesPath) {
+            return false;
+        }
+
+        // Does the custom front-end email template exist?
+        if (\Craft::$app->view->doesTemplateExist($customEmailTemplatesPath.'/'.$formHandle)) {
+            return $customEmailTemplatesPath.'/'.$formHandle;
+        }
+
+        // Does the default front-end email template exist?
+        if (\Craft::$app->view->doesTemplateExist($customEmailTemplatesPath.'/default')) {
+            return $customEmailTemplatesPath.'/default';
+        }
+
+        return false;
     }
 }

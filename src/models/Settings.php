@@ -83,6 +83,13 @@ class Settings extends Model
      */
     public $googleCaptchaSecretKey = '';
 
+    /**
+     * Path to front-end email templates
+     *
+     * @var string
+     */
+    public $customEmailTemplatesPath = '';
+
     // Public Methods
     // =========================================================================
 
