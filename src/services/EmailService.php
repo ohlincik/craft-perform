@@ -15,7 +15,8 @@ use tungsten\webform\models\SubmissionModel;
 
 use Craft;
 use craft\base\Component;
-use craft\helpers\MailerHelper;
+// use craft\helpers\MailerHelper;
+use craft\helpers\App;
 use craft\helpers\Template;
 use craft\mail\Message;
 use craft\web\View;
@@ -123,11 +124,8 @@ class EmailService extends Component
                 'password' => $pluginSettings->testPassword,
             ];
 
-            // Use this method of creating Mailer as of Craft 3.0.18
-            // $mailer = App::mailerConfig($mailerSettings);
-
-            // This method of creating Mailer is deprecated as of Craft 3.0.18
-            return MailerHelper::createMailer($mailerSettings);
+            $testMailerConfig = App::mailerConfig($mailerSettings);
+            return Craft::createObject($testMailerConfig);
         } else {
             // WebForm Plugin exception
             exit("Test Mailer could not be initiated. Please make sure that it is enabled in the Plugin Settings and the proper credentials are supplied.");
