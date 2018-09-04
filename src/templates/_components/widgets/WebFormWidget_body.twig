@@ -3,7 +3,7 @@
 /**
  * WebForm plugin for Craft CMS
  *
- * WebFormWidget Widget Body
+ * WebForm Widget Body
  *
  * @author    Tungsten Creative
  * @copyright Copyright (c) 2018 Tungsten Creative
@@ -13,8 +13,47 @@
  */
 #}
 
-{% set iconUrl = view.getAssetManager().getPublishedUrl('@tungsten/webform/assetbundles/webformwidgetwidget/dist', true) ~ '/img/WebFormWidget-icon.svg' %}
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@tungsten/webform/assetbundles/webformwidget/dist', true) ~ '/img/WebFormWidget-icon.svg' %}
 
-<img src="{{ iconUrl }}" height="64" width="64" />
+{% macro pluralize(label, count) %}
+  {% if count == 1 %}
+    {{- label -}}
+  {% else %}
+    {{- label -}}s
+  {% endif %}
+{% endmacro %}
+{% import _self as macros %}
 
-<p>{{ message }}</p>
+<div class="readable webform--centered">
+  <img src="{{ iconUrl }}" height="32" width="32" />
+  {% if allSubmissionsCount > 0 %}
+    {% if newSubmissionsCount == 0 %}
+      <p class="webform--no-submissions">There are no new submissions</p>
+    {% else %}
+      <p class="webform--new-submissions">
+        {{ newSubmissionsCount }} New {{ macros.pluralize('Submission', newSubmissionsCount) }}
+      </p>
+    {% endif %}
+    <p>
+      {{ allSubmissionsCount }} {{ macros.pluralize('Submission', allSubmissionsCount) }} Total
+    </p>
+    {% if currentUser.can('accessplugin-webform') %}
+      <div class="secondary-buttons">
+        <a class="btn small submit" href="{{ url('webform') }}">View</a>
+      </div>
+    {% endif %}
+    {% if currentUser.can('utility:webform-utility') %}
+      {% if testSubmissionsCount > 0 %}
+        <hr>
+        <p class="webform--test-submissions">
+          {{ testSubmissionsCount }} Test {{ macros.pluralize('Submission', testSubmissionsCount) }}
+        </p>
+        <div class="secondary-buttons">
+          <a class="btn small submit" href="{{ url('utilities/webform-utility') }}">Manage</a>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% else %}
+    <p class="webform--no-submissions">There are no submissions</p>
+  {% endif %}
+</div>

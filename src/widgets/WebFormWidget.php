@@ -11,7 +11,7 @@
 namespace tungsten\webform\widgets;
 
 use tungsten\webform\WebForm;
-use tungsten\webform\assetbundles\webformwidgetwidget\WebFormWidgetWidgetAsset;
+use tungsten\webform\assetbundles\webformwidget\WebFormWidgetAsset;
 
 use Craft;
 use craft\base\Widget;
@@ -37,7 +37,7 @@ class WebFormWidget extends Widget
     /**
      * @var string The message to display
      */
-    public $message = 'Hello, world.';
+    // public $message = 'Hello, world.';
 
     // Static Methods
     // =========================================================================
@@ -49,7 +49,7 @@ class WebFormWidget extends Widget
      */
     public static function displayName(): string
     {
-        return Craft::t('webform', 'WebFormWidget');
+        return Craft::t('webform', 'WebForm');
     }
 
     /**
@@ -59,7 +59,7 @@ class WebFormWidget extends Widget
      */
     public static function iconPath()
     {
-        return Craft::getAlias("@tungsten/webform/assetbundles/webformwidgetwidget/dist/img/WebFormWidget-icon.svg");
+        return Craft::getAlias("@tungsten/webform/assetbundles/webformwidget/dist/img/WebFormWidget-icon.svg");
     }
 
     /**
@@ -69,7 +69,7 @@ class WebFormWidget extends Widget
      */
     public static function maxColspan()
     {
-        return null;
+        return 1;
     }
 
     // Public Methods
@@ -85,18 +85,18 @@ class WebFormWidget extends Widget
      *
      * @return array
      */
-    public function rules()
-    {
-        $rules = parent::rules();
-        $rules = array_merge(
-            $rules,
-            [
-                ['message', 'string'],
-                ['message', 'default', 'value' => 'Hello, world.'],
-            ]
-        );
-        return $rules;
-    }
+    // public function rules()
+    // {
+    //     $rules = parent::rules();
+    //     $rules = array_merge(
+    //         $rules,
+    //         [
+    //             ['message', 'string'],
+    //             ['message', 'default', 'value' => 'Hello, world.'],
+    //         ]
+    //     );
+    //     return $rules;
+    // }
 
     /**
      * Returns the component’s settings HTML.
@@ -190,15 +190,15 @@ class WebFormWidget extends Widget
      *
      * @return string|null
      */
-    public function getSettingsHtml()
-    {
-        return Craft::$app->getView()->renderTemplate(
-            'webform/_components/widgets/WebFormWidget_settings',
-            [
-                'widget' => $this
-            ]
-        );
-    }
+    // public function getSettingsHtml()
+    // {
+    //     return Craft::$app->getView()->renderTemplate(
+    //         'webform/_components/widgets/WebFormWidget_settings',
+    //         [
+    //             'widget' => $this
+    //         ]
+    //     );
+    // }
 
     /**
      * Returns the widget's body HTML.
@@ -209,12 +209,14 @@ class WebFormWidget extends Widget
      */
     public function getBodyHtml()
     {
-        Craft::$app->getView()->registerAssetBundle(WebFormWidgetWidgetAsset::class);
+        Craft::$app->getView()->registerAssetBundle(WebFormWidgetAsset::class);
 
         return Craft::$app->getView()->renderTemplate(
             'webform/_components/widgets/WebFormWidget_body',
             [
-                'message' => $this->message
+                'newSubmissionsCount' => WebForm::$plugin->webFormService->getSubmissionsCount('new'),
+                'testSubmissionsCount' => WebForm::$plugin->webFormService->getSubmissionsCount('test'),
+                'allSubmissionsCount' => WebForm::$plugin->webFormService->getSubmissionsCount(),
             ]
         );
     }

@@ -9,3 +9,20 @@
  * @package   WebForm
  * @since     1.0.0
  */
+
+.webform--centered {
+  text-align: center;
+}
+
+.webform--new-submissions {
+  color: #27AE60;
+  font-weight: bold;
+}
+
+.webform--no-submissions {
+  color: #b9bfc6;
+}
+
+.webform--test-submissions {
+  color: #F2842D;
+}

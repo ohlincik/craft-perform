@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Tungsten Creative
  */
 
-namespace tungsten\webform\assetbundles\webformwidgetwidget;
+namespace tungsten\webform\assetbundles\webformwidget;
 
 use Craft;
 use craft\web\AssetBundle;
@@ -32,7 +32,7 @@ use craft\web\assets\cp\CpAsset;
  * @package   WebForm
  * @since     1.0.0
  */
-class WebFormWidgetWidgetAsset extends AssetBundle
+class WebFormWidgetAsset extends AssetBundle
 {
     // Public Methods
     // =========================================================================
@@ -43,7 +43,7 @@ class WebFormWidgetWidgetAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@tungsten/webform/assetbundles/webformwidgetwidget/dist";
+        $this->sourcePath = "@tungsten/webform/assetbundles/webformwidget/dist";
 
         // define the dependencies
         $this->depends = [
