@@ -8,14 +8,14 @@
  * @copyright Copyright (c) 2018 Tungsten Creative
  */
 
-namespace tungsten\webform\assetbundles\indexcpsection;
+namespace tungsten\webform\assetbundles\webformcp;
 
 use Craft;
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
 /**
- * IndexCPSectionAsset AssetBundle
+ * WebFormCPAsset AssetBundle
  *
  * AssetBundle represents a collection of asset files, such as CSS, JS, images.
  *
@@ -32,7 +32,7 @@ use craft\web\assets\cp\CpAsset;
  * @package   WebForm
  * @since     1.0.0
  */
-class IndexCPSectionAsset extends AssetBundle
+class WebFormCPAsset extends AssetBundle
 {
     // Public Methods
     // =========================================================================
@@ -43,7 +43,7 @@ class IndexCPSectionAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@tungsten/webform/assetbundles/indexcpsection/dist";
+        $this->sourcePath = "@tungsten/webform/assetbundles/webformcp/dist";
 
         // define the dependencies
         $this->depends = [
@@ -53,11 +53,11 @@ class IndexCPSectionAsset extends AssetBundle
         // define the relative path to CSS/JS files that should be registered with the page
         // when this asset bundle is registered
         $this->js = [
-            'js/Index.js',
+            'js/scripts.js',
         ];
 
         $this->css = [
-            'css/Index.css',
+            'css/styles.css',
         ];
 
         parent::init();

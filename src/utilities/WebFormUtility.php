@@ -11,7 +11,7 @@
 namespace tungsten\webform\utilities;
 
 use tungsten\webform\WebForm;
-use tungsten\webform\assetbundles\webformutilityutility\WebFormUtilityUtilityAsset;
+use tungsten\webform\assetbundles\webformcp\WebFormCPAsset;
 
 use Craft;
 use craft\base\Utility;
@@ -61,7 +61,7 @@ class WebFormUtility extends Utility
      */
     public static function iconPath()
     {
-        return Craft::getAlias("@tungsten/webform/assetbundles/webformutilityutility/dist/img/WebFormUtility-icon.svg");
+        return Craft::getAlias("@tungsten/webform/assetbundles/webformcp/dist/img/utility-icon.svg");
     }
 
     /**

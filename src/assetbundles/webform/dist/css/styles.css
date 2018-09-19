@@ -13,7 +13,7 @@
  /*
    Format the alert that is displayed if JavaScript is disabled
  */
- .webform--warning-js-disabled {
+ .webform--warning-panel {
    background-color: rgb(242, 222, 222);
    border: 1px solid rgb(235, 204, 209);
    border-radius: 4px;

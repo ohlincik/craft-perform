@@ -14,7 +14,6 @@ use tungsten\webform\WebForm;
 
 use Craft;
 use craft\web\AssetBundle;
-// use craft\web\assets\cp\CpAsset;
 
 /**
  * WebFormAsset AssetBundle
@@ -56,13 +55,13 @@ class WebFormAsset extends AssetBundle
         // when this asset bundle is registered
         if (WebForm::$plugin->getSettings()->parsleyClientSideValidation) {
             $this->js = [
-                // 'js/WebForm.js',
+                // 'js/scripts.js',
                 'js/parsley.2.8.1.min.js',
             ];
         }
 
         $this->css = [
-            'css/WebForm.css',
+            'css/styles.css',
         ];
 
         parent::init();
