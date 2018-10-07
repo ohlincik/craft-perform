@@ -4,32 +4,22 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\assetbundles\WebForm;
 
 use tungsten\webform\WebForm;
 
-use Craft;
 use craft\web\AssetBundle;
 
 /**
  * WebFormAsset AssetBundle
  *
- * AssetBundle represents a collection of asset files, such as CSS, JS, images.
+ * This asset bundle is used for the plugin front-end.
  *
- * Each asset bundle has a unique name that globally identifies it among all asset bundles used in an application.
- * The name is the [fully qualified class name](http://php.net/manual/en/language.namespaces.rules.php)
- * of the class representing it.
- *
- * An asset bundle can depend on other asset bundles. When registering an asset bundle
- * with a view, all its dependent asset bundles will be automatically registered.
- *
- * http://www.yiiframework.com/doc-2.0/guide-structure-assets.html
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -44,18 +34,11 @@ class WebFormAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@tungsten/webform/assetbundles/webform/dist";
+        $this->sourcePath = '@tungsten/webform/assetbundles/webform/dist';
 
-        // define the dependencies
-        // $this->depends = [
-        //     CpAsset::class,
-        // ];
-
-        // define the relative path to CSS/JS files that should be registered with the page
-        // when this asset bundle is registered
+        // Only include the Parsley JS if it is enabled in plugin settings
         if (WebForm::$plugin->getSettings()->parsleyClientSideValidation) {
             $this->js = [
-                // 'js/scripts.js',
                 'js/parsley.2.8.1.min.js',
             ];
         }

@@ -3,50 +3,50 @@
  *
  * Index Field CSS
  *
- * @author    Tungsten Creative
- * @copyright Copyright (c) 2018 Tungsten Creative
- * @link      http://atomic74.com
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
  * @package   WebForm
  * @since     1.0.0
  */
 
 .webform--section-heading {
-  font-size: 1.8em;
-  border-bottom: 3px solid #e7eef3;
-  line-height: 1.2;
-  margin-top: 1.5em;
-  margin-bottom: .8em;
-  padding-bottom: .2em;
+    font-size: 1.8em;
+    border-bottom: 3px solid #e7eef3;
+    line-height: 1.2;
+    margin-top: 1.5em;
+    margin-bottom: .8em;
+    padding-bottom: .2em;
 }
 
 /* ===== Form Settings Field ===== */
 
 .webform--field {
-  -ms-flex: 1;
-  -webkit-box-flex: 1;
-  border-radius: 3px;
-  border: 1px solid #e3e5e8;
-  flex: 1;
-  margin-bottom: 10px;
-  padding: 24px;
-  word-wrap: break-word;
+    -ms-flex: 1;
+    -webkit-box-flex: 1;
+    border-radius: 3px;
+    border: 1px solid #e3e5e8;
+    flex: 1;
+    margin-bottom: 10px;
+    padding: 24px;
+    word-wrap: break-word;
 }
 
 /* ===== Dashboard Widget ===== */
 
 .webform--centered {
-  text-align: center;
+    text-align: center;
 }
 
 .webform--new-submissions {
-  color: #27AE60;
-  font-weight: bold;
+    color: #27AE60;
+    font-weight: bold;
 }
 
 .webform--no-submissions {
-  color: #b9bfc6;
+    color: #b9bfc6;
 }
 
 .webform--test-submissions {
-  color: #F2842D;
+    color: #F2842D;
 }

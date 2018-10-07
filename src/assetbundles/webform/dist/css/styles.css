@@ -3,20 +3,17 @@
  *
  * WebForm CSS
  *
- * @author    Tungsten Creative
- * @copyright Copyright (c) 2018 Tungsten Creative
- * @link      http://atomic74.com
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
  * @package   WebForm
  * @since     1.0.0
  */
 
- /*
-   Format the alert that is displayed if JavaScript is disabled
- */
- .webform--warning-panel {
-   background-color: rgb(242, 222, 222);
-   border: 1px solid rgb(235, 204, 209);
-   border-radius: 4px;
-   display: block;
-   padding: 1em;
- }
+.webform--warning-panel {
+    background-color: rgb(242, 222, 222);
+    border: 1px solid rgb(235, 204, 209);
+    border-radius: 4px;
+    display: block;
+    padding: 1em;
+}
