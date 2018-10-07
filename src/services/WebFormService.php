@@ -4,30 +4,22 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\services;
 
+use craft\elements\Entry;
+use tungsten\webform\models\SubmissionModel;
 use tungsten\webform\WebForm;
 use tungsten\webform\elements\Submission;
-use tungsten\webform\models\SubmissionModel;
 
 use Craft;
-use craft\db\Query;
 use craft\base\Component;
 
 /**
- * WebFormService Service
- *
- * All of your plugin’s business logic should go in services, including saving data,
- * retrieving data, etc. They provide APIs that your controllers, template variables,
- * and other plugins can interact with.
- *
- * https://craftcms.com/docs/plugins/services
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -39,9 +31,11 @@ class WebFormService extends Component
     /**
      * Get a submission
      *
+     * @param int $submissionId
+     * @param int|null $siteId
      * @return submission
      */
-    public function getSubmissionById(int $submissionId, int $siteId = null)
+    public function getSubmissionById(int $submissionId, int $siteId = null): Submission
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return \Craft::$app->getElements()->getElementById($submissionId, Submission::class, $siteId);
@@ -50,11 +44,14 @@ class WebFormService extends Component
     /**
      * Add a submission
      *
-     * @param array
-     * @param boolean
+     * @param SubmissionModel $submissionData
+     * @param bool $isTestSubmission
      * @return boolean
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \yii\base\Exception
      */
-    public function addSubmission($submissionData, $isTestSubmission = false)
+    public function addSubmission(SubmissionModel $submissionData, bool $isTestSubmission = false): bool
     {
         $submission = new Submission();
 
@@ -68,21 +65,25 @@ class WebFormService extends Component
         $success = \Craft::$app->getElements()->saveElement($submission, true, false);
 
         if (!$success) {
-            Craft::error('Couldn’t save the form submission "'.$submission->formHandle.'"', __METHOD__);
+            Craft::error('Could not save the form submission "'.$submission->formHandle.'"', __METHOD__);
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
      * Set a submission status
      *
-     * @param submission
+     * @param Submission $submission
      * @param string
      * @return boolean
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \yii\base\Exception
      */
-    public function setSubmissionStatusType($submission, $statusType) {
+    public function setSubmissionStatusType(Submission $submission, string $statusType): bool
+    {
         $submission->statusType = $statusType;
         return \Craft::$app->getElements()->saveElement($submission, true, false);
     }
@@ -103,9 +104,12 @@ class WebFormService extends Component
                 ->count();
         }
 
-        return (int) $submissionsCount;
+        return $submissionsCount;
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function deleteAllTestSubmissions()
     {
         $submissions = Submission::find()
@@ -117,15 +121,20 @@ class WebFormService extends Component
         }
     }
 
+    /**
+     * @param $gRecaptchaResponse
+     * @param $remoteIp
+     * @return mixed
+     */
     public function validateCaptcha($gRecaptchaResponse, $remoteIp) {
       $url = 'https://www.google.com/recaptcha/api/siteverify';
 
       $pluginSettings = WebForm::$plugin->getSettings();
 
       $data = array(
-        "secret" => $pluginSettings->googleCaptchaSecretKey,
-        "response" => $gRecaptchaResponse,
-        "remoteip" => $remoteIp
+        'secret' => $pluginSettings->googleCaptchaSecretKey,
+        'response' => $gRecaptchaResponse,
+        'remoteip' => $remoteIp
       );
 
       $ch = curl_init($url);
@@ -133,7 +142,67 @@ class WebFormService extends Component
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-      $response = json_decode(curl_exec($ch));
-      return $response->success;
+      return json_decode(curl_exec($ch))->success;
+    }
+
+    /**
+     * @param Entry $entry
+     * @return bool|\craft\base\ElementInterface[]|mixed|null|string
+     */
+    public function getFormSettings(Entry $entry)
+    {
+        $entryFields = $entry->getFieldLayout()->getFields();
+
+        $formSettingsHandle = false;
+
+        foreach ($entryFields as $field) {
+            if ($field::displayName() == 'Form Settings') {
+                $formSettingsHandle = $field->handle;
+            }
+        }
+
+        if ($formSettingsHandle) {
+            $formSettings = $entry->$formSettingsHandle;
+        } else {
+            Craft::error(
+                Craft::t(
+                    'webform',
+                    'Form Settings were not found in the specified Entry'
+                ),
+                __METHOD__
+            );
+
+            return false;
+        }
+
+        if (!$formSettings->validate()) {
+            Craft::error(
+                Craft::t(
+                    'webform',
+                    'Form Settings could not be validated. Errors: {errors}',
+                    ['errors' => serialize($formSettings->errors)]
+                ),
+                __METHOD__
+            );
+
+            return false;
+        }
+
+        return $formSettings;
+    }
+
+    /**
+     * @param $entryId
+     * @return bool
+     */
+    public function formSettingsValid(int $entryId): bool
+    {
+        $entry = \Craft::$app->entries->getEntryById($entryId);
+
+        if ($this->getFormSettings($entry)) {
+            return true;
+        }
+
+        return false;
     }
 }

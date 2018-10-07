@@ -1,11 +1,12 @@
-<?php
+<?php /** @noinspection PhpUndefinedFieldInspection */
+
 /**
  * WebForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\controllers;
@@ -16,10 +17,12 @@ use tungsten\webform\models\SubmissionModel;
 use Craft;
 use craft\web\Controller;
 
+use yii\web\Response;
+
 /**
  * Public Controller
  *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -43,7 +46,14 @@ class PublicController extends Controller
      * Handle a request going to our plugin's actionSubmitForm URL,
      * e.g.: actions/webform/public/submit-form
      *
-     * @return Response|null
+     * @return null|Response
+     * @throws \Throwable
+     * @throws \Twig_Error_Loader
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\MissingComponentException
+     * @throws \craft\web\twig\TemplateLoaderException
+     * @throws \yii\base\Exception
+     * @throws \yii\web\BadRequestHttpException
      */
     public function actionSubmitForm()
     {
@@ -56,7 +66,10 @@ class PublicController extends Controller
         $fields = $request->getBodyParam('fields');
 
         $entry = \Craft::$app->entries->getEntryById($entryId);
-        $testModeEnabled = $entry->testModeEnabled;
+
+        $formSettings = $plugin->webFormService->getFormSettings($entry);
+
+        $testModeEnabled = $formSettings->testModeEnabled;
 
         // Validate captcha if enabled
         if ($pluginSettings->googleInvisibleCaptcha) {
@@ -72,16 +85,24 @@ class PublicController extends Controller
 
         $submissionData = new SubmissionModel();
         $submissionData->setAttributes([
-            'formHandle'      => $entry->formHandle,
-            'formTitle'       => $entry->formTitle,
-            'subjectTemplate' => $entry->formSubject,
-            'replyTo'         => $entry->notificationReplyTo,
-            'recipients'      => $entry->notificationRecipients,
+            'formHandle'      => $formSettings->formHandle,
+            'formTitle'       => $formSettings->formTitle,
+            'subjectTemplate' => $formSettings->formSubject,
+            'replyTo'         => $formSettings->notificationReplyTo,
+            'recipients'      => $formSettings->notificationRecipients,
             'fields'          => $fields,
         ], false);
 
         // Store the submission element in the CMS if the setting is enabled
-        $success = $plugin->webFormService->addSubmission($submissionData, $testModeEnabled);
+
+        if (!$plugin->webFormService->addSubmission($submissionData, $testModeEnabled)) {
+            \Craft::$app->getSession()->setError(Craft::t('webform', 'The WebForm submission could not be saved.'));
+            \Craft::$app->getUrlManager()->setRouteParams([
+                'variables' => ['payload' => $submissionData]
+            ]);
+
+            return null;
+        }
 
         // Deliver the notification to the recipients
         if (!$plugin->emailService->deliver($submissionData, $testModeEnabled)) {
@@ -94,6 +115,6 @@ class PublicController extends Controller
         }
 
         \Craft::$app->getSession()->setNotice(Craft::t('webform', 'WebForm submission was successfully completed'));
-        return $this->redirectToPostedUrl($submissionData, $entry->url."/?success=✓");
+        return $this->redirectToPostedUrl($submissionData, $entry->url. '/?success=✓');
     }
 }

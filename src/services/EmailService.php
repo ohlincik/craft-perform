@@ -4,33 +4,25 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\services;
 
+use craft\models\MailSettings;
 use tungsten\webform\WebForm;
 use tungsten\webform\models\SubmissionModel;
 
 use Craft;
 use craft\base\Component;
-// use craft\helpers\MailerHelper;
 use craft\helpers\App;
 use craft\helpers\Template;
 use craft\mail\Message;
 use craft\web\View;
 
 /**
- * EmailService Service
- *
- * All of your plugin’s business logic should go in services, including saving data,
- * retrieving data, etc. They provide APIs that your controllers, template variables,
- * and other plugins can interact with.
- *
- * https://craftcms.com/docs/plugins/services
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -40,19 +32,18 @@ class EmailService extends Component
     // =========================================================================
 
     /**
-     * This function can literally be anything you want, and you can have as many service
-     * functions as you want
+     * Deliver the submission in an email
      *
-     * From any other plugin file, call it like this:
+     * WebForm::$plugin->emailService->deliver()
      *
-     *     WebForm::$plugin->emailService->deliver()
-     *
-     * @param $html
-     * @param $subject
-     * @param null $recipients
+     * @param SubmissionModel $submissionData
+     * @param bool $useTestMailer
      * @return bool
+     * @throws \Twig_Error_Loader
+     * @throws \craft\web\twig\TemplateLoaderException
+     * @throws \yii\base\Exception
      */
-    public function deliver($submissionData, $useTestMailer = false): bool
+    public function deliver(SubmissionModel $submissionData, bool $useTestMailer = false): bool
     {
         $mailerSettings = \Craft::$app->systemSettings->getEmailSettings();
 
@@ -62,15 +53,24 @@ class EmailService extends Component
         {
             $mailer = $this->getTestMailer($mailerSettings);
 
+            if ($mailer === null) {
+                return false;
+            }
+
             return $mailer->send($message);
         }
-        else
-        {
-            return \Craft::$app->mailer->send($message);
-        }
+
+        return \Craft::$app->mailer->send($message);
     }
 
-    private function prepareMessage($submissionData, $mailerSettings)
+    /**
+     * @param SubmissionModel $submissionData
+     * @param $mailerSettings
+     * @return Message
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
+     */
+    private function prepareMessage(SubmissionModel $submissionData, MailSettings $mailerSettings): Message
     {
         $message = new Message();
 
@@ -85,7 +85,13 @@ class EmailService extends Component
         return $message;
     }
 
-    private function renderHtmlBody($submissionData)
+    /**
+     * @param SubmissionModel $submissionData
+     * @return \Twig_Markup
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
+     */
+    private function renderHtmlBody(SubmissionModel $submissionData): \Twig_Markup
     {
         $customEmailTemplate = $this->customEmailTemplate($submissionData->formHandle);
 
@@ -126,13 +132,17 @@ class EmailService extends Component
 
             $testMailerConfig = App::mailerConfig($mailerSettings);
             return Craft::createObject($testMailerConfig);
-        } else {
-            // WebForm Plugin exception
-            exit("Test Mailer could not be initiated. Please make sure that it is enabled in the Plugin Settings and the proper credentials are supplied.");
         }
+
+        // WebForm Plugin exception
+        return false;
     }
 
-    private function customEmailTemplate($formHandle)
+    /**
+     * @param string $formHandle
+     * @return bool|string
+     */
+    private function customEmailTemplate(string $formHandle)
     {
         $customEmailTemplatesPath = WebForm::$plugin->getSettings()->customEmailTemplatesPath;
 

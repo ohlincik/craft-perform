@@ -1,21 +1,23 @@
-<?php
+<?php /** @noinspection PropertyInitializationFlawsInspection */
+
 /**
  * WebForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform;
 
-// use tungsten\webform\services\WebFormService as WebFormServiceService;
+use tungsten\webform\services\WebFormService;
+use tungsten\webform\services\EmailService;
 use tungsten\webform\variables\WebFormVariable;
 use tungsten\webform\models\Settings;
-use tungsten\webform\fields\WebFormField as WebFormFieldField;
-use tungsten\webform\utilities\WebFormUtility as WebFormUtilityUtility;
-use tungsten\webform\widgets\WebFormWidget as WebFormWidgetWidget;
+use tungsten\webform\fields\FormSettings as FormSettingsField;
+use tungsten\webform\utilities\WebFormUtility;
+use tungsten\webform\widgets\WebFormWidget;
 
 use Craft;
 use craft\base\Plugin;
@@ -33,20 +35,15 @@ use craft\events\RegisterUrlRulesEvent;
 use yii\base\Event;
 
 /**
- * Craft plugins are very much like little applications in and of themselves. We’ve made
- * it as simple as we can, but the training wheels are off. A little prior knowledge is
- * going to be required to write a plugin.
+ * Class WebForm
  *
- * For the purposes of the plugin docs, we’re going to assume that you know PHP and SQL,
- * as well as some semi-advanced concepts like object-oriented programming and PHP namespaces.
- *
- * https://craftcms.com/docs/plugins/introduction
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  *
- * @property  WebFormServiceService $webFormService
+ * @property  WebFormService $webFormService
+ * @property  EmailService $emailService
+ * @property mixed $cpNavItem
  * @property  Settings $settings
  * @method    Settings getSettings()
  */
@@ -56,9 +53,6 @@ class WebForm extends Plugin
     // =========================================================================
 
     /**
-     * Static property that is an instance of this plugin class so that it can be accessed via
-     * WebForm::$plugin
-     *
      * @var WebForm
      */
     public static $plugin;
@@ -67,8 +61,6 @@ class WebForm extends Plugin
     // =========================================================================
 
     /**
-     * To execute your plugin’s migrations, you’ll need to increase its schema version.
-     *
      * @var string
      */
     public $schemaVersion = '1.0.0';
@@ -77,15 +69,7 @@ class WebForm extends Plugin
     // =========================================================================
 
     /**
-     * Set our $plugin static property to this class so that it can be accessed via
-     * WebForm::$plugin
-     *
-     * Called after the plugin class is instantiated; do any one-time initialization
-     * here such as hooks and events.
-     *
-     * If you have a '/vendor/autoload.php' file, it will be loaded for you automatically;
-     * you do not need to load it in your init() method.
-     *
+     * @inheritdoc
      */
     public function init()
     {
@@ -123,7 +107,7 @@ class WebForm extends Plugin
             Fields::class,
             Fields::EVENT_REGISTER_FIELD_TYPES,
             function (RegisterComponentTypesEvent $event) {
-                $event->types[] = WebFormFieldField::class;
+                $event->types[] = FormSettingsField::class;
             }
         );
 
@@ -132,7 +116,7 @@ class WebForm extends Plugin
             Utilities::class,
             Utilities::EVENT_REGISTER_UTILITY_TYPES,
             function (RegisterComponentTypesEvent $event) {
-                $event->types[] = WebFormUtilityUtility::class;
+                $event->types[] = WebFormUtility::class;
             }
         );
 
@@ -141,7 +125,7 @@ class WebForm extends Plugin
             Dashboard::class,
             Dashboard::EVENT_REGISTER_WIDGET_TYPES,
             function (RegisterComponentTypesEvent $event) {
-                $event->types[] = WebFormWidgetWidget::class;
+                $event->types[] = WebFormWidget::class;
             }
         );
 
@@ -162,34 +146,17 @@ class WebForm extends Plugin
             Plugins::EVENT_AFTER_INSTALL_PLUGIN,
             function (PluginEvent $event) {
                 if ($event->plugin === $this) {
-                    // We were just installed
+                    //TODO: Add post install screen
                 }
             }
         );
 
         $this->setComponents([
-            'webFormService' => \tungsten\webform\services\WebFormService::class,
-            'emailService' => \tungsten\webform\services\EmailService::class,
+            'webFormService' => WebFormService::class,
+            'emailService' => EmailService::class,
         ]);
 
-/**
- * Logging in Craft involves using one of the following methods:
- *
- * Craft::trace(): record a message to trace how a piece of code runs. This is mainly for development use.
- * Craft::info(): record a message that conveys some useful information.
- * Craft::warning(): record a warning message that indicates something unexpected has happened.
- * Craft::error(): record a fatal error that should be investigated as soon as possible.
- *
- * Unless `devMode` is on, only Craft::warning() & Craft::error() will log to `craft/storage/logs/web.log`
- *
- * It's recommended that you pass in the magic constant `__METHOD__` as the second parameter, which sets
- * the category to the method (prefixed with the fully qualified class name) where the constant appears.
- *
- * To enable the Yii debug toolbar, go to your user account in the AdminCP and check the
- * [] Show the debug toolbar on the front end & [] Show the debug toolbar on the Control Panel
- *
- * http://www.yiiframework.com/doc-2.0/guide-runtime-logging.html
- */
+        // We're loaded
         Craft::info(
             Craft::t(
                 'webform',
@@ -201,12 +168,12 @@ class WebForm extends Plugin
     }
 
     /**
-     * Sets the badge count in the CP nav item to number of NEW submissions
+     * Set the badge count in the CP nav item to number of NEW submissions
      */
     public function getCpNavItem()
     {
         $item = parent::getCpNavItem();
-        $item['badgeCount'] = WebForm::$plugin->webFormService->getSubmissionsCount('new');
+        $item['badgeCount'] = self::$plugin->webFormService->getSubmissionsCount('new');
         return $item;
     }
 
@@ -214,9 +181,7 @@ class WebForm extends Plugin
     // =========================================================================
 
     /**
-     * Creates and returns the model used to store the plugin’s settings.
-     *
-     * @return \craft\base\Model|null
+     * @inheritdoc
      */
     protected function createSettingsModel()
     {
@@ -228,6 +193,8 @@ class WebForm extends Plugin
      * block on the settings page.
      *
      * @return string The rendered settings HTML
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
      */
     protected function settingsHtml(): string
     {
