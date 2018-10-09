@@ -4,8 +4,8 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\controllers;
@@ -15,25 +15,10 @@ use tungsten\webform\WebForm;
 use Craft;
 use craft\web\Controller;
 use craft\helpers\UrlHelper;
-use tungsten\webform\elements\Submission;
+use yii\web\NotFoundHttpException;
 
 /**
- * Default Controller
- *
- * Generally speaking, controllers are the middlemen between the front end of
- * the CP/website and your plugin’s services. They contain action methods which
- * handle individual tasks.
- *
- * A common pattern used throughout Craft involves a controller action gathering
- * post data, saving it on a model, passing the model off to a service, and then
- * responding to the request appropriately depending on the service method’s response.
- *
- * Action methods begin with the prefix “action”, followed by a description of what
- * the method does (for example, actionSaveIngredient()).
- *
- * https://craftcms.com/docs/plugins/controllers
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -48,33 +33,26 @@ class DefaultController extends Controller
      *         The actions must be in 'kebab-case'
      * @access protected
      */
-    // protected $allowAnonymous = ['index', 'do-something'];
+    protected $allowAnonymous = [];
 
     // Public Methods
     // =========================================================================
 
     /**
-     * Handle a request going to our plugin's index action URL,
-     * e.g.: actions/webform/default
+     * Show Form Submission
      *
-     * @return mixed
-     */
-    // public function actionIndex()
-    // {
-    //     $result = 'Welcome to the DefaultController actionIndex() method';
-
-    //     return $result;
-    // }
-
-    /**
-     * Handle a request going to our plugin's actionDoSomething URL,
-     * e.g.: actions/webform/default/do-something
+     * e.g.: actions/webform/default/show-submission
      *
+     * @param int|null $submissionId Id of the form submission to display
      * @return mixed
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \yii\base\Exception
      */
     public function actionShowSubmission(int $submissionId = null): craft\web\Response
     {
         $variables = [];
+
         // Breadcrumbs
         $variables['crumbs'] = [
             [
@@ -82,11 +60,7 @@ class DefaultController extends Controller
                 'url' => UrlHelper::url('webform')
             ]
         ];
-        // $editableSitesOptions = [
-        // ];
-        // foreach (Craft::$app->getSites()->getAllSites() as $site) {
-        //     $editableSitesOptions[$site['id']] = $site->name;
-        // }
+
         if ($submissionId !== null) {
             $siteId = Craft::$app->request->get('siteId');
 
@@ -106,18 +80,18 @@ class DefaultController extends Controller
 
             $variables = [
                 'submissionId' => $submission->id,
-                'statusType' => $submission->status,
-                'formHandle' => $submission->formHandle,
-                'formTitle' => $submission->formTitle,
-                'subject' => $submission->subject,
-                'recipients' => $submission->recipients,
-                'fields' => unserialize($submission->content),
-                'submitted' => $submission->dateCreated,
+                'statusType'   => $submission->status,
+                'formHandle'   => $submission->formHandle,
+                'formTitle'    => $submission->formTitle,
+                'subject'      => $submission->subject,
+                'recipients'   => $submission->recipients,
+                'fields'       => unserialize($submission->content, ['allowed_classes' => false]),
+                'submitted'    => $submission->dateCreated,
             ];
         } else {
             throw new NotFoundHttpException('Submission id was not provided');
         }
-        // $variables['currentSiteId'] = $redirect->siteId;
+
         return $this->renderTemplate('webform/show', $variables);
     }
 }

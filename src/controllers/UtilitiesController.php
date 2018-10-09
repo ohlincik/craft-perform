@@ -4,8 +4,8 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\controllers;
@@ -14,15 +14,9 @@ use tungsten\webform\WebForm;
 
 use Craft;
 use craft\web\Controller;
-use craft\helpers\UrlHelper;
-use tungsten\webform\elements\Submission;
 
 /**
- * Utilities Controller
- *
- * Handle the actions required by the WebForm Utility.
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
