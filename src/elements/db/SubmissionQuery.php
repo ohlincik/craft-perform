@@ -4,69 +4,135 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\elements;
 
-use Craft;
-use craft\db\Query;
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
-use tungsten\webform\elements\Submission;
 
+/**
+ * @author    Oto Hlincik
+ * @package   WebForm
+ * @since     1.0.0
+ * @package tungsten\webform\elements
+ */
 class SubmissionQuery extends ElementQuery
 {
+    /**
+     * Status Type
+     *
+     * @var string
+     */
     public $statusType;
+
+    /**
+     * Form Handle
+     *
+     * @var string
+     */
     public $formHandle;
+
+    /**
+     * Form Title
+     *
+     * @var string
+     */
     public $formTitle;
+
+    /**
+     * Form Subject
+     *
+     * @var string
+     */
     public $subject;
+
+    /**
+     * Submission notification recipients. Emails separated by comma.
+     * e.g. "user1@domain.com, user2@domain.com"
+     *
+     * @var string
+     */
     public $recipients;
+
+    /**
+     * Serialized form submission fields
+     *
+     * @var string
+     */
     public $content;
 
-    public function statusType($value)
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function statusType($value): self
     {
         $this->statusType = $value;
 
         return $this;
     }
 
-    public function formHandle($value)
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function formHandle($value): self
     {
         $this->formHandle = $value;
 
         return $this;
     }
 
-    public function formTitle($value)
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function formTitle($value): self
     {
         $this->formTitle = $value;
 
         return $this;
     }
 
-    public function subject($value)
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function subject($value): self
     {
         $this->subject = $value;
 
         return $this;
     }
 
-    public function recipients($value)
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function recipients($value): self
     {
         $this->recipients = $value;
 
         return $this;
     }
 
-    public function content($value)
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function content($value): self
     {
         $this->content = $value;
 
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     protected function beforePrepare(): bool
     {
         $this->joinElementTable('webform_submissions');

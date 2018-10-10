@@ -1,73 +1,129 @@
 <?php
+/**
+ * WebForm plugin for Craft CMS 3.x
+ *
+ * Online form builder and submissions
+ *
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ */
+
 namespace tungsten\webform\elements;
 
 use tungsten\webform\WebForm;
 
-use Craft;
-use craft\base\Element;
-use craft\elements\db\ElementQueryInterface;
 use tungsten\webform\records\SubmissionRecord;
 use tungsten\webform\elements\actions\DeleteSubmissions;
 use tungsten\webform\elements\actions\MarkSubmissionsAsNew;
 use tungsten\webform\elements\actions\MarkSubmissionsAsRead;
-use craft\helpers\UrlHelper;
 
+use Craft;
+use craft\base\Element;
+use craft\elements\db\ElementQueryInterface;
+use craft\helpers\UrlHelper;
+use craft\web\ErrorHandler;
+
+/**
+ * @author    Oto Hlincik
+ * @package   WebForm
+ * @since     1.0.0
+ *
+ * @property string $name
+ */
 class Submission extends Element
 {
-    // Static
+    // Public Properties
     // =========================================================================
 
+    /**
+     * @var string Status of form submission
+     *
+     * Available: new, read, test
+     */
+    public $statusType;
+
+    /**
+     * @var string Form Handle of form submission
+     */
+    public $formHandle;
+
+    /**
+     * @var string Title of submission
+     */
+    public $formTitle;
+
+    /**
+     * @var string Subject of form submission
+     */
+    public $subject;
+
+    /**
+     * @var string Recipients of form submission
+     *
+     * Comma separated email addresses
+     */
+    public $recipients;
+
+    /**
+     * @var string Serialized content of form submission
+     */
+    public $content;
+
+    // Static Properties
+    // =========================================================================
+
+    /**
+     * @var array Colors associated with status types
+     */
     public static $statusColor = [
         'new'     => 'green',
         'read'    => 'grey',
         'test'    => 'orange',
     ];
 
+    // Public Static Methods
+    // =========================================================================
+
+    /**
+     * @inheritdoc
+     */
     public static function displayName(): string
     {
         return Craft::t('webform', 'Submission');
     }
 
+    /**
+     * @inheritdoc
+     */
     public static function refHandle()
     {
         return 'submission';
     }
 
-    public static function hasContent(): bool
-    {
-        return false;
-    }
-
-    public static function hasTitles(): bool
-    {
-        return false;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public static function isLocalized(): bool
     {
         return true;
     }
 
-    public static function hasStatuses(): bool
-    {
-        return false;
-    }
-
+    /**
+     * Submission query to relate plugin data to elements
+     *
+     * @return ElementQueryInterface
+     */
     public static function find(): ElementQueryInterface
     {
         return new SubmissionQuery(static::class);
     }
 
-    public function getIsEditable(): bool
-    {
-        return false;
-    }
+    // Protected Static Methods
+    // =========================================================================
 
-    public function getName(): string
-    {
-        return (string)$this->subject;
-    }
-
+    /**
+     * @inheritdoc
+     */
     protected static function defineTableAttributes(): array
     {
         return [
@@ -79,6 +135,9 @@ class Submission extends Element
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     protected static function defineDefaultTableAttributes(string $source): array
     {
         return [
@@ -90,6 +149,9 @@ class Submission extends Element
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     protected static function defineSearchableAttributes(): array
     {
         return [
@@ -99,6 +161,9 @@ class Submission extends Element
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     protected static function defineSortOptions(): array
     {
         return [
@@ -114,6 +179,9 @@ class Submission extends Element
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     protected static function defineSources(string $context = null): array
     {
         $sources = [
@@ -140,6 +208,7 @@ class Submission extends Element
 
         $testSubmissionsCount = WebForm::$plugin->webFormService->getSubmissionsCount('test');
 
+        // Include the test submissions source only if any test submissions exist
         if ($testSubmissionsCount > 0) {
             $sources[] = [
                 'key' => 'test',
@@ -153,6 +222,9 @@ class Submission extends Element
         return $sources;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected static function defineActions(string $source = null): array
     {
         return [
@@ -162,11 +234,69 @@ class Submission extends Element
         ];
     }
 
+    // Public Methods
+    // =========================================================================
+
+    /**
+     * @inheritdoc
+     */
+    public function getName(): string
+    {
+        return (string)$this->subject;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getCpEditUrl()
     {
         return UrlHelper::cpUrl('webform/' . $this->id . '?siteId=' . $this->siteId);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterSave(bool $isNew)
+    {
+        if (!$isNew) {
+            $record = SubmissionRecord::findOne($this->id);
+            if (!$record) {
+                throw new \RuntimeException('Invalid submission ID: '.$this->id);
+            }
+        } else {
+            $record = new SubmissionRecord();
+            $record->id = $this->id;
+        }
+
+        $record->statusType = $this->statusType;
+        $record->formHandle = $this->formHandle;
+        $record->formTitle  = $this->formTitle;
+        $record->subject    = $this->subject;
+        $record->recipients = $this->recipients;
+        $record->content    = $this->content;
+        $record->save(false);
+
+        parent::afterSave($isNew);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __toString()
+    {
+        try {
+            return $this->getName();
+        } catch (\Throwable $e) {
+            ErrorHandler::convertExceptionToError($e);
+        }
+    }
+
+    // Protected Methods
+    // =========================================================================
+
+    /**
+     * @inheritdoc
+     */
     protected function tableAttributeHtml(string $attribute): string
     {
         if ($attribute === 'statusType') {
@@ -181,53 +311,4 @@ class Submission extends Element
 
         return parent::tableAttributeHtml($attribute);
     }
-
-    public function afterSave(bool $isNew)
-    {
-        if (!$isNew) {
-            $record = SubmissionRecord::findOne($this->id);
-            if (!$record) {
-                throw new Exception('Invalid submission ID: '.$this->id);
-            }
-        } else {
-            $record = new SubmissionRecord();
-            $record->id = $this->id;
-        }
-
-        $record->statusType = $this->statusType;
-        $record->formHandle = $this->formHandle;
-        $record->formTitle = $this->formTitle;
-        $record->subject = $this->subject;
-        $record->recipients = $this->recipients;
-        $record->content = $this->content;
-        $record->save(false);
-        // remove form other sites
-        // Craft::$app->getDb()->createCommand()
-        //     ->delete('{{%elements_sites}}', [
-        //         'AND',
-        //         ['elementId' => $record->id],
-        //         ['!=', 'siteId', $this->siteId]
-        //     ])
-        //     ->execute();
-        parent::afterSave($isNew);
-    }
-
-    public function __toString()
-    {
-        try {
-            return $this->getName();
-        } catch (\Throwable $e) {
-            ErrorHandler::convertExceptionToError($e);
-        }
-    }
-
-    // Properties
-    // =========================================================================
-
-    public $statusType;
-    public $formHandle;
-    public $formTitle;
-    public $subject;
-    public $recipients;
-    public $content;
 }

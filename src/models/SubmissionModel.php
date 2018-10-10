@@ -4,15 +4,12 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\models;
 
-use tungsten\webform\WebForm;
-
-use Craft;
 use craft\base\Model;
 
 /**
@@ -21,9 +18,13 @@ use craft\base\Model;
  * Stores the submission data and provides methods to retrieve the right
  * information in the right format.
  *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
+ *
+ * @property string $subject
+ * @property array $variablesForEmailContent
+ * @property string $serializedFields
  */
 class SubmissionModel extends Model
 {
@@ -79,29 +80,11 @@ class SubmissionModel extends Model
     // =========================================================================
 
     /**
-     * Returns the validation rules for attributes.
-     *
-     * Validation rules are used by [[validate()]] to check if attribute values are valid.
-     * Child classes may override this method to declare different validation rules.
-     *
-     * More info: http://www.yiiframework.com/doc-2.0/guide-input-validation.html
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            // ['formHandle', 'string'],
-            // ['someAttribute', 'default', 'value' => 'Some Default'],
-        ];
-    }
-
-    /**
      * Returns the submission fields serialized for storing in the database
      *
      * @return string
      */
-    public function getSerializedFields()
+    public function getSerializedFields(): string
     {
         return serialize($this->fields);
     }
@@ -111,7 +94,7 @@ class SubmissionModel extends Model
      *
      * @return string
      */
-    public function getSubject()
+    public function getSubject(): string
     {
         $subject = \Craft::$app->view->renderString($this->subjectTemplate, $this->fields);
         $subject = empty($subject) ? 'Website Form Submission' : $subject;
@@ -124,7 +107,7 @@ class SubmissionModel extends Model
      *
      * @return array
      */
-    public function getRecipients()
+    public function getRecipients(): array
     {
         return explode(',', str_replace(' ', '', $this->recipients));
     }
@@ -149,7 +132,7 @@ class SubmissionModel extends Model
      *
      * @return array
      */
-    public function getVariablesForEmailContent()
+    public function getVariablesForEmailContent(): array
     {
         return [
             'subject' => $this->getSubject(),
@@ -157,25 +140,23 @@ class SubmissionModel extends Model
         ];
     }
 
-    // This is just a placeholder if server side validation is necessary
-    private function simpleValidation()
-    {
-        $errors = [];
-        foreach ($fields as $field) {
-            if (isset($field['required']) && (bool)$field['required'] === true) {
-                if (empty($field['value'])) {
-                    $errors[] = "{$field['label']} is required.";
-                }
-            }
-        }
-
-        if ($errors) {
-            \Craft::$app->getSession()->setError(Craft::t('webform', 'There was a problem with your submission, please check the form and try again!'));
-            \Craft::$app->getUrlManager()->setRouteParams([
-                'variables' => ['webformErrors' => $errors]
-            ]);
-
-            return null;
-        }
-    }
+//    This is just a placeholder if server side validation is necessary
+//    private function simpleValidation()
+//    {
+//        $errors = [];
+//        foreach ($this->fields as $field) {
+//            if (isset($field['required']) && (bool)$field['required'] === true && empty($field['value'])) {
+//                $errors[] = "{$field['label']} is required.";
+//            }
+//        }
+//
+//        if ($errors) {
+//            \Craft::$app->getSession()->setError(Craft::t('webform', 'There was a problem with your submission, please check the form and try again!'));
+//            \Craft::$app->getUrlManager()->setRouteParams([
+//                'variables' => ['webformErrors' => $errors]
+//            ]);
+//
+//            return null;
+//        }
+//    }
 }
