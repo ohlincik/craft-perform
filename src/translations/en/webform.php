@@ -4,8 +4,8 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 /**
@@ -16,7 +16,7 @@
  *
  * http://www.yiiframework.com/doc-2.0/guide-tutorial-i18n.html
  *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */

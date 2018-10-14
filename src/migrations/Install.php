@@ -4,16 +4,15 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\migrations;
 
-use tungsten\webform\WebForm;
+use tungsten\webform\elements\Submission;
 
 use Craft;
-use craft\config\DbConfig;
 use craft\db\Migration;
 
 /**
@@ -26,7 +25,7 @@ use craft\db\Migration;
  * If you need to perform any additional actions on install/uninstall, override the
  * safeUp() and safeDown() methods.
  *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -53,7 +52,7 @@ class Install extends Migration
      * @return boolean return a false value to indicate the migration fails
      * and should not proceed further. All other return values mean the migration succeeds.
      */
-    public function safeUp()
+    public function safeUp(): bool
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
         if ($this->createTables()) {
@@ -75,7 +74,7 @@ class Install extends Migration
      * @return boolean return a false value to indicate the migration fails
      * and should not proceed further. All other return values mean the migration succeeds.
      */
-    public function safeDown()
+    public function safeDown(): bool
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
         $this->removeTables();
@@ -92,7 +91,7 @@ class Install extends Migration
      *
      * @return bool
      */
-    protected function createTables()
+    protected function createTables(): bool
     {
         $tablesCreated = false;
 
@@ -141,7 +140,7 @@ class Install extends Migration
 
     protected function removeRecordsFromElementsTable()
     {
-        $this->delete('{{%elements}}', ['type' => 'tungsten\webform\elements\Submission']);
+        $this->delete('{{%elements}}', ['type' => Submission::class]);
     }
 
     /**
