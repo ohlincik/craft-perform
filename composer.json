@@ -17,8 +17,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Tungsten Creative",
-            "homepage": "http://atomic74.com"
+            "name": "Perfectus Digital Solutions",
+            "homepage": "https://perfectus.us"
         }
     ],
     "require": {
@@ -36,6 +36,7 @@
         "hasCpSection": true,
         "changelogUrl": "https://raw.githubusercontent.com/ohlincik/craft3-webform/master/CHANGELOG.md",
         "components": {
+            "emailService": "tungsten\\webform\\services\\EmailService",
             "webFormService": "tungsten\\webform\\services\\WebFormService"
         },
         "class": "tungsten\\webform\\WebForm"
