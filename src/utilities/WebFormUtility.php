@@ -4,26 +4,19 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\utilities;
 
 use tungsten\webform\WebForm;
-use tungsten\webform\assetbundles\webformcp\WebFormCPAsset;
 
 use Craft;
 use craft\base\Utility;
 
 /**
- * WebForm Utility
- *
- * Utility is the base class for classes representing Control Panel utilities.
- *
- * https://craftcms.com/docs/plugins/utilities
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -61,7 +54,7 @@ class WebFormUtility extends Utility
      */
     public static function iconPath()
     {
-        return Craft::getAlias("@tungsten/webform/assetbundles/webformcp/dist/img/utility-icon.svg");
+        return Craft::getAlias('@tungsten/webform/assetbundles/webformcp/dist/img/utility-icon.svg');
     }
 
     /**
@@ -80,6 +73,8 @@ class WebFormUtility extends Utility
      * Returns the utility's content HTML.
      *
      * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
      */
     public static function contentHtml(): string
     {

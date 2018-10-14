@@ -4,8 +4,8 @@
  *
  * Online form builder and submissions
  *
- * @link      http://atomic74.com
- * @copyright Copyright (c) 2018 Tungsten Creative
+ * @link      https://perfectus.us
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
 namespace tungsten\webform\widgets;
@@ -17,11 +17,12 @@ use Craft;
 use craft\base\Widget;
 
 /**
- * WebForm Widget
- *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
+ *
+ * @property string|false $bodyHtml
+ * @property null|string $settingsHtml
  */
 class WebFormWidget extends Widget
 {
@@ -45,7 +46,7 @@ class WebFormWidget extends Widget
      */
     public static function iconPath()
     {
-        return Craft::getAlias("@tungsten/webform/assetbundles/webformcp/dist/img/widget-icon.svg");
+        return Craft::getAlias('@tungsten/webform/assetbundles/webformcp/dist/img/widget-icon.svg');
     }
 
     /**
@@ -66,7 +67,7 @@ class WebFormWidget extends Widget
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = parent::rules();
         $rules = array_merge(
@@ -77,21 +78,14 @@ class WebFormWidget extends Widget
     }
 
     /**
-     * Returns the component’s settings HTML.
-     *
-     * @return string|null
-     */
-    public function getSettingsHtml()
-    {
-        return null;
-    }
-
-    /**
      * Returns the widget's body HTML.
      *
      * @return string|false The widget’s body HTML, or `false` if the widget
      *                      should not be visible. (If you don’t want the widget
      *                      to be selectable in the first place, use {@link isSelectable()}.)
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function getBodyHtml()
     {

@@ -19,7 +19,7 @@ use tungsten\webform\helpers\PluginTemplate as PluginTemplateHelper;
  *
  * e.g. {{ craft.webForm }}
  *
- * @author    Tungsten Creative
+ * @author    Oto Hlincik
  * @package   WebForm
  * @since     1.0.0
  */
@@ -70,11 +70,11 @@ class WebFormVariable
         return PluginTemplateHelper::renderPluginTemplate(
             '_components/variables/formTag',
             [
-                'entryId' => $entryId,
+                'entryId'                     => $entryId,
                 'parsleyClientSideValidation' => $pluginSettings->parsleyClientSideValidation,
-                'parsleyValidationJsOptions' => $parsleyValidationJsOptions,
-                'googleInvisibleCaptcha' => $pluginSettings->googleInvisibleCaptcha,
-                'googleCaptchaSiteKey' => $pluginSettings->googleCaptchaSiteKey,
+                'parsleyValidationJsOptions'  => $parsleyValidationJsOptions,
+                'googleInvisibleCaptcha'      => $pluginSettings->googleInvisibleCaptcha,
+                'googleCaptchaSiteKey'        => $pluginSettings->googleCaptchaSiteKey,
             ]
         );
     }
