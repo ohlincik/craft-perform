@@ -1,13 +1,13 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS
+ * WebForm plugin for Craft CMS 3.x
  *
- * WebForm Widget Body
+ * Plugin Widget Body Template
  *
- * @author    Tungsten Creative
- * @copyright Copyright (c) 2018 Tungsten Creative
- * @link      http://atomic74.com
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
  * @package   WebForm
  * @since     1.0.0
  */
@@ -16,44 +16,47 @@
 {% set iconUrl = view.getAssetManager().getPublishedUrl('@tungsten/webform/assetbundles/webformcp/dist', true) ~ '/img/widget-icon.svg' %}
 
 {% macro pluralize(label, count) %}
-  {% if count == 1 %}
-    {{- label -}}
-  {% else %}
-    {{- label -}}s
-  {% endif %}
+    {% if count == 1 %}
+        {{- label -}}
+    {% else %}
+        {{- label -}}s
+    {% endif %}
 {% endmacro %}
 {% import _self as macros %}
 
 <div class="readable webform--centered">
-  <img src="{{ iconUrl }}" height="32" width="32" />
-  {% if allSubmissionsCount > 0 %}
-    {% if newSubmissionsCount == 0 %}
-      <p class="webform--no-submissions">There are no new submissions</p>
-    {% else %}
-      <p class="webform--new-submissions">
-        {{ newSubmissionsCount }} New {{ macros.pluralize('Submission', newSubmissionsCount) }}
-      </p>
-    {% endif %}
-    <p>
-      {{ allSubmissionsCount }} {{ macros.pluralize('Submission', allSubmissionsCount) }} Total
-    </p>
-    {% if currentUser.can('accessplugin-webform') %}
-      <div class="secondary-buttons">
-        <a class="btn small submit" href="{{ url('webform') }}">View</a>
-      </div>
-    {% endif %}
-    {% if currentUser.can('utility:webform-utility') %}
-      {% if testSubmissionsCount > 0 %}
-        <hr>
-        <p class="webform--test-submissions">
-          {{ testSubmissionsCount }} Test {{ macros.pluralize('Submission', testSubmissionsCount) }}
+    <img src="{{ iconUrl }}" height="32" width="32"/>
+    {% if allSubmissionsCount > 0 %}
+        {% if newSubmissionsCount == 0 %}
+            <p class="webform--no-submissions">There are no new submissions</p>
+        {% else %}
+            <p class="webform--new-submissions">
+                {{ newSubmissionsCount }}
+                New {{ macros.pluralize('Submission', newSubmissionsCount) }}
+            </p>
+        {% endif %}
+        <p>
+            {{ allSubmissionsCount }} {{ macros.pluralize('Submission', allSubmissionsCount) }}
+            Total
         </p>
-        <div class="secondary-buttons">
-          <a class="btn small submit" href="{{ url('utilities/webform-utility') }}">Manage</a>
-        </div>
-      {% endif %}
+        {% if currentUser.can('accessplugin-webform') %}
+            <div class="secondary-buttons">
+                <a class="btn small submit" href="{{ url('webform') }}">View</a>
+            </div>
+        {% endif %}
+        {% if currentUser.can('utility:webform-utility') %}
+            {% if testSubmissionsCount > 0 %}
+                <hr>
+                <p class="webform--test-submissions">
+                    {{ testSubmissionsCount }}
+                    Test {{ macros.pluralize('Submission', testSubmissionsCount) }}
+                </p>
+                <div class="secondary-buttons">
+                    <a class="btn small submit" href="{{ url('utilities/webform-utility') }}">Manage</a>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <p class="webform--no-submissions">There are no submissions</p>
     {% endif %}
-  {% else %}
-    <p class="webform--no-submissions">There are no submissions</p>
-  {% endif %}
 </div>

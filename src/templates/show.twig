@@ -1,3 +1,17 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * WebForm plugin for Craft CMS 3.x
+ *
+ * Form Submission Detail
+ *
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
+ * @package   WebForm
+ * @since     1.0.0
+ */
+#}
 {% extends "_layouts/cp" %}
 
 {% do view.registerAssetBundle("tungsten\\webform\\assetbundles\\webformcp\\WebFormCPAsset") %}
@@ -5,49 +19,49 @@
 {% set title = subject %}
 
 {% set crumbs = [
-  { label: "WebForm Submissions"|t('webform'), url: url('webform') },
+    { label: "WebForm Submissions"|t('webform'), url: url('webform') },
 ] %}
 
 {% block content %}
     {% for field in fields %}
-      {% if field.label == '__section__' %}
-        <h2 class="webform--section-heading">{{ field.value }}</h2>
-      {% else %}
-        <p>
-          <strong>{{ field.label }}</strong><br>
-          {% if field.value is not defined %}
-            -- n/a --
-          {% elseif field.value is empty %}
-            -- n/a --
-          {% else %}
-            {% if field.value[0] is not defined and field.value is not empty %}
-              {{- field.value -}}
-            {% else %}
-              {% for option in field.value %}
-                {{- option }}{% if not loop.last %},{% endif %}
-              {% endfor %}
-            {% endif %}
-          {% endif %}
-        </p>
-      {% endif %}
+        {% if field.label == '__section__' %}
+            <h2 class="webform--section-heading">{{ field.value }}</h2>
+        {% else %}
+            <p>
+                <strong>{{ field.label }}</strong><br>
+                {% if field.value is not defined %}
+                    <span class="light">-- Not Available --</span>
+                {% elseif field.value is empty %}
+                    <span class="light">-- Not Available --</span>
+                {% else %}
+                    {% if field.value[0] is not defined and field.value is not empty %}
+                        {{- field.value -}}
+                    {% else %}
+                        {% for option in field.value %}
+                            {{- option }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </p>
+        {% endif %}
     {% endfor %}
 {% endblock %}
 
 {% block details %}
     <div class="meta">
-      <h3>Recipients</h3>
-      <ul>
-        {% for recipient in recipients|split(',') %}
-          <li>{{ recipient }}</li>
-        {% endfor %}
-      </ul>
+        <h3>Recipients</h3>
+        <ul>
+            {% for recipient in recipients|split(',') %}
+                <li>{{ recipient }}</li>
+            {% endfor %}
+        </ul>
     </div>
     <hr>
     <div class="meta">
-      <h5 class="heading">{{ "Form Title"|t('webform') }}</h5>
-      <div class="value">{{ formTitle }}</div>
-      <h5 class="heading">{{ "Form Handle"|t('webform') }}</h5>
-      <div class="value">{{ formHandle }}</div>
+        <h5 class="heading">{{ "Form Title"|t('webform') }}</h5>
+        <div class="value">{{ formTitle }}</div>
+        <h5 class="heading">{{ "Form Handle"|t('webform') }}</h5>
+        <div class="value">{{ formHandle }}</div>
     </div>
     <div class="meta read-only">
         <div class="data">

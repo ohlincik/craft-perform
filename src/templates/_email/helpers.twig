@@ -1,27 +1,34 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
-  -----------------------------------------------------------------------------
-
-  This macro outputs the label that has been setup in the Form Fields matrix.
+/**
+ * WebForm plugin for Craft CMS 3.x
+ *
+ * Email Helper Macros
+ *
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
+ * @package   WebForm
+ * @since     1.0.0
+ */
 #}
+
+{# Output the label that has been setup in the Form Fields matrix #}
 {% macro formFieldLabel(field) %}
-  {{- field.label -}}
+    {{- field.label -}}
 {% endmacro %}
 
-{#
-  -----------------------------------------------------------------------------
-
-  This macro outputs the value collected by the form.
-#}
+{# Output the value collected by the form #}
 {% macro formFieldValue(field) %}
-  {% if field.value is not defined %}
-    -- n/a --
-  {% else %}
-    {% if field.value[0] is not defined and field.value is not empty %}
-      {{- field.value -}}
+    {% if field.value is not defined %}
+        -- n/a --
     {% else %}
-      {% for option in field.value %}
-        {{- option }}{% if not loop.last %},{% endif %}
-      {% endfor %}
+        {% if field.value[0] is not defined and field.value is not empty %}
+            {{- field.value -}}
+        {% else %}
+            {% for option in field.value %}
+                {{- option }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        {% endif %}
     {% endif %}
-  {% endif %}
 {% endmacro %}

@@ -16,68 +16,68 @@
 {% import "_includes/forms" as forms %}
 
 {% namespace name %}
-<div id="{{ id }}" class="field webform--field">
-  {{ forms.textField({
-      label: 'Form Title',
-      instructions: 'Provide a user-friendly label to identify the WebForm Submissions on the listing page in Control Panel.',
-      id: 'formTitle',
-      name: 'formTitle',
-      maxlength: 35,
-      value: value.formTitle,
-      required: true,
-      placeholder: 'Contact Form',
-  }) }}
+    <div id="{{ id }}" class="field webform--field">
+        {{ forms.textField({
+            label: 'Form Title',
+            instructions: 'Provide a user-friendly label to identify the WebForm Submissions on the listing page in Control Panel.',
+            id: 'formTitle',
+            name: 'formTitle',
+            maxlength: 35,
+            value: value.formTitle,
+            required: true,
+            placeholder: 'Contact Form',
+        }) }}
 
-  {{ forms.textField({
-      label: 'Form Handle',
-      instructions: 'The **Form Handle** is used to indicate which template should be used to render the form and email notification. If the templates with the form handle do not exist, the **Default** templates will be used.',
-      id: 'formHandle',
-      class: 'code',
-      name: 'formHandle',
-      value: value.formHandle,
-      required: true,
-      placeholder: 'contactForm',
-  }) }}
+        {{ forms.textField({
+            label: 'Form Handle',
+            instructions: 'The **Form Handle** is used to indicate which template should be used to render the form and email notification. If the templates with the form handle do not exist, the **Default** templates will be used.',
+            id: 'formHandle',
+            class: 'code',
+            name: 'formHandle',
+            value: value.formHandle,
+            required: true,
+            placeholder: 'contactForm',
+        }) }}
 
-  {{ forms.textField({
-      label: 'Form Subject',
-      instructions: 'The **Form Subject** is used as the **Email Subject** in the email notification. It is also displayed on the WebForm Submissions listing page in the Control Panel. You can include the content of any Form Field that appears on the form using the following format {{ fieldHandle.value }}',
-      id: 'formSubject',
-      name: 'formSubject',
-      value: value.formSubject,
-      required: true,
-      placeholder: 'WebForm submission from {{ fullName.value }}',
-  }) }}
+        {{ forms.textField({
+            label: 'Form Subject',
+            instructions: 'The **Form Subject** is used as the **Email Subject** in the email notification. It is also displayed on the WebForm Submissions listing page in the Control Panel. You can include the content of any Form Field that appears on the form using the following format {{ fieldHandle.value }}',
+            id: 'formSubject',
+            name: 'formSubject',
+            value: value.formSubject,
+            required: true,
+            placeholder: 'WebForm submission from {{ fullName.value }}',
+        }) }}
 
-  {{ forms.textField({
-      label: 'Notification Recipients',
-      instructions: 'The **email addresses** of people that should receive the form submissions. Separate multiple email addresses using a comma.',
-      id: 'notificationRecipients',
-      name: 'notificationRecipients',
-      value: value.notificationRecipients,
-      required: true,
-      placeholder: 'user1@example.com, user2@domain.com',
-  }) }}
+        {{ forms.textField({
+            label: 'Notification Recipients',
+            instructions: 'The **email addresses** of people that should receive the form submissions. Separate multiple email addresses using a comma.',
+            id: 'notificationRecipients',
+            name: 'notificationRecipients',
+            value: value.notificationRecipients,
+            required: true,
+            placeholder: 'user1@example.com, user2@domain.com',
+        }) }}
 
-  {{ forms.textField({
-      label: 'Notification ReplyTo',
-      instructions: 'Specify the **Reply To** email address for this form. You can reference an email address collected within the form using the following format {{ fieldHandle.value }}. Leave empty to ignore this setting.',
-      id: 'notificationReplyTo',
-      name: 'notificationReplyTo',
-      value: value.notificationReplyTo,
-      placeholder: '{{ email.value }}',
-  }) }}
+        {{ forms.textField({
+            label: 'Notification ReplyTo',
+            instructions: 'Specify the **Reply To** email address for this form. You can reference an email address collected within the form using the following format {{ fieldHandle.value }}. Leave empty to ignore this setting.',
+            id: 'notificationReplyTo',
+            name: 'notificationReplyTo',
+            value: value.notificationReplyTo,
+            placeholder: '{{ email.value }}',
+        }) }}
 
-  {{ forms.lightswitchField({
-      label: 'Test Mode Enabled',
-      labelId: 'testModeEnabled-label',
-      instructions: 'When enabled, the form submission status is set to **Test** and it is delivered using the **Test Email Delivery Settings** rather than delivered via email to Notification Recipients.',
-      id: 'testModeEnabled',
-      name: 'testModeEnabled',
-      on: value.testModeEnabled ? true : false,
-      value: 1,
-  }) }}
-</div>
+        {{ forms.lightswitchField({
+            label: 'Test Mode Enabled',
+            labelId: 'testModeEnabled-label',
+            instructions: 'When enabled, the form submission status is set to **Test** and it is delivered using the **Test Email Delivery Settings** rather than delivered via email to Notification Recipients.',
+            id: 'testModeEnabled',
+            name: 'testModeEnabled',
+            on: value.testModeEnabled ? true : false,
+            value: 1,
+        }) }}
+    </div>
 {% endnamespace %}
 
 {% if value is empty or value.formHandle is empty %}

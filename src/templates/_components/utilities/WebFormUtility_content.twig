@@ -3,11 +3,11 @@
 /**
  * WebForm plugin for Craft CMS
  *
- * WebFormUtility Utility Content
+ * Plugin Utility Content
  *
- * @author    Tungsten Creative
- * @copyright Copyright (c) 2018 Tungsten Creative
- * @link      http://atomic74.com
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
  * @package   WebForm
  * @since     1.0.0
  */
@@ -16,24 +16,25 @@
 <h1>Test Submissions</h1>
 
 {% if testSubmissionsCount > 0 %}
-  <div class="readable">
-    {% if testSubmissionsCount > 1 %}
-      <p>There are <strong>{{ testSubmissionsCount }} test submissions</strong>.</p>
-    {% else %}
-      <p>There is <strong>{{ testSubmissionsCount }} test submission</strong>.</p>
-    {% endif %}
-  </div>
-  <form id="delete-test-submissions" class="utility" method="post" accept-charset="UTF-8">
-    {{ csrfInput() }}
-    <input type="hidden" name="action" value="webform/utilities/delete-test-submissions">
-    {{ redirectInput('utilities/webform-utility') }}
-    <div class="buttons">
-      <input type="submit" class="btn submit" value="{{ 'Delete All'|t('webform') }}">
-      <div class="utility-status"></div>
+    <div class="readable">
+        {% if testSubmissionsCount > 1 %}
+            <p>There are <strong>{{ testSubmissionsCount }} test submissions</strong>.</p>
+        {% else %}
+            <p>There is <strong>{{ testSubmissionsCount }} test submission</strong>.</p>
+        {% endif %}
     </div>
-  </form>
+    <form id="delete-test-submissions" class="utility" method="post"
+          accept-charset="UTF-8">
+        {{ csrfInput() }}
+        <input type="hidden" name="action" value="webform/utilities/delete-test-submissions">
+        {{ redirectInput('utilities/webform-utility') }}
+        <div class="buttons">
+            <input type="submit" class="btn submit" value="{{ 'Delete All'|t('webform') }}">
+            <div class="utility-status"></div>
+        </div>
+    </form>
 {% else %}
-  <div class="readable">
-    <p>Thre are no test submissions.</p>
-  </div>
+    <div class="readable">
+        <p>There are no test submissions.</p>
+    </div>
 {% endif %}

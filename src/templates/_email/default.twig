@@ -1,24 +1,38 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * WebForm plugin for Craft CMS 3.x
+ *
+ * Default Email Content Template
+ *
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
+ * @package   WebForm
+ * @since     1.0.0
+ */
+#}
 {# Import the form helper macros #}
 {% import 'webform/_email/helpers' as eh %}
 
 {% extends 'webform/_email/layout' %}
 
 {% block subject %}
-  {{ subject }}
+    {{ subject }}
 {% endblock %}
 
 {% block body %}
-  {% for field in fields %}
-    {% if field.label == "__section__" %}
-      <p>&nbsp;</p>
-      <h2>{{ eh.formFieldValue(field) }}</h2>
-    {% else %}
-      {% if field.value is defined and field.value is not empty %}
-        <p>
-          <strong>{{ eh.formFieldLabel(field) }}:</strong>
-          {{ eh.formFieldValue(field) }}
-        </p>
-      {% endif %}
-    {% endif %}
-  {% endfor %}
+    {% for field in fields %}
+        {% if field.label == "__section__" %}
+            <p>&nbsp;</p>
+            <h2>{{ eh.formFieldValue(field) }}</h2>
+        {% else %}
+            {% if field.value is defined and field.value is not empty %}
+                <p>
+                    <strong>{{ eh.formFieldLabel(field) }}:</strong>
+                    {{ eh.formFieldValue(field) }}
+                </p>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
 {% endblock %}
