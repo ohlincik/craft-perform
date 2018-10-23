@@ -1,6 +1,6 @@
 # WebForm plugin for Craft CMS 3.x
 
-Online form builder and submissions
+WebForm facilitates form submission storage and email delivery, form testing, client-side validation, spam protection, and more.
 
 ![Screenshot](resources/img/plugin-logo.png)
 
@@ -24,7 +24,12 @@ To install the plugin, follow these instructions.
 
 ## WebForm Overview
 
--Insert text here-
+WebForm is bult for **Craft CMS web developers** with ultimate flexibility in mind. The goal is to let you build the web form front-end anyway you'd like while following a handful of simple conventions. After you include the web form in your Twig template, the plugin will assist you with the following:
+
+* Client-side form validation using [Parsley](http://parsleyjs.org/)
+* Spam protection using the [Google Invisible ReCaptcha](https://developers.google.com/recaptcha/docs/invisible)
+* Saving the form submissions in the Control Panel for future reference
+* Delivering the form submission content via email (built-in testing using [mailtrap](https://mailtrap.io/))
 
 ## Configuring WebForm
 
@@ -40,4 +45,4 @@ Some things to do, and ideas for potential features:
 
 * Release it
 
-Brought to you by [Tungsten Creative](http://atomic74.com)
+Brought to you by [Perfectus Digital Solutions](https://perfectus.us)
