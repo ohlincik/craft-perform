@@ -1,14 +1,14 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS
+ * PerForm plugin for Craft CMS
  *
  * Plugin Utility Content
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
@@ -26,10 +26,10 @@
     <form id="delete-test-submissions" class="utility" method="post"
           accept-charset="UTF-8">
         {{ csrfInput() }}
-        <input type="hidden" name="action" value="webform/utilities/delete-test-submissions">
-        {{ redirectInput('utilities/webform-utility') }}
+        <input type="hidden" name="action" value="perform/utilities/delete-test-submissions">
+        {{ redirectInput('utilities/perform-utility') }}
         <div class="buttons">
-            <input type="submit" class="btn submit" value="{{ 'Delete All'|t('webform') }}">
+            <input type="submit" class="btn submit" value="{{ 'Delete All'|t('perform') }}">
             <div class="utility-status"></div>
         </div>
     </form>

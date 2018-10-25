@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -9,12 +9,12 @@
  */
 
 /**
- * WebForm config.php
+ * PerForm config.php
  *
- * This file exists only as a template for the WebForm settings.
+ * This file exists only as a template for the PerForm settings.
  * It does nothing on its own.
  *
- * Don't edit this file, instead copy it to 'craft/config' as 'webform.php'
+ * Don't edit this file, instead copy it to 'craft/config' as 'perform.php'
  * and make your changes there to override default settings.
  *
  * Once copied to 'craft/config', this file will be multi-environment aware as

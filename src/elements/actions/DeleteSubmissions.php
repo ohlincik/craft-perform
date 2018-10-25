@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\elements\actions;
+namespace perfectus\perform\elements\actions;
 
 use Craft;
 use craft\base\ElementAction;
@@ -18,7 +18,7 @@ use yii\base\Exception;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
  * @property string $triggerLabel
@@ -47,7 +47,7 @@ class DeleteSubmissions extends ElementAction
      */
     public function getConfirmationMessage()
     {
-        return Craft::t('webform', 'Are you sure you want to delete the selected submissions?');
+        return Craft::t('perform', 'Are you sure you want to delete the selected submissions?');
     }
 
     /**
@@ -71,7 +71,7 @@ class DeleteSubmissions extends ElementAction
             return false;
         }
 
-        $this->setMessage(Craft::t('webform', 'Submissions deleted.'));
+        $this->setMessage(Craft::t('perform', 'Submissions deleted.'));
 
         return true;
     }

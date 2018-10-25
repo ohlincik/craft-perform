@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,16 +8,16 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\controllers;
+namespace perfectus\perform\controllers;
 
-use tungsten\webform\WebForm;
+use perfectus\perform\PerForm;
 
 use Craft;
 use craft\web\Controller;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 class UtilitiesController extends Controller
@@ -28,14 +28,14 @@ class UtilitiesController extends Controller
     /**
      * Handle a request to delete all test submissions
      *
-     * URL: webform/utilities/delete-test-submissions
+     * URL: perform/utilities/delete-test-submissions
      */
     public function actionDeleteTestSubmissions()
     {
-        $this->requirePermission('utility:webform-utility');
+        $this->requirePermission('utility:perform-utility');
         $this->requirePostRequest();
 
-        WebForm::$plugin->webFormService->deleteAllTestSubmissions();
+        PerForm::$plugin->formService->deleteAllTestSubmissions();
         Craft::$app->getSession()->setNotice('Deleted all test submissions.');
     }
 }

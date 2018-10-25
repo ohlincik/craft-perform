@@ -1,28 +1,28 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Plugin Settings Input
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
 
 {% import "_includes/forms" as forms %}
 
-{% do view.registerAssetBundle("tungsten\\webform\\assetbundles\\webformcp\\WebFormCPAsset") %}
+{% do view.registerAssetBundle("perfectus\\perform\\assetbundles\\cp\\PerFormCPAsset") %}
 
 <h2>Test Email Delivery Settings</h2>
 
 <p>You can test your email delivery templates and form submission using the Mailtrap.</p>
 
 {{ forms.checkboxField({
-    label: "Use Mailtrap"|t('webform'),
+    label: "Use Mailtrap"|t('perform'),
     id: 'testWithMailtrap',
     name: 'testWithMailtrap',
     checked: settings.testWithMailtrap,
@@ -54,7 +54,7 @@
 <p>You can use Parsley for client side form submission validation.</p>
 
 {{ forms.checkboxField({
-    label: "Use Parsley Client Side JS Validation"|t('webform'),
+    label: "Use Parsley Client Side JS Validation"|t('perform'),
     id: 'parsleyClientSideValidation',
     name: 'parsleyClientSideValidation',
     checked: settings.parsleyClientSideValidation
@@ -67,7 +67,7 @@
 <p>You will need to create the API Key for this site by logging into the <a href="https://www.google.com/recaptcha/admin#list" target="_blank">Google reCAPTCHA</a>.</p>
 
 {{ forms.checkboxField({
-    label: "Use Google Invisible reCAPTCHA"|t('webform'),
+    label: "Use Google Invisible reCAPTCHA"|t('perform'),
     id: 'googleInvisibleCaptcha',
     name: 'googleInvisibleCaptcha',
     checked: settings.googleInvisibleCaptcha,
@@ -76,7 +76,7 @@
 
 <div id="captcha-credentials" class="nested-fields{% if not settings.googleInvisibleCaptcha %} hidden{% endif %}">
     {{ forms.textField({
-      label: "Captcha Site Key"|t('webform'),
+      label: "Captcha Site Key"|t('perform'),
       id: 'googleCaptchaSiteKey',
       name: 'googleCaptchaSiteKey',
       instructions: 'Input the Google reCaptcha **Site key**.',
@@ -101,7 +101,7 @@
 <p>You can utilize custom templates for the email</p>
 
 {{ forms.textField({
-  label: "Custom Email Templates Path"|t('webform'),
+  label: "Custom Email Templates Path"|t('perform'),
   id: 'customEmailTemplatesPath',
   name: 'customEmailTemplatesPath',
   instructions: 'Specify a path relative to your front-end templates folder where your custom Email templates are located.',

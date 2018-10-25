@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,19 +8,19 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\utilities;
+namespace perfectus\perform\utilities;
 
-use tungsten\webform\WebForm;
+use perfectus\perform\PerForm;
 
 use Craft;
 use craft\base\Utility;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
-class WebFormUtility extends Utility
+class PerFormUtility extends Utility
 {
     // Static
     // =========================================================================
@@ -32,7 +32,7 @@ class WebFormUtility extends Utility
      */
     public static function displayName(): string
     {
-        return Craft::t('webform', 'WebForm');
+        return Craft::t('perform', 'PerForm');
     }
 
     /**
@@ -44,7 +44,7 @@ class WebFormUtility extends Utility
      */
     public static function id(): string
     {
-        return 'webform-utility';
+        return 'perform-utility';
     }
 
     /**
@@ -54,7 +54,7 @@ class WebFormUtility extends Utility
      */
     public static function iconPath()
     {
-        return Craft::getAlias('@tungsten/webform/assetbundles/webformcp/dist/img/utility-icon.svg');
+        return Craft::getAlias('@perfectus/perform/assetbundles/cp/dist/img/utility-icon.svg');
     }
 
     /**
@@ -66,7 +66,7 @@ class WebFormUtility extends Utility
      */
     public static function badgeCount(): int
     {
-        return WebForm::$plugin->webFormService->getSubmissionsCount('test');
+        return PerForm::$plugin->formService->getSubmissionsCount('test');
     }
 
     /**
@@ -81,10 +81,10 @@ class WebFormUtility extends Utility
 
         $view = Craft::$app->getView();
 
-        $testSubmissionsCount = WebForm::$plugin->webFormService->getSubmissionsCount('test');
+        $testSubmissionsCount = PerForm::$plugin->formService->getSubmissionsCount('test');
 
         return $view->renderTemplate(
-            'webform/_components/utilities/WebFormUtility_content',
+            'perform/_components/utilities/PerFormUtility_content',
             [
                 'testSubmissionsCount' => $testSubmissionsCount
             ]

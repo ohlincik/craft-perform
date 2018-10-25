@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -9,17 +9,17 @@
  */
 
 /**
- * WebForm en Translation
+ * PerForm en Translation
  *
- * Returns an array with the string to be translated (as passed to `Craft::t('webform', '...')`) as
+ * Returns an array with the string to be translated (as passed to `Craft::t('perform', '...')`) as
  * the key, and the translation as the value.
  *
  * http://www.yiiframework.com/doc-2.0/guide-tutorial-i18n.html
  *
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 return [
-    'WebForm plugin loaded' => 'WebForm plugin loaded',
+    'PerForm plugin loaded' => 'PerForm plugin loaded',
 ];

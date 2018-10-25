@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\helpers;
+namespace perfectus\perform\helpers;
 
 use Craft;
 use craft\helpers\Template;
@@ -17,7 +17,7 @@ use yii\base\Exception;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 class PluginTemplate
@@ -45,11 +45,11 @@ class PluginTemplate
 
         // Render the template with our vars passed in
         try {
-            $htmlText = Craft::$app->view->renderTemplate('webform/' . $templatePath, $params);
+            $htmlText = Craft::$app->view->renderTemplate('perform/' . $templatePath, $params);
             $templateRendered = true;
         } catch (\Exception $e) {
             $htmlText = Craft::t(
-                'webform',
+                'perform',
                 'Error rendering `{template}` -> {error}',
                 ['template' => $templatePath, 'error' => $e->getMessage()]
             );
@@ -69,7 +69,7 @@ class PluginTemplate
                 $htmlText = Craft::$app->view->renderTemplate($templatePath, $params);
             } catch (\Exception $e) {
                 $htmlText = Craft::t(
-                    'webform',
+                    'perform',
                     'Error rendering `{template}` -> {error}',
                     ['template' => $templatePath, 'error' => $e->getMessage()]
                 );

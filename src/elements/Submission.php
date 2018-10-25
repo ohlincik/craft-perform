@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,14 +8,14 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\elements;
+namespace perfectus\perform\elements;
 
-use tungsten\webform\WebForm;
+use perfectus\perform\PerForm;
 
-use tungsten\webform\records\SubmissionRecord;
-use tungsten\webform\elements\actions\DeleteSubmissions;
-use tungsten\webform\elements\actions\MarkSubmissionsAsNew;
-use tungsten\webform\elements\actions\MarkSubmissionsAsRead;
+use perfectus\perform\records\SubmissionRecord;
+use perfectus\perform\elements\actions\DeleteSubmissions;
+use perfectus\perform\elements\actions\MarkSubmissionsAsNew;
+use perfectus\perform\elements\actions\MarkSubmissionsAsRead;
 
 use Craft;
 use craft\base\Element;
@@ -25,7 +25,7 @@ use craft\web\ErrorHandler;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
  * @property string $name
@@ -89,7 +89,7 @@ class Submission extends Element
      */
     public static function displayName(): string
     {
-        return Craft::t('webform', 'Submission');
+        return Craft::t('perform', 'Submission');
     }
 
     /**
@@ -127,11 +127,11 @@ class Submission extends Element
     protected static function defineTableAttributes(): array
     {
         return [
-            'subject' => \Craft::t('webform', 'Subject'),
-            'statusType' => \Craft::t('webform', 'Status'),
-            'dateCreated' => \Craft::t('webform', 'Submitted'),
-            'formTitle' => \Craft::t('webform', 'Form Title'),
-            'formHandle' => \Craft::t('webform', 'Form Handle'),
+            'subject' => \Craft::t('perform', 'Subject'),
+            'statusType' => \Craft::t('perform', 'Status'),
+            'dateCreated' => \Craft::t('perform', 'Submitted'),
+            'formTitle' => \Craft::t('perform', 'Form Title'),
+            'formHandle' => \Craft::t('perform', 'Form Handle'),
         ];
     }
 
@@ -168,14 +168,14 @@ class Submission extends Element
     {
         return [
             [
-                'label' => Craft::t('webform', 'Submitted'),
+                'label' => Craft::t('perform', 'Submitted'),
                 'orderBy' => 'elements.dateCreated',
                 'attribute' => 'dateCreated'
             ],
-            'subject' => \Craft::t('webform', 'Subject'),
-            'statusType' => \Craft::t('webform', 'Status'),
-            'formTitle' => \Craft::t('webform', 'Form Title'),
-            'formHandle' => \Craft::t('webform', 'Form Handle'),
+            'subject' => \Craft::t('perform', 'Subject'),
+            'statusType' => \Craft::t('perform', 'Status'),
+            'formTitle' => \Craft::t('perform', 'Form Title'),
+            'formHandle' => \Craft::t('perform', 'Form Handle'),
         ];
     }
 
@@ -187,32 +187,32 @@ class Submission extends Element
         $sources = [
             [
                 'key' => '*',
-                'label' => Craft::t('webform', 'All Submissions'),
+                'label' => Craft::t('perform', 'All Submissions'),
                 'criteria' => []
             ],
             [
                 'key' => 'new',
-                'label' => Craft::t('webform', 'NEW Submissions'),
+                'label' => Craft::t('perform', 'NEW Submissions'),
                 'criteria' => [
                     'statusType' => 'new',
                 ]
             ],
             [
                 'key' => 'read',
-                'label' => Craft::t('webform', 'Read Submissions'),
+                'label' => Craft::t('perform', 'Read Submissions'),
                 'criteria' => [
                     'statusType' => 'read',
                 ]
             ],
         ];
 
-        $testSubmissionsCount = WebForm::$plugin->webFormService->getSubmissionsCount('test');
+        $testSubmissionsCount = PerForm::$plugin->formService->getSubmissionsCount('test');
 
         // Include the test submissions source only if any test submissions exist
         if ($testSubmissionsCount > 0) {
             $sources[] = [
                 'key' => 'test',
-                'label' => Craft::t('webform', 'Test Submissions'),
+                'label' => Craft::t('perform', 'Test Submissions'),
                 'criteria' => [
                     'statusType' => 'test',
                 ]
@@ -250,7 +250,7 @@ class Submission extends Element
      */
     public function getCpEditUrl()
     {
-        return UrlHelper::cpUrl('webform/' . $this->id . '?siteId=' . $this->siteId);
+        return UrlHelper::cpUrl('perform/' . $this->id . '?siteId=' . $this->siteId);
     }
 
     /**

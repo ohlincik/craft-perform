@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\records;
+namespace perfectus\perform\records;
 
 use craft\base\Element;
 use craft\db\ActiveRecord;
@@ -17,7 +17,7 @@ use yii\db\ActiveQueryInterface;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
  * @property \yii\db\ActiveQueryInterface $element
@@ -81,7 +81,7 @@ class SubmissionRecord extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return '{{%webform_submissions}}';
+        return '{{%perform_submissions}}';
     }
 
     /**

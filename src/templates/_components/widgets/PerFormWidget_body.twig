@@ -1,19 +1,19 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Plugin Widget Body Template
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
 
-{% set iconUrl = view.getAssetManager().getPublishedUrl('@tungsten/webform/assetbundles/webformcp/dist', true) ~ '/img/widget-icon.svg' %}
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@perfectus/perform/assetbundles/cp/dist', true) ~ '/img/widget-icon.svg' %}
 
 {% macro pluralize(label, count) %}
     {% if count == 1 %}
@@ -24,13 +24,13 @@
 {% endmacro %}
 {% import _self as macros %}
 
-<div class="readable webform--centered">
+<div class="readable perform--centered">
     <img src="{{ iconUrl }}" height="32" width="32"/>
     {% if allSubmissionsCount > 0 %}
         {% if newSubmissionsCount == 0 %}
-            <p class="webform--no-submissions">There are no new submissions</p>
+            <p class="perform--no-submissions">There are no new submissions</p>
         {% else %}
-            <p class="webform--new-submissions">
+            <p class="perform--new-submissions">
                 {{ newSubmissionsCount }}
                 New {{ macros.pluralize('Submission', newSubmissionsCount) }}
             </p>
@@ -39,24 +39,24 @@
             {{ allSubmissionsCount }} {{ macros.pluralize('Submission', allSubmissionsCount) }}
             Total
         </p>
-        {% if currentUser.can('accessplugin-webform') %}
+        {% if currentUser.can('accessplugin-perform') %}
             <div class="secondary-buttons">
-                <a class="btn small submit" href="{{ url('webform') }}">View</a>
+                <a class="btn small submit" href="{{ url('perform') }}">View</a>
             </div>
         {% endif %}
-        {% if currentUser.can('utility:webform-utility') %}
+        {% if currentUser.can('utility:perform-utility') %}
             {% if testSubmissionsCount > 0 %}
                 <hr>
-                <p class="webform--test-submissions">
+                <p class="perform--test-submissions">
                     {{ testSubmissionsCount }}
                     Test {{ macros.pluralize('Submission', testSubmissionsCount) }}
                 </p>
                 <div class="secondary-buttons">
-                    <a class="btn small submit" href="{{ url('utilities/webform-utility') }}">Manage</a>
+                    <a class="btn small submit" href="{{ url('utilities/perform-utility') }}">Manage</a>
                 </div>
             {% endif %}
         {% endif %}
     {% else %}
-        <p class="webform--no-submissions">There are no submissions</p>
+        <p class="perform--no-submissions">There are no submissions</p>
     {% endif %}
 </div>

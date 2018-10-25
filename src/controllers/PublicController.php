@@ -1,7 +1,7 @@
 <?php /** @noinspection PhpUndefinedFieldInspection */
 
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -9,10 +9,10 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\controllers;
+namespace perfectus\perform\controllers;
 
-use tungsten\webform\WebForm;
-use tungsten\webform\models\SubmissionModel;
+use perfectus\perform\PerForm;
+use perfectus\perform\models\SubmissionModel;
 
 use Craft;
 use craft\web\Controller;
@@ -23,7 +23,7 @@ use yii\web\Response;
  * Public Controller
  *
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 class PublicController extends Controller
@@ -44,7 +44,7 @@ class PublicController extends Controller
 
     /**
      * Handle a request going to our plugin's actionSubmitForm URL,
-     * e.g.: actions/webform/public/submit-form
+     * e.g.: actions/perform/public/submit-form
      *
      * @return null|Response
      * @throws \Throwable
@@ -58,7 +58,7 @@ class PublicController extends Controller
     public function actionSubmitForm()
     {
         $this->requirePostRequest();
-        $plugin = WebForm::getInstance();
+        $plugin = PerForm::getInstance();
         $request = \Craft::$app->getRequest();
         $pluginSettings = $plugin->getSettings();
 
@@ -67,7 +67,7 @@ class PublicController extends Controller
 
         $entry = \Craft::$app->entries->getEntryById($entryId);
 
-        $formSettings = $plugin->webFormService->getFormSettings($entry);
+        $formSettings = $plugin->formService->getFormSettings($entry);
 
         $testModeEnabled = $formSettings->testModeEnabled;
 
@@ -76,7 +76,7 @@ class PublicController extends Controller
             $gRecaptchaResponse = \Craft::$app->request->post('g-recaptcha-response');
             $remoteIp = \Craft::$app->request->remoteIp;
 
-          if (!$plugin->webFormService->validateCaptcha($gRecaptchaResponse, $remoteIp)) {
+          if (!$plugin->formService->validateCaptcha($gRecaptchaResponse, $remoteIp)) {
             // Captcha verification failed!
             header($_SERVER['SERVER_PROTOCOL'].' 418 I\'m a teapot');
             exit;
@@ -95,8 +95,8 @@ class PublicController extends Controller
 
         // Store the submission element in the CMS if the setting is enabled
 
-        if (!$plugin->webFormService->addSubmission($submissionData, $testModeEnabled)) {
-            \Craft::$app->getSession()->setError(Craft::t('webform', 'The WebForm submission could not be saved.'));
+        if (!$plugin->formService->addSubmission($submissionData, $testModeEnabled)) {
+            \Craft::$app->getSession()->setError(Craft::t('perform', 'The form submission could not be saved.'));
             \Craft::$app->getUrlManager()->setRouteParams([
                 'variables' => ['payload' => $submissionData]
             ]);
@@ -106,7 +106,7 @@ class PublicController extends Controller
 
         // Deliver the notification to the recipients
         if (!$plugin->emailService->deliver($submissionData, $testModeEnabled)) {
-            \Craft::$app->getSession()->setError(Craft::t('webform', 'The WebForm submission email could not be delivered.'));
+            \Craft::$app->getSession()->setError(Craft::t('perform', 'The form submission email could not be delivered.'));
             \Craft::$app->getUrlManager()->setRouteParams([
                 'variables' => ['payload' => $submissionData]
             ]);
@@ -114,7 +114,7 @@ class PublicController extends Controller
             return null;
         }
 
-        \Craft::$app->getSession()->setNotice(Craft::t('webform', 'WebForm submission was successfully completed'));
+        \Craft::$app->getSession()->setNotice(Craft::t('perform', 'Form submission was successfully completed'));
         return $this->redirectToPostedUrl($submissionData, $entry->url. '/?success=✓');
     }
 }

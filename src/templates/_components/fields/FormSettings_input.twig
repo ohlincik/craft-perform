@@ -1,14 +1,14 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS
+ * PerForm plugin for Craft CMS
  *
  * Form Settings Field Input
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
@@ -16,10 +16,10 @@
 {% import "_includes/forms" as forms %}
 
 {% namespace name %}
-    <div id="{{ id }}" class="field webform--field">
+    <div id="{{ id }}" class="field perform--field">
         {{ forms.textField({
             label: 'Form Title',
-            instructions: 'Provide a user-friendly label to identify the WebForm Submissions on the listing page in Control Panel.',
+            instructions: 'Provide a user-friendly label to identify the Form Submissions on the listing page in Control Panel.',
             id: 'formTitle',
             name: 'formTitle',
             maxlength: 35,
@@ -41,12 +41,12 @@
 
         {{ forms.textField({
             label: 'Form Subject',
-            instructions: 'The **Form Subject** is used as the **Email Subject** in the email notification. It is also displayed on the WebForm Submissions listing page in the Control Panel. You can include the content of any Form Field that appears on the form using the following format {{ fieldHandle.value }}',
+            instructions: 'The **Form Subject** is used as the **Email Subject** in the email notification. It is also displayed on the PerForm Submissions listing page in the Control Panel. You can include the content of any Form Field that appears on the form using the following format {{ fieldHandle.value }}',
             id: 'formSubject',
             name: 'formSubject',
             value: value.formSubject,
             required: true,
-            placeholder: 'WebForm submission from {{ fullName.value }}',
+            placeholder: 'Form submission from {{ fullName.value }}',
         }) }}
 
         {{ forms.textField({

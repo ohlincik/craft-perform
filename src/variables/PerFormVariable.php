@@ -1,7 +1,7 @@
 <?php /** @noinspection ReturnTypeCanBeDeclaredInspection */
 
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -9,21 +9,21 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\variables;
+namespace perfectus\perform\variables;
 
-use tungsten\webform\WebForm;
-use tungsten\webform\helpers\PluginTemplate as PluginTemplateHelper;
+use perfectus\perform\PerForm;
+use perfectus\perform\helpers\PluginTemplate as PluginTemplateHelper;
 
 /**
- * WebForm Variable
+ * PerForm Variable
  *
- * e.g. {{ craft.webForm }}
+ * e.g. {{ craft.perForm }}
  *
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
-class WebFormVariable
+class PerFormVariable
 {
     // Public Methods
     // =========================================================================
@@ -31,7 +31,7 @@ class WebFormVariable
     /**
      * Render opening tag for the submission form.
      *
-     * {{ craft.webForm.formTag(options) }}
+     * {{ craft.perForm.formTag(options) }}
      *
      * @param array $options
      * @return string
@@ -50,7 +50,7 @@ class WebFormVariable
 
         $entryId = $options['entryId'];
 
-        if (!WebForm::$plugin->webFormService->formSettingsValid($entryId)) {
+        if (!PerForm::$plugin->formService->formSettingsValid($entryId)) {
             return PluginTemplateHelper::renderPluginTemplate(
                 '_components/variables/error',
                 [
@@ -65,7 +65,7 @@ class WebFormVariable
             $parsleyValidationJsOptions = '';
         }
 
-        $pluginSettings = WebForm::$plugin->getSettings();
+        $pluginSettings = PerForm::$plugin->getSettings();
 
         return PluginTemplateHelper::renderPluginTemplate(
             '_components/variables/formTag',

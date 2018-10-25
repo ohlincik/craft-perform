@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,9 +8,9 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\elements\actions;
+namespace perfectus\perform\elements\actions;
 
-use tungsten\webform\WebForm;
+use perfectus\perform\PerForm;
 
 use Craft;
 use craft\base\ElementAction;
@@ -20,7 +20,7 @@ use yii\base\Exception;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
  * @property string $triggerLabel
@@ -49,7 +49,7 @@ class MarkSubmissionsAsNew extends ElementAction
         try {
             foreach ($query->all() as $submission) {
                 if ($submission->statusType !== 'test') {
-                    WebForm::$plugin->webFormService->setSubmissionStatusType($submission, 'new');
+                    PerForm::$plugin->formService->setSubmissionStatusType($submission, 'new');
                 }
             }
         } catch (Exception $exception) {
@@ -58,7 +58,7 @@ class MarkSubmissionsAsNew extends ElementAction
             return false;
         }
 
-        $this->setMessage(Craft::t('webform', 'Submissions marked as New.'));
+        $this->setMessage(Craft::t('perform', 'Submissions marked as New.'));
 
         return true;
     }

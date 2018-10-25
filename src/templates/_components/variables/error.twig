@@ -1,18 +1,18 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
-{% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
+{% do view.registerAssetBundle('perfectus\\perform\\assetbundles\\fe\\PerFormFEAsset') %}
 
-<p class="webform--warning-panel">
+<p class="perform--warning-panel">
     <strong>There is a problem with your settings</strong><br>
     {{ error }}
 </p>

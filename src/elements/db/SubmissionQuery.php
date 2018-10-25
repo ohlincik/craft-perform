@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,16 +8,16 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\elements;
+namespace perfectus\perform\elements;
 
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
- * @package tungsten\webform\elements
+ * @package perfectus\perform\elements
  */
 class SubmissionQuery extends ElementQuery
 {
@@ -135,39 +135,39 @@ class SubmissionQuery extends ElementQuery
      */
     protected function beforePrepare(): bool
     {
-        $this->joinElementTable('webform_submissions');
+        $this->joinElementTable('perform_submissions');
 
         $this->query->select([
-            'webform_submissions.statusType',
-            'webform_submissions.formHandle',
-            'webform_submissions.formTitle',
-            'webform_submissions.subject',
-            'webform_submissions.recipients',
-            'webform_submissions.content',
+            'perform_submissions.statusType',
+            'perform_submissions.formHandle',
+            'perform_submissions.formTitle',
+            'perform_submissions.subject',
+            'perform_submissions.recipients',
+            'perform_submissions.content',
         ]);
 
         if ($this->statusType) {
-            $this->subQuery->andWhere(Db::parseParam('webform_submissions.statusType', $this->statusType));
+            $this->subQuery->andWhere(Db::parseParam('perform_submissions.statusType', $this->statusType));
         }
 
         if ($this->formHandle) {
-            $this->subQuery->andWhere(Db::parseParam('webform_submissions.formHandle', $this->formHandle));
+            $this->subQuery->andWhere(Db::parseParam('perform_submissions.formHandle', $this->formHandle));
         }
 
         if ($this->formTitle) {
-            $this->subQuery->andWhere(Db::parseParam('webform_submissions.formTitle', $this->formTitle));
+            $this->subQuery->andWhere(Db::parseParam('perform_submissions.formTitle', $this->formTitle));
         }
 
         if ($this->subject) {
-            $this->subQuery->andWhere(Db::parseParam('webform_submissions.subject', $this->subject));
+            $this->subQuery->andWhere(Db::parseParam('perform_submissions.subject', $this->subject));
         }
 
         if ($this->recipients) {
-            $this->subQuery->andWhere(Db::parseParam('webform_submissions.recipients', $this->recipients));
+            $this->subQuery->andWhere(Db::parseParam('perform_submissions.recipients', $this->recipients));
         }
 
         if ($this->content) {
-            $this->subQuery->andWhere(Db::parseParam('webform_submissions.content', $this->content));
+            $this->subQuery->andWhere(Db::parseParam('perform_submissions.content', $this->content));
         }
 
         return parent::beforePrepare();

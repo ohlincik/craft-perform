@@ -1,30 +1,30 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * formTag Variable Template
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
 
-{% do view.registerAssetBundle('tungsten\\webform\\assetbundles\\webform\\WebFormAsset') %}
+{% do view.registerAssetBundle('perfectus\\perform\\assetbundles\\fe\\PerFormFEAsset') %}
 
 <noscript>
     {#
       JavaScript must be endabled. Otherwise the form is hidden and message to enable JavaScript is displayed.
     #}
     <style type="text/css">
-        #webform-submission {
+        #perform-submission {
             display: none;
         }
     </style>
-    <p class="webform--warning-panel">
+    <p class="perform--warning-panel">
         <strong>You don't have JavaScript enabled.</strong><br>
         To continue, please <a href="http://enable-javascript.com/" target="_blank">enable JavaScript in your browser</a>.
     </p>
@@ -33,7 +33,7 @@
 {% if parsleyClientSideValidation %}
     {% js %}
         $(document).ready(function() {
-            $('#webform-submission').parsley({{ parsleyValidationJsOptions|raw }});
+            $('#perform-submission').parsley({{ parsleyValidationJsOptions|raw }});
         });
     {% endjs %}
 {% endif %}
@@ -46,7 +46,7 @@
 
     {% js %}
         $(document).ready(function() {
-            $('#webform-submission').on('submit', function() {
+            $('#perform-submission').on('submit', function() {
                 var token = grecaptcha.getResponse();
 
                 // if there is no token, the user is not validated yet
@@ -61,15 +61,15 @@
 
             captchaCallback = function (token) {
                 // submit the form after the captcha was completed
-                $('#webform-submission').submit();
+                $('#perform-submission').submit();
             };
         });
     {% endjs %}
 {% endif %}
 
-<form role="form" id="webform-submission" method="post" action=""
+<form role="form" id="perform-submission" method="post" action=""
       accept-charset="UTF-8">
-    <input type="hidden" name="action" value="webform/public/submit-form">
+    <input type="hidden" name="action" value="perform/public/submit-form">
     <input type="hidden" name="entry_id" value="{{ entryId }}">
     {{ csrfInput() }}
 

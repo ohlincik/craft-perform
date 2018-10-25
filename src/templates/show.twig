@@ -1,31 +1,31 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Form Submission Detail
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
 {% extends "_layouts/cp" %}
 
-{% do view.registerAssetBundle("tungsten\\webform\\assetbundles\\webformcp\\WebFormCPAsset") %}
+{% do view.registerAssetBundle("perfectus\\perform\\assetbundles\\cp\\PerFormCPAsset") %}
 
 {% set title = subject %}
 
 {% set crumbs = [
-    { label: "WebForm Submissions"|t('webform'), url: url('webform') },
+    { label: "Form Submissions"|t('perform'), url: url('perform') },
 ] %}
 
 {% block content %}
     {% for field in fields %}
         {% if field.label == '__section__' %}
-            <h2 class="webform--section-heading">{{ field.value }}</h2>
+            <h2 class="perform--section-heading">{{ field.value }}</h2>
         {% else %}
             <p>
                 <strong>{{ field.label }}</strong><br>
@@ -58,14 +58,14 @@
     </div>
     <hr>
     <div class="meta">
-        <h5 class="heading">{{ "Form Title"|t('webform') }}</h5>
+        <h5 class="heading">{{ "Form Title"|t('perform') }}</h5>
         <div class="value">{{ formTitle }}</div>
-        <h5 class="heading">{{ "Form Handle"|t('webform') }}</h5>
+        <h5 class="heading">{{ "Form Handle"|t('perform') }}</h5>
         <div class="value">{{ formHandle }}</div>
     </div>
     <div class="meta read-only">
         <div class="data">
-            <h5 class="heading">{{ "Submitted"|t('webform') }}</h5>
+            <h5 class="heading">{{ "Submitted"|t('perform') }}</h5>
             <div class="value">{{ submitted|datetime('short') }}</div>
         </div>
     </div>

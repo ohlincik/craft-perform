@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,22 +8,22 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\services;
+namespace perfectus\perform\services;
 
 use craft\elements\Entry;
-use tungsten\webform\models\SubmissionModel;
-use tungsten\webform\WebForm;
-use tungsten\webform\elements\Submission;
+use perfectus\perform\models\SubmissionModel;
+use perfectus\perform\PerForm;
+use perfectus\perform\elements\Submission;
 
 use Craft;
 use craft\base\Component;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
-class WebFormService extends Component
+class FormService extends Component
 {
     // Public Methods
     // =========================================================================
@@ -129,7 +129,7 @@ class WebFormService extends Component
     public function validateCaptcha($gRecaptchaResponse, $remoteIp) {
       $url = 'https://www.google.com/recaptcha/api/siteverify';
 
-      $pluginSettings = WebForm::$plugin->getSettings();
+      $pluginSettings = PerForm::$plugin->getSettings();
 
       $data = array(
         'secret' => $pluginSettings->googleCaptchaSecretKey,
@@ -166,7 +166,7 @@ class WebFormService extends Component
         } else {
             Craft::error(
                 Craft::t(
-                    'webform',
+                    'perform',
                     'Form Settings were not found in the specified Entry'
                 ),
                 __METHOD__
@@ -178,7 +178,7 @@ class WebFormService extends Component
         if (!$formSettings->validate()) {
             Craft::error(
                 Craft::t(
-                    'webform',
+                    'perform',
                     'Form Settings could not be validated. Errors: {errors}',
                     ['errors' => serialize($formSettings->errors)]
                 ),

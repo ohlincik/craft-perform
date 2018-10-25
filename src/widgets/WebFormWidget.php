@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,23 +8,23 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\widgets;
+namespace perfectus\perform\widgets;
 
-use tungsten\webform\WebForm;
-use tungsten\webform\assetbundles\webformcp\WebFormCPAsset;
+use perfectus\perform\PerForm;
+use perfectus\perform\assetbundles\cp\PerFormCPAsset;
 
 use Craft;
 use craft\base\Widget;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
  * @property string|false $bodyHtml
  * @property null|string $settingsHtml
  */
-class WebFormWidget extends Widget
+class PerFormWidget extends Widget
 {
     // Static Methods
     // =========================================================================
@@ -36,7 +36,7 @@ class WebFormWidget extends Widget
      */
     public static function displayName(): string
     {
-        return Craft::t('webform', 'WebForm');
+        return Craft::t('perform', 'PerForm');
     }
 
     /**
@@ -46,7 +46,7 @@ class WebFormWidget extends Widget
      */
     public static function iconPath()
     {
-        return Craft::getAlias('@tungsten/webform/assetbundles/webformcp/dist/img/widget-icon.svg');
+        return Craft::getAlias('@perfectus/perform/assetbundles/cp/dist/img/widget-icon.svg');
     }
 
     /**
@@ -89,14 +89,14 @@ class WebFormWidget extends Widget
      */
     public function getBodyHtml()
     {
-        Craft::$app->getView()->registerAssetBundle(WebFormCPAsset::class);
+        Craft::$app->getView()->registerAssetBundle(PerFormCPAsset::class);
 
         return Craft::$app->getView()->renderTemplate(
-            'webform/_components/widgets/WebFormWidget_body',
+            'perform/_components/widgets/PerFormWidget_body',
             [
-                'newSubmissionsCount' => WebForm::$plugin->webFormService->getSubmissionsCount('new'),
-                'testSubmissionsCount' => WebForm::$plugin->webFormService->getSubmissionsCount('test'),
-                'allSubmissionsCount' => WebForm::$plugin->webFormService->getSubmissionsCount(),
+                'newSubmissionsCount' => PerForm::$plugin->formService->getSubmissionsCount('new'),
+                'testSubmissionsCount' => PerForm::$plugin->formService->getSubmissionsCount('test'),
+                'allSubmissionsCount' => PerForm::$plugin->formService->getSubmissionsCount(),
             ]
         );
     }

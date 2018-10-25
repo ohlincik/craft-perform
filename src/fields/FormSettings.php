@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,10 +8,10 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\fields;
+namespace perfectus\perform\fields;
 
-use tungsten\webform\assetbundles\webformcp\WebFormCPAsset;
-use tungsten\webform\models\FormSettings as FormSettingsModel;
+use perfectus\perform\assetbundles\cp\PerFormCPAsset;
+use perfectus\perform\models\FormSettings as FormSettingsModel;
 
 use Craft;
 use craft\base\ElementInterface;
@@ -21,7 +21,7 @@ use craft\helpers\Json;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
  * @property string $contentColumnType
@@ -38,7 +38,7 @@ class FormSettings extends Field
      */
     public static function displayName(): string
     {
-        return Craft::t('webform', 'Form Settings');
+        return Craft::t('perform', 'Form Settings');
     }
 
     // Public Methods
@@ -110,7 +110,7 @@ class FormSettings extends Field
     {
         $variables = [];
         // Register our asset bundle
-        Craft::$app->getView()->registerAssetBundle(WebFormCPAsset::class);
+        Craft::$app->getView()->registerAssetBundle(PerFormCPAsset::class);
 
         // Get our id and namespace
         $id = Craft::$app->getView()->formatInputId($this->handle);
@@ -125,7 +125,7 @@ class FormSettings extends Field
 
         // Render the input template
         return Craft::$app->getView()->renderTemplate(
-            'webform/_components/fields/FormSettings_input',
+            'perform/_components/fields/FormSettings_input',
             $variables
         );
     }

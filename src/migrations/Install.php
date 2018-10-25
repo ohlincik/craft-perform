@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,15 +8,15 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\migrations;
+namespace perfectus\perform\migrations;
 
-use tungsten\webform\elements\Submission;
+use perfectus\perform\elements\Submission;
 
 use Craft;
 use craft\db\Migration;
 
 /**
- * WebForm Install Migration
+ * PerForm Install Migration
  *
  * If your plugin needs to create any custom database tables when it gets installed,
  * create a migrations/ folder within your plugin folder, and save an Install.php file
@@ -26,7 +26,7 @@ use craft\db\Migration;
  * safeUp() and safeDown() methods.
  *
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 class Install extends Migration
@@ -95,12 +95,12 @@ class Install extends Migration
     {
         $tablesCreated = false;
 
-        // webform_submissions table
-        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%webform_submissions}}');
+        // perform_submissions table
+        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%perform_submissions}}');
         if ($tableSchema === null) {
             $tablesCreated = true;
             $this->createTable(
-                '{{%webform_submissions}}',
+                '{{%perform_submissions}}',
                 [
                     'id' => $this->primaryKey(),
                     'statusType' => $this->string(255)->notNull()->defaultValue('new'),
@@ -126,10 +126,10 @@ class Install extends Migration
      */
     protected function addForeignKeys()
     {
-        // webform_submissions table
+        // perform_submissions table
         $this->addForeignKey(
-            $this->db->getForeignKeyName('{{%webform_submissions}}', 'id'),
-            '{{%webform_submissions}}',
+            $this->db->getForeignKeyName('{{%perform_submissions}}', 'id'),
+            '{{%perform_submissions}}',
             'id',
             '{{%elements}}',
             'id',
@@ -150,7 +150,7 @@ class Install extends Migration
      */
     protected function removeTables()
     {
-    // webform_submissions table
-        $this->dropTableIfExists('{{%webform_submissions}}');
+    // perform_submissions table
+        $this->dropTableIfExists('{{%perform_submissions}}');
     }
 }

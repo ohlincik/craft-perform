@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,18 +8,19 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\controllers;
+namespace perfectus\perform\controllers;
 
-use tungsten\webform\WebForm;
+use perfectus\perform\PerForm;
 
 use Craft;
 use craft\web\Controller;
+use craft\web\Response;
 use craft\helpers\UrlHelper;
 use yii\web\NotFoundHttpException;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 class DefaultController extends Controller
@@ -41,7 +42,7 @@ class DefaultController extends Controller
     /**
      * Show Form Submission
      *
-     * e.g.: actions/webform/default/show-submission
+     * e.g.: actions/perform/default/show-submission
      *
      * @param int|null $submissionId Id of the form submission to display
      * @return mixed
@@ -49,15 +50,15 @@ class DefaultController extends Controller
      * @throws \craft\errors\ElementNotFoundException
      * @throws \yii\base\Exception
      */
-    public function actionShowSubmission(int $submissionId = null): craft\web\Response
+    public function actionShowSubmission(int $submissionId = null): Response
     {
         $variables = [];
 
         // Breadcrumbs
         $variables['crumbs'] = [
             [
-                'label' => Craft::t('webform', 'WebForm Submissions'),
-                'url' => UrlHelper::url('webform')
+                'label' => Craft::t('perform', 'Form Submissions'),
+                'url' => UrlHelper::url('perform')
             ]
         ];
 
@@ -68,14 +69,14 @@ class DefaultController extends Controller
                 $siteId = Craft::$app->getSites()->currentSite->id;
             }
 
-            $submission = WebForm::$plugin->webFormService->getSubmissionById($submissionId, $siteId);
+            $submission = PerForm::$plugin->formService->getSubmissionById($submissionId, $siteId);
 
             if (!$submission) {
                 throw new NotFoundHttpException('Submission not found');
             }
 
             if ($submission->statusType === 'new') {
-                WebForm::$plugin->webFormService->setSubmissionStatusType($submission, 'read');
+                PerForm::$plugin->formService->setSubmissionStatusType($submission, 'read');
             }
 
             $variables = [
@@ -92,6 +93,6 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('Submission id was not provided');
         }
 
-        return $this->renderTemplate('webform/show', $variables);
+        return $this->renderTemplate('perform/show', $variables);
     }
 }

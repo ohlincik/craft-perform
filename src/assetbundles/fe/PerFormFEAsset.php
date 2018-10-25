@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,21 +8,20 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\assetbundles\webformcp;
+namespace perfectus\perform\assetbundles\fe;
+
+use perfectus\perform\PerForm;
 
 use craft\web\AssetBundle;
-use craft\web\assets\cp\CpAsset;
 
 /**
- * WebFormCPAsset AssetBundle
- *
- * This asset bundle is used for the plugin in control panel .
+ * Front-End AssetBundle
  *
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
-class WebFormCPAsset extends AssetBundle
+class PerFormFEAsset extends AssetBundle
 {
     // Public Methods
     // =========================================================================
@@ -33,12 +32,14 @@ class WebFormCPAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = '@tungsten/webform/assetbundles/webformcp/dist';
+        $this->sourcePath = '@perfectus/perform/assetbundles/fe/dist';
 
-        // define the dependencies
-        $this->depends = [
-            CpAsset::class,
-        ];
+        // Only include the Parsley JS if it is enabled in plugin settings
+        if (PerForm::$plugin->getSettings()->parsleyClientSideValidation) {
+            $this->js = [
+                'js/parsley.2.8.1.min.js',
+            ];
+        }
 
         $this->css = [
             'css/styles.css',

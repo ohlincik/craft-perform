@@ -1,5 +1,5 @@
 {
-    "name": "tungsten/webform",
+    "name": "perfectus/perform",
     "description": "Online form builder and submissions",
     "type": "craft-plugin",
     "version": "1.0.0",
@@ -11,10 +11,10 @@
         "web form"
     ],
     "support": {
-        "docs": "https://github.com/ohlincik/craft3-webform/blob/master/README.md",
-        "issues": "https://github.com/ohlincik/craft3-webform/issues"
+        "docs": "https://github.com/ohlincik/craft-perform/blob/master/README.md",
+        "issues": "https://github.com/ohlincik/craft-perform/issues"
     },
-    "license": "MIT",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Perfectus Digital Solutions",
@@ -26,19 +26,19 @@
     },
     "autoload": {
         "psr-4": {
-          "tungsten\\webform\\": "src/"
+          "perfectus\\perform\\": "src/"
         }
     },
     "extra": {
-        "name": "WebForm",
-        "handle": "webform",
+        "name": "PerForm",
+        "handle": "perform",
         "hasCpSettings": true,
         "hasCpSection": true,
-        "changelogUrl": "https://raw.githubusercontent.com/ohlincik/craft3-webform/master/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/ohlincik/craft-perform/master/CHANGELOG.md",
         "components": {
-            "emailService": "tungsten\\webform\\services\\EmailService",
-            "webFormService": "tungsten\\webform\\services\\WebFormService"
+            "emailService": "perfectus\\perform\\services\\EmailService",
+            "formService": "perfectus\\perform\\services\\FormService"
         },
-        "class": "tungsten\\webform\\WebForm"
+        "class": "perfectus\\perform\\PerForm"
     }
 }

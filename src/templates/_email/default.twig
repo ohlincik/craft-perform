@@ -1,21 +1,21 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Default Email Content Template
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 #}
 {# Import the form helper macros #}
-{% import 'webform/_email/helpers' as eh %}
+{% import 'perform/_email/helpers' as eh %}
 
-{% extends 'webform/_email/layout' %}
+{% extends 'perform/_email/layout' %}
 
 {% block subject %}
     {{ subject }}

@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,11 +8,11 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\services;
+namespace perfectus\perform\services;
 
 use craft\models\MailSettings;
-use tungsten\webform\WebForm;
-use tungsten\webform\models\SubmissionModel;
+use perfectus\perform\PerForm;
+use perfectus\perform\models\SubmissionModel;
 
 use Craft;
 use craft\base\Component;
@@ -23,7 +23,7 @@ use craft\web\View;
 
 /**
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 class EmailService extends Component
@@ -34,7 +34,7 @@ class EmailService extends Component
     /**
      * Deliver the submission in an email
      *
-     * WebForm::$plugin->emailService->deliver()
+     * PerForm::$plugin->emailService->deliver()
      *
      * @param SubmissionModel $submissionData
      * @param bool $useTestMailer
@@ -106,7 +106,7 @@ class EmailService extends Component
 
             // Render the default plugin email template
             $htmlBody = \Craft::$app->view->renderTemplate(
-                'webform/_email/default',
+                'perform/_email/default',
                 $submissionData->getVariablesForEmailContent()
             );
 
@@ -118,7 +118,7 @@ class EmailService extends Component
 
     private function getTestMailer($mailerSettings)
     {
-        $pluginSettings = WebForm::$plugin->getSettings();
+        $pluginSettings = PerForm::$plugin->getSettings();
 
         if ($pluginSettings->testWithMailtrap)
         {
@@ -134,7 +134,7 @@ class EmailService extends Component
             return Craft::createObject($testMailerConfig);
         }
 
-        // WebForm Plugin exception
+        // PerForm Plugin exception
         return false;
     }
 
@@ -144,7 +144,7 @@ class EmailService extends Component
      */
     private function customEmailTemplate(string $formHandle)
     {
-        $customEmailTemplatesPath = WebForm::$plugin->getSettings()->customEmailTemplatesPath;
+        $customEmailTemplatesPath = PerForm::$plugin->getSettings()->customEmailTemplatesPath;
 
         // Is the custom email template path set?
         if (!$customEmailTemplatesPath) {

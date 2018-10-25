@@ -1,7 +1,7 @@
 <?php /** @noinspection PropertyInitializationFlawsInspection */
 
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -9,15 +9,15 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform;
+namespace perfectus\perform;
 
-use tungsten\webform\services\WebFormService;
-use tungsten\webform\services\EmailService;
-use tungsten\webform\variables\WebFormVariable;
-use tungsten\webform\models\Settings;
-use tungsten\webform\fields\FormSettings as FormSettingsField;
-use tungsten\webform\utilities\WebFormUtility;
-use tungsten\webform\widgets\WebFormWidget;
+use perfectus\perform\services\FormService;
+use perfectus\perform\services\EmailService;
+use perfectus\perform\variables\PerFormVariable;
+use perfectus\perform\models\Settings;
+use perfectus\perform\fields\FormSettings as FormSettingsField;
+use perfectus\perform\utilities\PerFormUtility;
+use perfectus\perform\widgets\PerFormWidget;
 
 use Craft;
 use craft\base\Plugin;
@@ -35,25 +35,25 @@ use craft\events\RegisterUrlRulesEvent;
 use yii\base\Event;
 
 /**
- * Class WebForm
+ * Class PerForm
  *
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
- * @property  WebFormService $webFormService
+ * @property  FormService $formService
  * @property  EmailService $emailService
  * @property mixed $cpNavItem
  * @property  Settings $settings
  * @method    Settings getSettings()
  */
-class WebForm extends Plugin
+class PerForm extends Plugin
 {
     // Static Properties
     // =========================================================================
 
     /**
-     * @var WebForm
+     * @var PerForm
      */
     public static $plugin;
 
@@ -81,7 +81,7 @@ class WebForm extends Plugin
             UrlManager::class,
             UrlManager::EVENT_REGISTER_SITE_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules['siteActionTrigger1'] = 'webform/default';
+                $event->rules['siteActionTrigger1'] = 'perform/default';
             }
         );
 
@@ -90,7 +90,7 @@ class WebForm extends Plugin
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules['webform/<submissionId:\d+>'] = 'webform/default/show-submission';
+                $event->rules['perform/<submissionId:\d+>'] = 'perform/default/show-submission';
             }
         );
 
@@ -116,7 +116,7 @@ class WebForm extends Plugin
             Utilities::class,
             Utilities::EVENT_REGISTER_UTILITY_TYPES,
             function (RegisterComponentTypesEvent $event) {
-                $event->types[] = WebFormUtility::class;
+                $event->types[] = PerFormUtility::class;
             }
         );
 
@@ -125,7 +125,7 @@ class WebForm extends Plugin
             Dashboard::class,
             Dashboard::EVENT_REGISTER_WIDGET_TYPES,
             function (RegisterComponentTypesEvent $event) {
-                $event->types[] = WebFormWidget::class;
+                $event->types[] = PerFormWidget::class;
             }
         );
 
@@ -136,7 +136,7 @@ class WebForm extends Plugin
             function (Event $event) {
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
-                $variable->set('webForm', WebFormVariable::class);
+                $variable->set('perForm', PerFormVariable::class);
             }
         );
 
@@ -152,14 +152,14 @@ class WebForm extends Plugin
         );
 
         $this->setComponents([
-            'webFormService' => WebFormService::class,
+            'formService' => FormService::class,
             'emailService' => EmailService::class,
         ]);
 
         // We're loaded
         Craft::info(
             Craft::t(
-                'webform',
+                'perform',
                 '{name} plugin loaded',
                 ['name' => $this->name]
             ),
@@ -173,7 +173,7 @@ class WebForm extends Plugin
     public function getCpNavItem()
     {
         $item = parent::getCpNavItem();
-        $item['badgeCount'] = self::$plugin->webFormService->getSubmissionsCount('new');
+        $item['badgeCount'] = self::$plugin->formService->getSubmissionsCount('new');
         return $item;
     }
 
@@ -199,7 +199,7 @@ class WebForm extends Plugin
     protected function settingsHtml(): string
     {
         return Craft::$app->view->renderTemplate(
-            'webform/settings',
+            'perform/settings',
             [
                 'settings' => $this->getSettings()
             ]

@@ -1,16 +1,16 @@
 /**
- * WebForm plugin for Craft CMS
+ * PerForm plugin for Craft CMS
  *
  * Index Field CSS
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */
 
-.webform--section-heading {
+.perform--section-heading {
     font-size: 1.8em;
     border-bottom: 3px solid #e7eef3;
     line-height: 1.2;
@@ -21,7 +21,7 @@
 
 /* ===== Form Settings Field ===== */
 
-.webform--field {
+.perform--field {
     -ms-flex: 1;
     -webkit-box-flex: 1;
     border-radius: 3px;
@@ -34,19 +34,19 @@
 
 /* ===== Dashboard Widget ===== */
 
-.webform--centered {
+.perform--centered {
     text-align: center;
 }
 
-.webform--new-submissions {
+.perform--new-submissions {
     color: #27AE60;
     font-weight: bold;
 }
 
-.webform--no-submissions {
+.perform--no-submissions {
     color: #b9bfc6;
 }
 
-.webform--test-submissions {
+.perform--test-submissions {
     color: #F2842D;
 }

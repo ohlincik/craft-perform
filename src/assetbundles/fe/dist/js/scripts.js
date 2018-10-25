@@ -1,11 +1,11 @@
 /**
- * WebForm plugin for Craft CMS
+ * PerForm plugin for Craft CMS
  *
- * WebForm JS
+ * PerForm JS
  *
  * @author    Oto Hlincik
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  * @link      https://perfectus.us
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  */

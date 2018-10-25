@@ -1,6 +1,6 @@
-# WebForm plugin for Craft CMS 3.x
+# PerForm plugin for Craft CMS 3.x
 
-WebForm facilitates form submission storage and email delivery, form testing, client-side validation, spam protection, and more.
+PerForm facilitates form submission storage and email delivery, form testing, client-side validation, spam protection, and more.
 
 ![Screenshot](resources/img/plugin-logo.png)
 
@@ -18,28 +18,28 @@ To install the plugin, follow these instructions.
 
 2. Then tell Composer to load the plugin:
 
-        composer require tungsten/webform
+        composer require perfectus/perform
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for WebForm.
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for PerForm.
 
-## WebForm Overview
+## PerForm Overview
 
-WebForm is bult for **Craft CMS web developers** with ultimate flexibility in mind. The goal is to let you build the web form front-end anyway you'd like while following a handful of simple conventions. After you include the web form in your Twig template, the plugin will assist you with the following:
+PerForm is bult for **Craft CMS web developers** with ultimate flexibility in mind. The goal is to let you build the web form front-end anyway you'd like while following a handful of simple conventions. After you include the web form in your Twig template, the plugin will assist you with the following:
 
 * Client-side form validation using [Parsley](http://parsleyjs.org/)
 * Spam protection using the [Google Invisible ReCaptcha](https://developers.google.com/recaptcha/docs/invisible)
 * Saving the form submissions in the Control Panel for future reference
 * Delivering the form submission content via email (built-in testing using [mailtrap](https://mailtrap.io/))
 
-## Configuring WebForm
+## Configuring PerForm
 
 -Insert text here-
 
-## Using WebForm
+## Using PerForm
 
 -Insert text here-
 
-## WebForm Roadmap
+## PerForm Roadmap
 
 Some things to do, and ideas for potential features:
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * WebForm plugin for Craft CMS 3.x
+ * PerForm plugin for Craft CMS 3.x
  *
  * Online form builder and submissions
  *
@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Perfectus Digital Solutions
  */
 
-namespace tungsten\webform\models;
+namespace perfectus\perform\models;
 
 use craft\base\Model;
 
@@ -19,7 +19,7 @@ use craft\base\Model;
  * information in the right format.
  *
  * @author    Oto Hlincik
- * @package   WebForm
+ * @package   PerForm
  * @since     1.0.0
  *
  * @property string $subject
@@ -151,9 +151,9 @@ class SubmissionModel extends Model
 //        }
 //
 //        if ($errors) {
-//            \Craft::$app->getSession()->setError(Craft::t('webform', 'There was a problem with your submission, please check the form and try again!'));
+//            \Craft::$app->getSession()->setError(Craft::t('perform', 'There was a problem with your submission, please check the form and try again!'));
 //            \Craft::$app->getUrlManager()->setRouteParams([
-//                'variables' => ['webformErrors' => $errors]
+//                'variables' => ['performErrors' => $errors]
 //            ]);
 //
 //            return null;
