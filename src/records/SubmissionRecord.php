@@ -25,56 +25,6 @@ use yii\db\ActiveQueryInterface;
 class SubmissionRecord extends ActiveRecord
 {
     /**
-     * Form Submission Id
-     *
-     * @var integer
-     */
-    public $id;
-
-    /**
-     * Status Type
-     *
-     * @var string
-     */
-    public $statusType;
-
-    /**
-     * Form Handle
-     *
-     * @var string
-     */
-    public $formHandle;
-
-    /**
-     * Form Title
-     *
-     * @var string
-     */
-    public $formTitle;
-
-    /**
-     * Form Subject
-     *
-     * @var string
-     */
-    public $subject;
-
-    /**
-     * Submission notification recipients. Emails separated by comma.
-     * e.g. "user1@domain.com, user2@domain.com"
-     *
-     * @var string
-     */
-    public $recipients;
-
-    /**
-     * Serialized form submission fields
-     *
-     * @var string
-     */
-    public $content;
-
-    /**
      * Table Name
      *
      * @return string
