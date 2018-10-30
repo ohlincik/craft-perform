@@ -93,8 +93,7 @@ class PublicController extends Controller
             'fields'          => $fields,
         ], false);
 
-        // Store the submission element in the CMS if the setting is enabled
-
+        // Store the submission element in the CMS
         if (!$plugin->formService->addSubmission($submissionData, $testModeEnabled)) {
             \Craft::$app->getSession()->setError(Craft::t('perform', 'The form submission could not be saved.'));
             \Craft::$app->getUrlManager()->setRouteParams([
@@ -106,7 +105,9 @@ class PublicController extends Controller
 
         // Deliver the notification to the recipients
         if (!$plugin->emailService->deliver($submissionData, $testModeEnabled)) {
-            \Craft::$app->getSession()->setError(Craft::t('perform', 'The form submission email could not be delivered.'));
+            if (!\Craft::$app->getSession()->hasFlash('error')) {
+                \Craft::$app->getSession()->setError(Craft::t('perform', 'The form submission email could not be delivered.'));
+            }
             \Craft::$app->getUrlManager()->setRouteParams([
                 'variables' => ['payload' => $submissionData]
             ]);

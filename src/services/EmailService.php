@@ -10,7 +10,6 @@
 
 namespace perfectus\perform\services;
 
-use craft\models\MailSettings;
 use perfectus\perform\PerForm;
 use perfectus\perform\models\SubmissionModel;
 
@@ -19,6 +18,8 @@ use craft\base\Component;
 use craft\helpers\App;
 use craft\helpers\Template;
 use craft\mail\Message;
+use craft\mail\transportadapters\Smtp;
+use craft\models\MailSettings;
 use craft\web\View;
 
 /**
@@ -122,20 +123,25 @@ class EmailService extends Component
 
         if ($pluginSettings->testWithMailtrap)
         {
-            $mailerSettings->transportSettings = [
-                'host' => 'smtp.mailtrap.io',
-                'port' => '2525',
+            $testMailerSettings = new MailSettings();
+            $testMailerSettings->fromEmail = $mailerSettings->fromEmail;
+            $testMailerSettings->fromName = $mailerSettings->fromName;
+            $testMailerSettings->transportType = Smtp::class;
+            $testMailerSettings->transportSettings = [
+                'host'              => 'smtp.mailtrap.io',
+                'port'              => '2525',
                 'useAuthentication' => true,
-                'username' => $pluginSettings->testUsername,
-                'password' => $pluginSettings->testPassword,
+                'username'          => $pluginSettings->testUsername,
+                'password'          => $pluginSettings->testPassword,
             ];
 
-            $testMailerConfig = App::mailerConfig($mailerSettings);
+            $testMailerConfig = App::mailerConfig($testMailerSettings);
             return Craft::createObject($testMailerConfig);
         }
 
         // PerForm Plugin exception
-        return false;
+        \Craft::$app->getSession()->setError(Craft::t('perform', 'The test form submission email could not be delivered. Please make sure that the PerForm plugin settings for Email Delivery Testing are correct.'));
+        return null;
     }
 
     /**
