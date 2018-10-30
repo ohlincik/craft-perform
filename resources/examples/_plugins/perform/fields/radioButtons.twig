@@ -1,0 +1,51 @@
+{#
+  {% include "_plugins/perform/fields/radioButtons" with {
+    label: 'Input Label',
+    inputHandle: 'inputHandle',
+    required: true,
+    options: [
+      {label: 'Label', value: 'value'},
+      {label: 'Label', value: 'value'}
+    ],
+    helpBlock: ''
+  } only %}
+#}
+{% if matrixBlock.inputHandle is defined %}
+  {% set label = matrixBlock.label %}
+  {% set inputHandle = matrixBlock.inputHandle|default(label|camel) %}
+  {% set required = matrixBlock.required %}
+  {% set options = matrixBlock.options %}
+  {% set helpBlock = matrixBlock.helpBlock %}
+{% endif %}
+<div class="form-group">
+  <label>
+    {% if required %}
+      <span class="text-danger"><strong>*</strong></span>
+      <input type="hidden" name="fields[{{ inputHandle }}][required]" value="true">
+    {% endif %}
+    {{ label }}
+  </label>
+  <div id="{{ inputHandle }}-container" class="input">
+    <input type="hidden" name="fields[{{ inputHandle }}][label]" value="{{ label }}">
+    {% for option in options %}
+      <div class="radio">
+        <label>
+          <input
+            type="radio"
+            name="fields[{{ inputHandle }}][value][]"
+            value="{{ option.value|default(option.label) }}"
+            {% if loop.first and required %}
+              required
+              data-parsley-error-message="Please select at least one option above."
+              data-parsley-errors-container="#{{ inputHandle }}-container"
+            {% endif %}
+          >
+          {{ option.label }}
+        </label>
+      </div>
+    {% endfor %}
+    {% if helpBlock is defined and helpBlock is not empty %}
+      <span class="help-block">{{ helpBlock }}</span>
+    {% endif %}
+  </div>
+</div>

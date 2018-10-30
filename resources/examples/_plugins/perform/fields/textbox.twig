@@ -1,0 +1,40 @@
+{#
+  {% include "_plugins/perform/fields/textbox" with {
+    label: 'Input Label',
+    inputHandle: 'inputHandle',
+    required: true,
+    placeholder: '',
+    helpBlock: ''
+  } only %}
+#}
+{% if matrixBlock.inputHandle is defined %}
+  {% set label = matrixBlock.label %}
+  {% set inputHandle = matrixBlock.inputHandle|default(label|camel) %}
+  {% set required = matrixBlock.required %}
+  {% set placeholder = matrixBlock.placeholder %}
+  {% set helpBlock = matrixBlock.helpBlock %}
+{% endif %}
+<div class="form-group">
+  <label class="control-label" for="fields_{{ inputHandle }}">
+    {% if required %}
+      <span class="text-danger"><strong>*</strong></span>
+    {% endif %}
+    {{ label }}
+  </label>
+  <div class="input">
+    <input type="hidden" name="fields[{{ inputHandle }}][label]" value="{{ label }}">
+    <input
+      class="form-control"
+      type="text"
+      id="fields_{{ inputHandle }}"
+      name="fields[{{ inputHandle }}][value]"
+      placeholder="{{ placeholder|default('') }}"
+      {% if required %}
+        required
+      {% endif %}
+    >
+    {% if helpBlock is defined and helpBlock is not empty %}
+      <span class="help-block">{{ helpBlock }}</span>
+    {% endif %}
+  </div>
+</div>

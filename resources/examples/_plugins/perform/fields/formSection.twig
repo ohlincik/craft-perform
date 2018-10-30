@@ -1,0 +1,27 @@
+{#
+  {% include "_plugins/perform/fields/formSection" with {
+    sectionHeading: 'heading',
+    showDivider: true
+  } only %}
+#}
+{% if matrixBlock.sectionHeading is defined %}
+  {% set sectionHeading = matrixBlock.sectionHeading %}
+  {% set inputHandle = matrixBlock.inputHandle|default(sectionHeading|camel) %}
+  {% set showDivider = matrixBlock.showDivider %}
+  {% set description = matrixBlock.description %}
+{% else %}
+  {% set inputHandle = sectionHeading|camel %}
+{% endif %}
+
+{% if showDivider is defined and showDivider %}
+  <hr>
+{% endif %}
+
+<div class="form-section">
+  <input type="hidden" name="fields[{{ inputHandle }}][label]" value="__section__">
+  <input type="hidden" name="fields[{{ inputHandle }}][value]" value="{{ sectionHeading }}">
+  <h3>{{ sectionHeading }}</h3>
+  {% if description is defined and description is not empty %}
+    {{ description }}
+  {% endif %}
+</div>

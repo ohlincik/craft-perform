@@ -1,0 +1,619 @@
+{
+    "fieldGroups": [
+        "Web Form"
+    ],
+    "fields": [
+        {
+            "group": "Web Form",
+            "name": "Form Fields",
+            "handle": "formFields",
+            "instructions": "",
+            "type": "craft\\fields\\Matrix",
+            "minBlocks": "",
+            "maxBlocks": "",
+            "localizeBlocks": false,
+            "blockTypes": [
+                {
+                    "name": "Section",
+                    "handle": "formSection",
+                    "fields": [
+                        {
+                            "required": true,
+                            "name": "Heading",
+                            "handle": "sectionHeading",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Handle",
+                            "handle": "inputHandle",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Show Divider",
+                            "handle": "showDivider",
+                            "instructions": "",
+                            "type": "craft\\fields\\Lightswitch",
+                            "typesettings": {
+                                "default": ""
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Description",
+                            "handle": "description",
+                            "instructions": "",
+                            "type": "craft\\redactor\\Field",
+                            "typesettings": {
+                                "redactorConfig": "Basic.json",
+                                "purifierConfig": "",
+                                "cleanupHtml": "1",
+                                "purifyHtml": "1",
+                                "columnType": "text",
+                                "availableVolumes": "*",
+                                "availableTransforms": "*"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Textbox",
+                    "handle": "textbox",
+                    "fields": [
+                        {
+                            "required": true,
+                            "name": "Label",
+                            "handle": "label",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Handle",
+                            "handle": "inputHandle",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Required",
+                            "handle": "required",
+                            "instructions": "",
+                            "type": "craft\\fields\\Lightswitch",
+                            "typesettings": {
+                                "default": ""
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Placeholder",
+                            "handle": "placeholder",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Instructions",
+                            "handle": "helpBlock",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "1",
+                                "initialRows": "3",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Text Area",
+                    "handle": "textArea",
+                    "fields": [
+                        {
+                            "required": true,
+                            "name": "Label",
+                            "handle": "label",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Handle",
+                            "handle": "inputHandle",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Required",
+                            "handle": "required",
+                            "instructions": "",
+                            "type": "craft\\fields\\Lightswitch",
+                            "typesettings": {
+                                "default": ""
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Placeholder",
+                            "handle": "placeholder",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Instructions",
+                            "handle": "helpBlock",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "1",
+                                "initialRows": "3",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Rows",
+                            "handle": "rows",
+                            "instructions": "",
+                            "type": "craft\\fields\\Number",
+                            "typesettings": {
+                                "defaultValue": "4",
+                                "min": "2",
+                                "max": "20",
+                                "decimals": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Checkboxes",
+                    "handle": "checkboxes",
+                    "fields": [
+                        {
+                            "required": true,
+                            "name": "Label",
+                            "handle": "label",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Handle",
+                            "handle": "inputHandle",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": true,
+                            "name": "Options",
+                            "handle": "options",
+                            "instructions": "",
+                            "type": "craft\\fields\\Table",
+                            "typesettings": {
+                                "addRowLabel": "Add an option",
+                                "maxRows": "",
+                                "minRows": "",
+                                "columns": {
+                                    "col1": {
+                                        "heading": "Label",
+                                        "handle": "label",
+                                        "width": "",
+                                        "type": "singleline"
+                                    },
+                                    "col2": {
+                                        "heading": "Value",
+                                        "handle": "value",
+                                        "width": "",
+                                        "type": "singleline"
+                                    }
+                                },
+                                "defaults": {
+                                    "row1": {
+                                        "col1": "",
+                                        "col2": ""
+                                    }
+                                },
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Required",
+                            "handle": "required",
+                            "instructions": "",
+                            "type": "craft\\fields\\Lightswitch",
+                            "typesettings": {
+                                "default": ""
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Instructions",
+                            "handle": "helpBlock",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "1",
+                                "initialRows": "3",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Radio Buttons",
+                    "handle": "radioButtons",
+                    "fields": [
+                        {
+                            "required": true,
+                            "name": "Label",
+                            "handle": "label",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Handle",
+                            "handle": "inputHandle",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": true,
+                            "name": "Options",
+                            "handle": "options",
+                            "instructions": "",
+                            "type": "craft\\fields\\Table",
+                            "typesettings": {
+                                "addRowLabel": "Add an option",
+                                "maxRows": "",
+                                "minRows": "",
+                                "columns": {
+                                    "col1": {
+                                        "heading": "Label",
+                                        "handle": "label",
+                                        "width": "",
+                                        "type": "singleline"
+                                    },
+                                    "col2": {
+                                        "heading": "Value",
+                                        "handle": "value",
+                                        "width": "",
+                                        "type": "singleline"
+                                    }
+                                },
+                                "defaults": {
+                                    "row1": {
+                                        "col1": "",
+                                        "col2": ""
+                                    }
+                                },
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Required",
+                            "handle": "required",
+                            "instructions": "",
+                            "type": "craft\\fields\\Lightswitch",
+                            "typesettings": {
+                                "default": ""
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Instructions",
+                            "handle": "helpBlock",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "1",
+                                "initialRows": "3",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Drop-down",
+                    "handle": "dropdown",
+                    "fields": [
+                        {
+                            "required": true,
+                            "name": "Label",
+                            "handle": "label",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Handle",
+                            "handle": "inputHandle",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": true,
+                            "name": "Options",
+                            "handle": "options",
+                            "instructions": "If you leave the **Value** empty, the **Label** will be used for the **Value**.",
+                            "type": "craft\\fields\\Table",
+                            "typesettings": {
+                                "addRowLabel": "Add an option",
+                                "maxRows": "",
+                                "minRows": "",
+                                "columns": {
+                                    "col1": {
+                                        "heading": "Label",
+                                        "handle": "label",
+                                        "width": "",
+                                        "type": "singleline"
+                                    },
+                                    "col2": {
+                                        "heading": "Value",
+                                        "handle": "value",
+                                        "width": "",
+                                        "type": "singleline"
+                                    }
+                                },
+                                "defaults": {
+                                    "row1": {
+                                        "col1": "",
+                                        "col2": ""
+                                    }
+                                },
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Required",
+                            "handle": "required",
+                            "instructions": "If this field is required, the **Prompt Option** will be always displayed as the first option in the drop-down.",
+                            "type": "craft\\fields\\Lightswitch",
+                            "typesettings": {
+                                "default": ""
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Prompt Option",
+                            "handle": "promptOption",
+                            "instructions": "Provide the text that will be displayed in the drop-down as the initial option with empty value. If this field is **NOT required** the Prompt Option will be displayed **ONLY** if you provide your own value below.",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "Please select one...",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Instructions",
+                            "handle": "helpBlock",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "1",
+                                "initialRows": "3",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Us States Drop-down",
+                    "handle": "usStatesDropdown",
+                    "fields": [
+                        {
+                            "required": true,
+                            "name": "Label",
+                            "handle": "label",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "inputHandle",
+                            "handle": "inputhandle",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Required",
+                            "handle": "required",
+                            "instructions": "",
+                            "type": "craft\\fields\\Lightswitch",
+                            "typesettings": {
+                                "default": ""
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Prompt Option",
+                            "handle": "promptOption",
+                            "instructions": "Provide the text that will be displayed in the drop-down as the initial option with empty value. If this field is **NOT required** the Prompt Option will be displayed **ONLY** if you provide your own value below.",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "Please select a state...",
+                                "code": "1",
+                                "multiline": "",
+                                "initialRows": "4",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        },
+                        {
+                            "required": false,
+                            "name": "Instructions",
+                            "handle": "helpBlock",
+                            "instructions": "",
+                            "type": "craft\\fields\\PlainText",
+                            "typesettings": {
+                                "placeholder": "",
+                                "code": "",
+                                "multiline": "1",
+                                "initialRows": "3",
+                                "charLimit": "",
+                                "columnType": "text"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

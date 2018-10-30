@@ -1,0 +1,94 @@
+{# Import the form helper macros #}
+{% import '_plugins/webform/macros/formHelpers' as fh %}
+
+{% set validationJsOptions %}
+  {
+    classHandler: function(el) {
+      return el.$element.closest('.form-group');
+    },
+    errorClass: 'has-error',
+    successClass: 'has-success',
+    errorsWrapper: '<small class="help-block"></small>',
+    errorTemplate: '<span></span><br>'
+  }
+{% endset %}
+
+{# This generates the form tag that will submit the form to the custom plugin. #}
+{# <form role="form" id="submission-form" method="post" ... #}
+{{ craft.webForm.formTag({
+  'entryId': entry.id,
+  'parsleyValidationJsOptions': validationJsOptions
+}) }}
+
+{#
+  -----------------------------------------------------------------------------
+  Create a custom layout for fields configured through the Web Form entry type
+  -----------------------------------------------------------------------------
+#}
+
+  <div class="row">
+    <div class="col-sm-12">
+      {{ fh.formField(entry, 'sectionContact') }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      {{ fh.formField(entry, 'firstName') }}
+    </div>
+    <div class="col-sm-6">
+      {{ fh.formField(entry, 'lastName') }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      {{ fh.formField(entry, 'email') }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      {{ fh.formField(entry, 'sectionAdditionalInformation') }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">{{ fh.formField(entry, 'checkboxes') }}</div>
+    <div class="col-sm-6">{{ fh.formField(entry, 'radioButtons') }}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      {{ fh.formField(entry, 'textArea') }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">{{ fh.formField(entry, 'dropdown') }}</div>
+    <div class="col-sm-6">{{ fh.formField(entry, 'usStatesDropdown') }}</div>
+  </div>
+
+{# ========== Form footer with optional Captcha and submit button ========== #}
+
+  <hr>
+
+  <div class="submit">
+    <button class="btn-new btn-default" type="submit">{{ entry.submitButtonLabel|default('Submit') }}</button>
+  </div>
+
+</form>
+
+<div id="webform-submission-processing" style="display:none;margin:100px auto;text-align:center;">
+  <p><img src="https://nlc-helpers.s3.amazonaws.com/loadingAnimation.gif" alt="Processing..." /></p>
+  <p>Processing your form submission, please wait...</p>
+</div>
+
+{% js %}
+  $(document).ready(function() {
+    $('#webform-submission').parsley().on('form:submit', function() {
+      $('#webform-submission').hide();
+      $('#webform-submission-processing').show();
+    });
+  });
+{% endjs %}

@@ -1,0 +1,43 @@
+{#
+  {% include "_plugins/perform/fields/textArea" with {
+    label: 'Input Label',
+    inputHandle: 'inputHandle',
+    required: true,
+    placeholder: '',
+    helpBlock: '',
+    rows: 2
+  } only %}
+#}
+{% if matrixBlock.inputHandle is defined %}
+  {% set label = matrixBlock.label %}
+  {% set inputHandle = matrixBlock.inputHandle|default(label|camel) %}
+  {% set required = matrixBlock.required %}
+  {% set placeholder = matrixBlock.placeholder %}
+  {% set helpBlock = matrixBlock.helpBlock %}
+  {% set rows = matrixBlock.rows %}
+{% endif %}
+<div class="form-group">
+  <label class="control-label" for="fields_{{ inputHandle }}">
+    {% if required %}
+      <span class="text-danger"><strong>*</strong></span>
+      <input type="hidden" name="fields[{{ inputHandle }}][required]" value="true">
+    {% endif %}
+    {{ label }}
+  </label>
+  <div class="input">
+    <input type="hidden" name="fields[{{ inputHandle }}][label]" value="{{ label }}">
+    <textarea
+      class="form-control"
+      id="fields_{{ inputHandle }}"
+      name="fields[{{ inputHandle }}][value]"
+      rows="{{ rows|default(2) }}"
+      placeholder="{{ placeholder|default('') }}"
+      {% if required %}
+        required
+      {% endif %}
+    ></textarea>
+    {% if helpBlock is defined and helpBlock is not empty %}
+      <span class="help-block">{{ helpBlock }}</span>
+    {% endif %}
+  </div>
+</div>

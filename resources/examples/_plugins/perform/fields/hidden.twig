@@ -1,0 +1,10 @@
+{#
+  {% include "_plugins/perform/fields/hidden" with {
+    label: 'Input Label',
+    inputHandle: 'inputHandle',
+    value: 'value'
+  } only %}
+#}
+{% set inputHandle = inputHandle|default(label|camel) %}
+<input type="hidden" name="fields[{{ inputName }}][label]" value="{{ label }}">
+<input type="hidden" name="fields[{{ inputName }}][value]" value="{{ value }}">

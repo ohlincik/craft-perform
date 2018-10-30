@@ -1,0 +1,24 @@
+{# Import the form helper macros #}
+{% import '_plugins/webform/templates/email/helpers' as eh %}
+
+{% extends '_plugins/webform/templates/email/layout' %}
+
+{% block subject %}
+  This is my custom subject now
+{% endblock %}
+
+{% block body %}
+  {% for field in fields %}
+    {% if field.label == "__section__" %}
+      <p>&nbsp;</p>
+      <h2>{{ eh.formFieldValue(field) }}</h2>
+    {% else %}
+      {% if field.value is defined and field.value is not empty %}
+        <p>
+          <strong>{{ eh.formFieldLabel(field) }}:</strong>
+          {{ eh.formFieldValue(field) }}
+        </p>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endblock %}

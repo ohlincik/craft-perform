@@ -1,0 +1,55 @@
+{#
+  {% include "_plugins/perform/fields/dropdown" with {
+    label: 'Input Label',
+    inputHandle: 'inputHandle',
+    required: true,
+    options: [
+      {label: 'Label', value: 'value'},
+      {label: 'Label', value: 'value'}
+    ],
+    promptOption: '',
+    helpBlock: ''
+  } only %}
+#}
+{% if matrixBlock.inputHandle is defined %}
+  {% set label = matrixBlock.label %}
+  {% set inputHandle = matrixBlock.inputHandle|default(label|camel) %}
+  {% set required = matrixBlock.required %}
+  {% set options = matrixBlock.options %}
+  {% set promptOption = matrixBlock.promptOption %}
+  {% set helpBlock = matrixBlock.helpBlock %}
+{% endif %}
+<div class="form-group">
+  <label class="control-label" for="fields_{{ inputHandle }}">
+    {% if required %}
+      <span class="text-danger"><strong>*</strong></span>
+      <input type="hidden" name="fields[{{ inputHandle }}][required]" value="true">
+    {% endif %}
+    {{ label }}
+  </label>
+  <div class="input">
+    <input type="hidden" name="fields[{{ inputHandle }}][label]" value="{{ label }}">
+    <select
+      class="form-control"
+      id="fields_{{ inputHandle }}"
+      name="fields[{{ inputHandle }}][value]"
+      {% if required %}
+        required
+      {% endif %}
+    >
+      {% if promptOption is defined %}
+        {% if required %}
+          <option value="">{{ promptOption|default('Please select one...') }}</option>
+        {% elseif promptOption is not empty %}
+          <option value="-- n/a --">{{ promptOption }}</option>
+        {% endif %}
+      {% endif %}
+      {% for option in options %}
+        <option value="{{ option.value|default(option.label) }}">{{ option.label }}</option>
+      {% endfor %}
+    </select>
+    {% if helpBlock is defined and helpBlock is not empty %}
+      <span class="help-block">{{ helpBlock }}</span>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,179 @@
+{#
+  -----------------------------------------------------------------------------
+
+  Checkboxes
+
+  {{ fh.checkboxes({
+    inputHandle: 'inputHandle',
+    required: true,
+    label: 'Input Label',
+    options: [
+      {label: 'Label', value: 'value'},
+      {label: 'Label', value: 'value'}
+    ],
+    helpBlock: ''
+  }) }}
+#}
+{% macro checkboxes(params) %}
+  {% include '_plugins/perform/fields/checkboxes' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  Dropdown
+
+  {{ fh.dropdown({
+    inputHandle: 'inputHandle',
+    required: true,
+    label: 'Input Label',
+    promptOption: '',
+    options: [
+      {label: 'Label', value: 'value'},
+      {label: 'Label', value: 'value'}
+    ],
+    helpBlock: ''
+  }) }}
+#}
+{% macro dropdown(params) %}
+  {% include '_plugins/perform/fields/dropdown' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  Dropdown Us States
+
+  {{ fh.dropdownUsStates({
+    inputHandle: 'inputHandle',
+    required: true,
+    label: 'Input Label',
+    promptOption: '',
+    helpBlock: ''
+  }) }}
+#}
+{% macro dropdownUsStates(params) %}
+  {% include '_plugins/perform/fields/dropdownUsStates' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  Form Section
+
+  {{ fh.formSection({
+    sectionTitle: 'title',
+    showDivider: true
+  }) }}
+#}
+{% macro formSection(params) %}
+  {% include '_plugins/perform/fields/formSection' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  Hidden Field
+
+  {{ fh.hidden({
+    label: 'Input Label',
+    value: 'value'
+  }) }}
+#}
+{% macro hidden(params) %}
+  {% include '_plugins/perform/fields/hidden' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  Radio Buttons
+
+  {{ fh.radioButtons({
+    inputHandle: 'inputHandle',
+    required: true,
+    label: 'Input Label',
+    options: [
+      {label: 'Label', value: 'value'},
+      {label: 'Label', value: 'value'}
+    ],
+    helpBlock: ''
+  }) }}
+#}
+{% macro radioButtons(params) %}
+  {% include '_plugins/perform/fields/radioButtons' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  Text Area
+
+  {{ fh.textArea({
+    inputHandle: 'inputHandle',
+    required: true,
+    label: 'Input Label',
+    rows: 2,
+    placeholder: '',
+    helpBlock: ''
+  }) }}
+#}
+{% macro textArea(params) %}
+  {% include '_plugins/perform/fields/textArea' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  Textbox
+
+  {{ fh.textbox({
+    inputHandle: 'inputHandle',
+    required: true,
+    label: 'Input Label',
+    placeholder: '',
+    helpBlock: ''
+  }) }}
+#}
+{% macro textbox(params) %}
+  {% include '_plugins/perform/fields/textbox' with params only %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  This macro is intended for use in a custom form. Use it to generate a form input for a
+  specific field identified by the 'inputHandle'.
+#}
+{% macro formField(entry, inputHandle) %}
+  {% if entry.formFields %}
+    {% for matrixBlock in entry.formFields.all %}
+      {% if matrixBlock.inputHandle == inputHandle %}
+        {% set include_type = '_plugins/perform/fields/' ~ matrixBlock.type %}
+        {% include include_type with {matrixBlock: matrixBlock} only %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  This macro is used specifically to getnerat the form inputs for the DEFAULT form template.
+  It automatically adds the 'row' and 'col-xs-12' divs to lay out the inputs on the page.
+#}
+
+{% macro defaultFormField(entry, fieldMatrixBlock) %}
+<div class="row">
+  <div class="col-xs-12">
+  {% if entry.formFields %}
+    {% for entryMatrixBlock in entry.formFields.all %}
+      {% if entryMatrixBlock.id == fieldMatrixBlock.id %}
+        {% set include_type = '_plugins/perform/fields/' ~ fieldMatrixBlock.type %}
+        {% include include_type with {matrixBlock: fieldMatrixBlock} only %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  </div>
+</div>
+{% endmacro %}

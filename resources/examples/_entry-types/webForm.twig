@@ -1,0 +1,32 @@
+{% extends "_layouts/base" %}
+{% set uri = entry.uri %}
+{% set showSidebar = false %}
+{% set pageLayoutTemplate = showSidebar ? 'default' : 'narrow' %}
+{% set pageHeading = entry.pageHeading is not empty ? entry.pageHeading : entry.title %}
+
+{% block pageLayout %}
+  {% embed '_layouts/page/' ~ pageLayoutTemplate %}
+    {% block contentLayout %}
+      {% embed '_layouts/content/default' %}
+        {% block mainContent %}
+          <h1>{{ pageHeading }}</h1>
+          {% if craft.app.request.getParam('success') != '✓' %}
+
+            <hr>
+
+            <p>Fields marked with <span class="text-danger"><strong>*</strong></span> are required.</p>
+
+            {# Include the custom formatted form if exists otherwise just render the default template #}
+            {% include ['_plugins/perform/templates/form/' ~ entry.formSettings.formHandle, '_plugins/perform/templates/form/default'] %}
+
+          {% else %}
+
+            {# The form has been successfully submitted, render the success content #}
+            {{ entry.successContent }}
+
+          {% endif %}
+        {% endblock %}
+      {% endembed %}
+    {% endblock %}
+  {% endembed %}
+{% endblock %}

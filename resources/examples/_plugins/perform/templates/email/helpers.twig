@@ -1,0 +1,27 @@
+{#
+  -----------------------------------------------------------------------------
+
+  This macro outputs the label that has been setup in the Form Fields matrix.
+#}
+{% macro formFieldLabel(field) %}
+  {{- field.label -}}
+{% endmacro %}
+
+{#
+  -----------------------------------------------------------------------------
+
+  This macro outputs the value collected by the form.
+#}
+{% macro formFieldValue(field) %}
+  {% if field.value is not defined %}
+    -- n/a --
+  {% else %}
+    {% if field.value[0] is not defined and field.value is not empty %}
+      {{- field.value -}}
+    {% else %}
+      {% for option in field.value %}
+        {{- option }}{% if not loop.last %},{% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
