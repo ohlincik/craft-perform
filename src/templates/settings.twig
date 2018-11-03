@@ -17,9 +17,9 @@
 
 {% do view.registerAssetBundle("perfectus\\perform\\assetbundles\\cp\\PerFormCPAsset") %}
 
-<h2>Test Email Delivery Settings</h2>
+<h2>{{ 'Test Email Delivery Settings'|t('perform') }}</h2>
 
-<p>You can test your email delivery templates and form submission using the Mailtrap.</p>
+{{ '<a href="https://mailtrap.io/" target="_blank">Mailtrap</a> offers a very generous free tier and is an excellent tool for testing your email delivery templates and form submissions. It will be used whenever you enable **Test Mode** in your _Form Settings_.'|t('perform')|md }}
 
 {{ forms.checkboxField({
     label: "Use Mailtrap"|t('perform'),
@@ -49,9 +49,9 @@
 
 <hr>
 
-<h2>Client Side Validation</h2>
+<h2>{{ 'Client Side Validation'|t('perform') }}</h2>
 
-<p>You can use Parsley for client side form submission validation.</p>
+{{ '<a href="http://parsleyjs.org/" target="_blank">Parsley</a> provides you with a powerful client side form submission validation. **It relies on jQuery (>= 1.8), and it will need to be included before including Parsley.** Check the _PerForm_ docs for additional information.'|t('perform')|md }}
 
 {{ forms.checkboxField({
     label: "Use Parsley Client Side JS Validation"|t('perform'),
@@ -62,10 +62,9 @@
 
 <hr>
 
-<h2>Google Invisible reCAPTCHA Configuration</h2>
+<h2>{{ 'Google Invisible reCAPTCHA Configuration'|t('perform') }}</h2>
 
-<p>You will need to create the API Key for this site by logging into the <a href="https://www.google.com/recaptcha/admin#list" target="_blank">Google reCAPTCHA</a>.</p>
-
+{{ 'Turn on this setting to enable powerful spam protection for your form submissions.'|t('perform') }}
 {{ forms.checkboxField({
     label: "Use Google Invisible reCAPTCHA"|t('perform'),
     id: 'googleInvisibleCaptcha',
@@ -75,6 +74,8 @@
 }) }}
 
 <div id="captcha-credentials" class="nested-fields{% if not settings.googleInvisibleCaptcha %} hidden{% endif %}">
+    {{ '<a href="https://www.google.com/recaptcha/admin#list" target="_blank">Create the keys</a> for this site and input them below.'|t('perform')|md }}
+
     {{ forms.textField({
       label: "Captcha Site Key"|t('perform'),
       id: 'googleCaptchaSiteKey',
@@ -88,7 +89,7 @@
       label: "Captcha Secret Key"|t,
       id: 'googleCaptchaSecretKey',
       name: 'googleCaptchaSecretKey',
-      instructions: 'Input the Google reCaptcha **Secret key**.',
+      instructions: 'Input the Google reCaptcha **Secret key**.'|t('perform'),
       value: (settings.googleCaptchaSecretKey is defined) ? settings.googleCaptchaSecretKey : '',
       errors: (settings.googleCaptchaSecretKey is defined) ? settings.getErrors('googleCaptchaSecretKey') : ''
     }) }}
@@ -98,13 +99,13 @@
 
 <h2>Custom Email Templates</h2>
 
-<p>You can utilize custom templates for the email</p>
+{{ 'PerForm comes with a built in template for sending your form submissions. Feel free to set up your own custom email templates. Check the _PerForm_ docs for additional information.'|t('perform')|md }}
 
 {{ forms.textField({
   label: "Custom Email Templates Path"|t('perform'),
   id: 'customEmailTemplatesPath',
   name: 'customEmailTemplatesPath',
-  instructions: 'Specify a path relative to your front-end templates folder where your custom Email templates are located.',
+  instructions: 'Specify a path relative to your front-end templates folder where your custom Email templates are located.'|t('perform'),
   value: (settings.customEmailTemplatesPath is defined) ? settings.customEmailTemplatesPath : '',
   errors: (settings.customEmailTemplatesPath is defined) ? settings.getErrors('customEmailTemplatesPath') : ''
 }) }}
