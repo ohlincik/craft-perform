@@ -13,7 +13,7 @@
  */
 #}
 
-{% set iconUrl = view.getAssetManager().getPublishedUrl('@perfectus/perform/assetbundles/cp/dist', true) ~ '/img/widget-icon.svg' %}
+{% set widgetLogoUrl = view.getAssetManager().getPublishedUrl('@perfectus/perform/assetbundles/cp/dist', true) ~ '/img/icon.svg' %}
 
 {% macro pluralize(label, count) %}
     {% if count == 1 %}
@@ -25,7 +25,7 @@
 {% import _self as macros %}
 
 <div class="readable perform--centered">
-    <img src="{{ iconUrl }}" height="32" width="32"/>
+    <img class="perform--widget-logo" src="{{ widgetLogoUrl }}" />
     {% if allSubmissionsCount > 0 %}
         {% if newSubmissionsCount == 0 %}
             <p class="perform--no-submissions">There are no new submissions</p>

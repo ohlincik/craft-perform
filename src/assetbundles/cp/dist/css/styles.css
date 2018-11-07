@@ -34,6 +34,14 @@
 
 /* ===== Dashboard Widget ===== */
 
+.perfectus\\perform\\widgets\\performwidget h2 {
+    display: none;
+}
+
+.perform--widget-logo {
+    width: 25%;
+}
+
 .perform--centered {
     text-align: center;
 }
@@ -49,4 +57,28 @@
 
 .perform--test-submissions {
     color: #F2842D;
+}
+
+/* ===== Welcome Screen ===== */
+
+.perform--welcome-section {
+    margin: 0 auto;
+    padding: 5% 10%;
+    text-align: center;
+}
+
+.perform--welcome-section img {
+    max-width: 360px;
+    min-width: 236px;
+    width: 50%;
+    margin-bottom: 1em;
+}
+
+.perform--welcome-section ul {
+    background-color: #e7eef3;
+    border-radius: 6px;
+    margin: 2em auto;
+    padding: 1em;
+    width: 80%;
+    text-align: left;
 }

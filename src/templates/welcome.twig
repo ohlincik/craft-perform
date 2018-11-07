@@ -1,0 +1,52 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * PerForm plugin for Craft CMS 3.x
+ *
+ * Welcome Screen displayed after Plugin installation
+ *
+ * @author    Oto Hlincik
+ * @copyright Copyright (c) 2018 Perfectus Digital Solutions
+ * @link      https://perfectus.us
+ * @package   PerForm
+ * @since     1.0.0
+ */
+#}
+{% requirePermission 'accessplugin-perform' %}
+
+{% extends "_layouts/cp" %}
+
+{% do view.registerAssetBundle("perfectus\\perform\\assetbundles\\cp\\PerFormCPAsset") %}
+
+{% set logoUrl = view.getAssetManager().getPublishedUrl('@perfectus/perform/assetbundles/cp/dist', true) ~ '/img/logo.svg' %}
+
+{% set title = 'Welcome' %}
+
+{% set crumbs = [
+    { label: "PerForm", url: url('perform') },
+] %}
+
+{% block content %}
+    <div class="field readable">
+        <div class="readable perform--welcome-section">
+            <img src="{{ logoUrl }}" />
+
+            <h2>Thank you for trying PerForm!</h2>
+
+            <p>
+                PerForm is built for <strong>Craft CMS web developers</strong> with ultimate flexibility in mind. The goal is to let you build the web form front-end anyway you'd like while following a handful of simple conventions. After you include the web form in your Twig template, the plugin will assist you with the following:
+            </p>
+
+            <ul>
+                <li>Client-side form validation using <strong>Parsley</strong></li>
+                <li>Spam protection using the <strong>Google Invisible ReCaptcha</strong></li>
+                <li>Saving the form submissions in the Control Panel for future reference</li>
+                <li>Delivering the form submission content via email (built-in testing using <strong>Mailtrap</strong>)</li>
+            </ul>
+
+            <p>
+                We hope you find it useful. For more information, please <a href="https://github.com/ohlincik/craft-perform/blob/master/README.md" target="_blank" rel="noopener">see the documentation</a>.
+            </p>
+        </div>
+    </div>
+{% endblock %}

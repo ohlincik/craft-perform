@@ -11,26 +11,27 @@
 
 namespace perfectus\perform;
 
-use perfectus\perform\services\FormService;
-use perfectus\perform\services\EmailService;
-use perfectus\perform\variables\PerFormVariable;
-use perfectus\perform\models\Settings;
 use perfectus\perform\fields\FormSettings as FormSettingsField;
+use perfectus\perform\models\Settings;
+use perfectus\perform\services\EmailService;
+use perfectus\perform\services\FormService;
 use perfectus\perform\utilities\PerFormUtility;
+use perfectus\perform\variables\PerFormVariable;
 use perfectus\perform\widgets\PerFormWidget;
 
 use Craft;
 use craft\base\Plugin;
-use craft\services\Plugins;
 use craft\events\PluginEvent;
-use craft\web\UrlManager;
-use craft\services\Elements;
-use craft\services\Fields;
-use craft\services\Utilities;
-use craft\web\twig\variables\CraftVariable;
-use craft\services\Dashboard;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\helpers\UrlHelper;
+use craft\services\Dashboard;
+use craft\services\Elements;
+use craft\services\Fields;
+use craft\services\Plugins;
+use craft\services\Utilities;
+use craft\web\UrlManager;
+use craft\web\twig\variables\CraftVariable;
 
 use yii\base\Event;
 
@@ -146,7 +147,11 @@ class PerForm extends Plugin
             Plugins::EVENT_AFTER_INSTALL_PLUGIN,
             function (PluginEvent $event) {
                 if ($event->plugin === $this) {
-                    //TODO: Add post install screen
+                    // Show the welcome screen
+                    $request = Craft::$app->getRequest();
+                    if ($request->isCpRequest) {
+                        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('perform/welcome'))->send();
+                    }
                 }
             }
         );

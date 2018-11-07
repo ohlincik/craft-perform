@@ -1,6 +1,6 @@
 {
     "name": "perfectus/perform",
-    "description": "Online form builder and submissions",
+    "description": "Form handling for Craft developers. Process, test, store, send email notifications, configure client side validation, include powerful spam protection, and more.",
     "type": "craft-plugin",
     "version": "1.0.0",
     "keywords": [
