@@ -250,6 +250,6 @@ Some things to do, and ideas for potential features:
 * Process forms submitted through AJAX
 * Add preview of form submission fields in **Test Mode**
 * Add the option to send a *receipt* or *confirmation* after a form is submitted
-* [Submit your new feature request](./issues) if you need PerForm to do something specific that would be useful for other Craft developers...
+* [Submit your new feature request](https://github.com/ohlincik/craft-perform/issues) if you need PerForm to do something specific that would be useful for other Craft developers...
 
 Brought to you by [Perfectus Digital Solutions](https://perfectus.us)
