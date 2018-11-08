@@ -43,7 +43,7 @@ PerForm is built for **Craft CMS web developers** with ultimate flexibility in m
 
 ## Using PerForm
 
-Using PerForm is quite simple. The following needs to be in place get PerForm working properly.
+Using PerForm is quite simple. The following needs to be in place to get PerForm working properly.
 
 1. PerForm **formTag** — to make sure that the form will be submitted to and processed by PerForm
 2. Form built according to PerForm **form fields conventions** — to make sure that PerForm knows which fields need to be processed
@@ -120,7 +120,7 @@ Once you create the field and associate it with an entry layout, you can provide
 - **Form Handle** — this setting is useful if you decide to provide different templates for different form and if you want to setup your own *email content templates*.
 - **Form Subject** — what will be displayed on the form submissions listing in the Control Panel and used for the *Email Subject* of the email notification. The subject is processed by Twig so you can include the content of any field that appears in the form using the following format `{{ fieldHandle.value }}`.
 - **Notification Recipients** — one or more email addresses that should receive the form submission notification after the form is submitted and processed.
-- **Notification ReplyTo** — the form submission notification email is sent using the **System Email Address** configured in the *Control Panel → Settings → Email* so whenever the recipient clicks the 'Reply' button in their email client, the email reply would not go to whomever actually submitted the form. You can provide the email address of the actual person that submitted the form if are collecting it through the form, in which case you just need to reference the value of the form field. For example, `{{ email.value }}` if the form input handle happens to be 'email'.
+- **Notification ReplyTo** — the form submission notification email is sent using the **System Email Address** configured in the *Control Panel → Settings → Email* so whenever the recipient clicks the 'Reply' button in their email client, the email reply would not go to whomever actually submitted the form. You can provide the email address of the actual person that submitted the form if you are collecting it through the form, in which case you just need to reference the value of the form field. For example, `{{ email.value }}` if the form input handle happens to be 'email'.
 - **Test Mode Enabled** — when this setting is ON, the form submissions will be automatically set to **Test** status and delivered according to the *Test Email Delivery Settings* instead of the email addresses specified in the 'Notification Recipients'.
 
 ### PerForm plugin settings
