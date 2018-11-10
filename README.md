@@ -202,6 +202,69 @@ And, the **notification recipient** receives the following email notification:
 
 ![Screenshot](resources/screenshots/perform-simple-form-email-notification.png)
 
+### Redirecting after submit
+
+By default, after a successful submission, PerForm will automatically reload the current page and add the `?success=✓` query parameter. You can check for it in the page and act accordingly. In the example below, when the PerForm submission is completed, the *Thank you* content is displayed, otherwise the form is displayed.
+
+```twig
+{% if craft.app.request.getParam('success') == '✓' %}
+	<p>Thank you for submitting your information</p>
+{% else %}
+    {# Generate the PerForm form tag #}
+    {{ craft.perForm.formTag({
+      'entryId': entry.id
+    }) }}    
+    ...
+{% endif %}
+```
+
+To override this default behavior, simply include `redirectInput` function after the PerForm `formTag` and specify your redirect location.
+
+```twig
+{# Generate the PerForm form tag #}
+{{ craft.perForm.formTag({
+'entryId': entry.id
+}) }}
+
+{{ redirectInput('contact-form/thank-you') }}
+```
+
+Sometimes it's convenient to retrieve and display the information included in the form submission on the 'thank you' page. The following variables can be used within the URL/path you set:
+
+- `formHandle`
+- `formTitle`
+- `fields` (use the field handles to retrieve the submitted values)
+
+For example, if your form looks like this:
+
+```twig
+{{ redirectInput('contact-form/thank-you?name={fields.firstName.value}+{fields.lastName.value}') }}
+
+{# First Name field #}
+<input type="text" id="fields_firstName" name="fields[firstName][value]">
+
+{# Last Name field #}
+<input type="text" id="fields_lastName" name="fields[lastName][value]">
+```
+
+On your `contact-form/thank-you.html` template, you can access the parameters using the `craft.app.request.getQueryParam()`:
+
+```twig
+<p>{{ craft.app.request.getParam('name') }}, thank you for submitting your information</p>
+```
+
+### Displaying flash messages
+
+When a form submission is processed, PerForm will set a `notice` or `success` flash message on the user session. You can display it in your template.
+
+```twig
+{% if craft.app.session.hasFlash('notice') %}
+    <p class="message notice">{{ craft.app.session.getFlash('notice') }}</p>
+{% elseif craft.app.session.hasFlash('error') %}
+    <p class="message error">{{ craft.app.session.getFlash('error') }}</p>
+{% endif %}
+```
+
 ## Example: Full-featured Complex Form
 
 Sorry, this content is coming soon...
