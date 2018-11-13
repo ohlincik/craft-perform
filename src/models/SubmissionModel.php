@@ -11,11 +11,12 @@
 namespace perfectus\perform\models;
 
 use craft\base\Model;
+use perfectus\perform\elements\Submission;
 
 /**
  * Submission Model
  *
- * Stores the submission data and provides methods to retrieve the right
+ * Contains submission data and provides methods to retrieve the right
  * information in the right format.
  *
  * @author    Oto Hlincik
@@ -32,6 +33,35 @@ class SubmissionModel extends Model
     // =========================================================================
 
     /**
+     * Submission ID
+     *
+     * @var int
+     */
+    public $submissionId;
+
+    /**
+     * DateTime when the submission was created
+     *
+     * @var \DateTime|null
+     */
+    public $dateCreated;
+
+    /**
+     * DateTime when the submission was last updated
+     *
+     * @var \DateTime|null
+     */
+    public $dateUpdated;
+
+    /**
+     * Submission status
+     * (new, read, test)
+     *
+     * @var string
+     */
+    public $statusType;
+
+    /**
      * Form Handle
      *
      * @var string
@@ -46,31 +76,28 @@ class SubmissionModel extends Model
     public $formTitle;
 
     /**
-     * Twig template for the Form Subject
-     * e.g. "Contact form submitted by {{ name.value }}"
+     * Submission Subject
      *
      * @var string
      */
-    public $subjectTemplate;
+    public $subject;
 
     /**
-     * Twig template to extract the Reply To email address
-     * e.g. "{{ email.value }}"
+     * Reply To email address
      *
-     * @var string
+     * @var null|string
      */
     public $replyTo;
 
     /**
-     * Submission notification recipients. Emails separated by comma.
-     * e.g. "user1@domain.com, user2@domain.com"
+     * Submission notification recipients.
      *
-     * @var string
+     * @var array
      */
     public $recipients;
 
     /**
-     * Fields submitted (posted) through the form
+     * Fields stored with the submission
      *
      * @var array
      */
@@ -80,83 +107,48 @@ class SubmissionModel extends Model
     // =========================================================================
 
     /**
-     * Returns the submission fields serialized for storing in the database
+     * Assign the submission values based on the submission element
      *
-     * @return string
+     * @param Submission|null $submissionElement
      */
-    public function getSerializedFields(): string
+    public function __construct(Submission $submissionElement = null)
     {
-        return serialize($this->fields);
+        if ($submissionElement !== null) {
+            $this->submissionId = $submissionElement->id;
+            $this->dateCreated = $submissionElement->dateCreated;
+            $this->dateUpdated = $submissionElement->dateUpdated;
+            $this->statusType = $submissionElement->statusType;
+            $this->formHandle = $submissionElement->formHandle;
+            $this->formTitle = $submissionElement->formTitle;
+            $this->subject = $submissionElement->subject;
+            // $this->replyTo = $submissionElement->replyTo;
+            $this->recipients = $this->getRecipients($submissionElement->recipients);
+            $this->fields = $this->unserializeFields($submissionElement->content);
+        }
     }
 
-    /**
-     * Returns the rendered submission subject
-     *
-     * @return string
-     */
-    public function getSubject(): string
-    {
-        $subject = \Craft::$app->view->renderString($this->subjectTemplate, $this->fields);
-        $subject = empty($subject) ? 'Website Form Submission' : $subject;
+    // Private Methods
+    // =========================================================================
 
-        return $subject;
+    /**
+     * Returns the submission fields unserialized for display
+     *
+     * @param string $content
+     * @return array
+     */
+    private function unserializeFields(string $content): array
+    {
+        return unserialize($content, ['allowed_classes' => false]);
     }
 
     /**
      * Returns the individual notification recipient emails
      *
+     * @param string $recipients
      * @return array
      */
-    public function getRecipients(): array
+    private function getRecipients(string $recipients): array
     {
-        return explode(',', str_replace(' ', '', $this->recipients));
+        return explode(',', str_replace(' ', '', $recipients));
     }
-
-    /**
-     * Returns the ReplyTo email address or false if empty
-     *
-     * @return string|bool
-     */
-    public function getReplyTo()
-    {
-
-        if (empty($this->replyTo)) {
-            return false;
-        }
-
-        return \Craft::$app->view->renderString($this->replyTo, $this->fields);
-    }
-
-    /**
-     * Returns the variables for rendering the email notification body
-     *
-     * @return array
-     */
-    public function getVariablesForEmailContent(): array
-    {
-        return [
-            'subject' => $this->getSubject(),
-            'fields'  => $this->fields,
-        ];
-    }
-
-//    This is just a placeholder if server side validation is necessary
-//    private function simpleValidation()
-//    {
-//        $errors = [];
-//        foreach ($this->fields as $field) {
-//            if (isset($field['required']) && (bool)$field['required'] === true && empty($field['value'])) {
-//                $errors[] = "{$field['label']} is required.";
-//            }
-//        }
-//
-//        if ($errors) {
-//            \Craft::$app->getSession()->setError(Craft::t('perform', 'There was a problem with your submission, please check the form and try again!'));
-//            \Craft::$app->getUrlManager()->setRouteParams([
-//                'variables' => ['performErrors' => $errors]
-//            ]);
-//
-//            return null;
-//        }
-//    }
 }

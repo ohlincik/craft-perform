@@ -11,7 +11,7 @@
 namespace perfectus\perform\services;
 
 use perfectus\perform\PerForm;
-use perfectus\perform\models\SubmissionModel;
+use perfectus\perform\models\IncomingSubmissionModel;
 
 use Craft;
 use craft\base\Component;
@@ -37,14 +37,14 @@ class EmailService extends Component
      *
      * PerForm::$plugin->emailService->deliver()
      *
-     * @param SubmissionModel $submissionData
+     * @param IncomingSubmissionModel $submissionData
      * @param bool $useTestMailer
      * @return bool
      * @throws \Twig_Error_Loader
      * @throws \craft\web\twig\TemplateLoaderException
      * @throws \yii\base\Exception
      */
-    public function deliver(SubmissionModel $submissionData, bool $useTestMailer = false): bool
+    public function deliver(IncomingSubmissionModel $submissionData, bool $useTestMailer = false): bool
     {
         $mailerSettings = \Craft::$app->systemSettings->getEmailSettings();
 
@@ -65,13 +65,13 @@ class EmailService extends Component
     }
 
     /**
-     * @param SubmissionModel $submissionData
+     * @param IncomingSubmissionModel $submissionData
      * @param $mailerSettings
      * @return Message
      * @throws \Twig_Error_Loader
      * @throws \yii\base\Exception
      */
-    private function prepareMessage(SubmissionModel $submissionData, MailSettings $mailerSettings): Message
+    private function prepareMessage(IncomingSubmissionModel $submissionData, MailSettings $mailerSettings): Message
     {
         $message = new Message();
 
@@ -87,12 +87,12 @@ class EmailService extends Component
     }
 
     /**
-     * @param SubmissionModel $submissionData
+     * @param IncomingSubmissionModel $submissionData
      * @return \Twig_Markup
      * @throws \Twig_Error_Loader
      * @throws \yii\base\Exception
      */
-    private function renderHtmlBody(SubmissionModel $submissionData): \Twig_Markup
+    private function renderHtmlBody(IncomingSubmissionModel $submissionData): \Twig_Markup
     {
         $customEmailTemplate = $this->customEmailTemplate($submissionData->formHandle);
 

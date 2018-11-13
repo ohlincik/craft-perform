@@ -11,7 +11,7 @@
 namespace perfectus\perform\services;
 
 use craft\elements\Entry;
-use perfectus\perform\models\SubmissionModel;
+use perfectus\perform\models\IncomingSubmissionModel;
 use perfectus\perform\PerForm;
 use perfectus\perform\elements\Submission;
 
@@ -33,25 +33,24 @@ class FormService extends Component
      *
      * @param int $submissionId
      * @param int|null $siteId
-     * @return submission
+     * @return Submission|null
      */
-    public function getSubmissionById(int $submissionId, int $siteId = null): Submission
+    public function getSubmissionById(int $submissionId, int $siteId = null)
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return \Craft::$app->getElements()->getElementById($submissionId, Submission::class, $siteId);
     }
 
     /**
      * Add a submission
      *
-     * @param SubmissionModel $submissionData
+     * @param IncomingSubmissionModel $submissionData
      * @param bool $isTestSubmission
-     * @return boolean
+     * @return bool|Submission
      * @throws \Throwable
      * @throws \craft\errors\ElementNotFoundException
      * @throws \yii\base\Exception
      */
-    public function addSubmission(SubmissionModel $submissionData, bool $isTestSubmission = false): bool
+    public function addSubmission(IncomingSubmissionModel $submissionData, bool $isTestSubmission = false)
     {
         $submission = new Submission();
 
@@ -69,7 +68,7 @@ class FormService extends Component
             return false;
         }
 
-        return true;
+        return $submission;
     }
 
     /**

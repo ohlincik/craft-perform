@@ -10,12 +10,12 @@
 
 namespace perfectus\perform\controllers;
 
+use perfectus\perform\models\SubmissionModel;
 use perfectus\perform\PerForm;
 
 use Craft;
 use craft\web\Controller;
 use craft\web\Response;
-use craft\helpers\UrlHelper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -52,47 +52,24 @@ class DefaultController extends Controller
      */
     public function actionShowSubmission(int $submissionId = null): Response
     {
-        $variables = [];
-
-        // Breadcrumbs
-        $variables['crumbs'] = [
-            [
-                'label' => Craft::t('perform', 'Form Submissions'),
-                'url' => UrlHelper::url('perform')
-            ]
-        ];
-
         if ($submissionId !== null) {
             $siteId = Craft::$app->request->get('siteId');
 
-            if ($siteId == null) {
-                $siteId = Craft::$app->getSites()->currentSite->id;
-            }
+            $submissionElement = PerForm::$plugin->formService->getSubmissionById($submissionId, $siteId);
 
-            $submission = PerForm::$plugin->formService->getSubmissionById($submissionId, $siteId);
-
-            if (!$submission) {
+            if (!$submissionElement) {
                 throw new NotFoundHttpException('Submission not found');
             }
 
-            if ($submission->statusType === 'new') {
-                PerForm::$plugin->formService->setSubmissionStatusType($submission, 'read');
+            if ($submissionElement->statusType === 'new') {
+                PerForm::$plugin->formService->setSubmissionStatusType($submissionElement, 'read');
             }
 
-            $variables = [
-                'submissionId' => $submission->id,
-                'statusType'   => $submission->status,
-                'formHandle'   => $submission->formHandle,
-                'formTitle'    => $submission->formTitle,
-                'subject'      => $submission->subject,
-                'recipients'   => $submission->recipients,
-                'fields'       => unserialize($submission->content, ['allowed_classes' => false]),
-                'submitted'    => $submission->dateCreated,
-            ];
+            $submission = new SubmissionModel($submissionElement);
         } else {
             throw new NotFoundHttpException('Submission id was not provided');
         }
 
-        return $this->renderTemplate('perform/show', $variables);
+        return $this->renderTemplate('perform/show', $submission->attributes);
     }
 }

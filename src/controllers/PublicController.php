@@ -11,8 +11,9 @@
 
 namespace perfectus\perform\controllers;
 
-use perfectus\perform\PerForm;
 use perfectus\perform\models\SubmissionModel;
+use perfectus\perform\PerForm;
+use perfectus\perform\models\IncomingSubmissionModel;
 
 use Craft;
 use craft\web\Controller;
@@ -83,7 +84,7 @@ class PublicController extends Controller
           }
         }
 
-        $submissionData = new SubmissionModel();
+        $submissionData = new IncomingSubmissionModel();
         $submissionData->setAttributes([
             'formHandle'      => $formSettings->formHandle,
             'formTitle'       => $formSettings->formTitle,
