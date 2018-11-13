@@ -82,6 +82,10 @@ class PerFormVariable
     }
 
     /**
+     * Retrieve the contents of an existing submission using the submission id
+     *
+     * {{ craft.perForm.getSubmissionById(submissionId) }}
+     *
      * @param int|null $submissionId
      * @return SubmissionModel
      * @throws NotFoundHttpException
