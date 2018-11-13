@@ -13,6 +13,8 @@ namespace perfectus\perform\variables;
 
 use perfectus\perform\PerForm;
 use perfectus\perform\helpers\PluginTemplate as PluginTemplateHelper;
+use perfectus\perform\models\SubmissionModel;
+use yii\web\NotFoundHttpException;
 
 /**
  * PerForm Variable
@@ -77,5 +79,27 @@ class PerFormVariable
                 'googleCaptchaSiteKey'        => $pluginSettings->googleCaptchaSiteKey,
             ]
         );
+    }
+
+    /**
+     * @param int|null $submissionId
+     * @return SubmissionModel
+     * @throws NotFoundHttpException
+     */
+    public function getSubmissionById(int $submissionId = null)
+    {
+        if ($submissionId !== null) {
+            $submissionElement = PerForm::$plugin->formService->getSubmissionById($submissionId);
+
+            if (!$submissionElement) {
+                throw new NotFoundHttpException('Submission not found');
+            }
+
+            $submission = new SubmissionModel($submissionElement);
+        } else {
+            throw new NotFoundHttpException('Submission id was not provided');
+        }
+
+        return $submission;
     }
 }

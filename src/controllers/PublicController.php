@@ -95,7 +95,8 @@ class PublicController extends Controller
         ], false);
 
         // Store the submission element in the CMS
-        if (!$plugin->formService->addSubmission($submissionData, $testModeEnabled)) {
+        $submissionElement = $plugin->formService->addSubmission($submissionData, $testModeEnabled);
+        if (!$submissionElement) {
             \Craft::$app->getSession()->setError(Craft::t('perform', 'The form submission could not be saved.'));
             \Craft::$app->getUrlManager()->setRouteParams([
                 'variables' => ['payload' => $submissionData]
@@ -116,7 +117,9 @@ class PublicController extends Controller
             return null;
         }
 
-        \Craft::$app->getSession()->setNotice(Craft::t('perform', 'Form submission was successfully completed'));
-        return $this->redirectToPostedUrl($submissionData, $entry->url. '/?success=✓');
+        $submission = new SubmissionModel($submissionElement);
+
+        \Craft::$app->getSession()->setFlash('submissionId', $submission->submissionId);
+        return $this->redirectToPostedUrl($submission);
     }
 }
