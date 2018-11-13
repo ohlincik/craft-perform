@@ -108,6 +108,7 @@ class Install extends Migration
                     'formTitle' => $this->string(255)->notNull()->defaultValue(''),
                     'subject' => $this->string(255)->notNull()->defaultValue(''),
                     'recipients' => $this->string(255)->notNull()->defaultValue(''),
+                    'replyTo' => $this->string(255)->null(),
                     'content' => $this->text(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime()->notNull(),
