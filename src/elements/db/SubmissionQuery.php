@@ -58,6 +58,13 @@ class SubmissionQuery extends ElementQuery
     public $recipients;
 
     /**
+     * The email that has been captured from submission as 'Reply To'
+     *
+     * @var string
+     */
+    public $replyTo;
+
+    /**
      * Serialized form submission fields
      *
      * @var string
@@ -123,6 +130,17 @@ class SubmissionQuery extends ElementQuery
      * @param $value
      * @return $this
      */
+    public function replyTo($value): self
+    {
+        $this->replyTo = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
     public function content($value): self
     {
         $this->content = $value;
@@ -143,6 +161,7 @@ class SubmissionQuery extends ElementQuery
             'perform_submissions.formTitle',
             'perform_submissions.subject',
             'perform_submissions.recipients',
+            'perform_submissions.replyTo',
             'perform_submissions.content',
         ]);
 
@@ -164,6 +183,10 @@ class SubmissionQuery extends ElementQuery
 
         if ($this->recipients) {
             $this->subQuery->andWhere(Db::parseParam('perform_submissions.recipients', $this->recipients));
+        }
+
+        if ($this->replyTo) {
+            $this->subQuery->andWhere(Db::parseParam('perform_submissions.replyTo', $this->replyTo));
         }
 
         if ($this->content) {

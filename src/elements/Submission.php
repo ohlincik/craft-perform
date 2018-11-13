@@ -65,6 +65,11 @@ class Submission extends Element
     public $recipients;
 
     /**
+     * @var string The email that has been captured from submission as 'Reply To'
+     */
+    public $replyTo;
+
+    /**
      * @var string Serialized content of form submission
      */
     public $content;
@@ -273,6 +278,7 @@ class Submission extends Element
         $record->formTitle  = $this->formTitle;
         $record->subject    = $this->subject;
         $record->recipients = $this->recipients;
+        $record->replyTo    = $this->replyTo;
         $record->content    = $this->content;
         $record->save(false);
 

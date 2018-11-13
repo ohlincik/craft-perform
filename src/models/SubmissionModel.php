@@ -115,16 +115,18 @@ class SubmissionModel extends Model
     {
         if ($submissionElement !== null) {
             $this->submissionId = $submissionElement->id;
-            $this->dateCreated = $submissionElement->dateCreated;
-            $this->dateUpdated = $submissionElement->dateUpdated;
-            $this->statusType = $submissionElement->statusType;
-            $this->formHandle = $submissionElement->formHandle;
-            $this->formTitle = $submissionElement->formTitle;
-            $this->subject = $submissionElement->subject;
-            // $this->replyTo = $submissionElement->replyTo;
-            $this->recipients = $this->getRecipients($submissionElement->recipients);
-            $this->fields = $this->unserializeFields($submissionElement->content);
+            $this->dateCreated  = $submissionElement->dateCreated;
+            $this->dateUpdated  = $submissionElement->dateUpdated;
+            $this->statusType   = $submissionElement->statusType;
+            $this->formHandle   = $submissionElement->formHandle;
+            $this->formTitle    = $submissionElement->formTitle;
+            $this->subject      = $submissionElement->subject;
+            $this->replyTo      = $submissionElement->replyTo;
+            $this->recipients   = $this->getRecipients($submissionElement->recipients);
+            $this->fields       = $this->unserializeFields($submissionElement->content);
         }
+
+        parent::__construct();
     }
 
     // Private Methods

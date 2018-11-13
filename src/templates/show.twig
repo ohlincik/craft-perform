@@ -56,6 +56,13 @@
             {% endfor %}
         </ul>
     </div>
+    {% if replyTo is not empty %}
+        <hr>
+        <div class="meta">
+            <h3>Reply To</h3>
+            <div class="value"><a href="mailto:{{ replyTo }}">{{ replyTo }}</a></div>
+        </div>
+    {% endif %}
     <hr>
     <div class="meta">
         <h5 class="heading">{{ "Form Title"|t('perform') }}</h5>

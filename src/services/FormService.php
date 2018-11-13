@@ -59,6 +59,7 @@ class FormService extends Component
         $submission->formTitle  = $submissionData->formTitle;
         $submission->subject    = $submissionData->getSubject();
         $submission->recipients = $submissionData->recipients;
+        $submission->replyTo    = $submissionData->getReplyTo();
         $submission->content    = $submissionData->getSerializedFields();
 
         $success = \Craft::$app->getElements()->saveElement($submission, true, false);
