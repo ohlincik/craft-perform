@@ -204,21 +204,9 @@ And, the **notification recipient** receives the following email notification:
 
 ### Redirecting after submit
 
-By default, after a successful submission, PerForm will automatically reload the current page and add the `?success=✓` query parameter. You can check for it in the page and act accordingly. In the example below, when the PerForm submission is completed, the *Thank you* content is displayed, otherwise the form is displayed.
+By default, PerForm will automatically reload the current page. 
 
-```twig
-{% if craft.app.request.getParam('success') == '✓' %}
-	<p>Thank you for submitting your information</p>
-{% else %}
-    {# Generate the PerForm form tag #}
-    {{ craft.perForm.formTag({
-      'entryId': entry.id
-    }) }}    
-    ...
-{% endif %}
-```
-
-To override this default behavior, simply include `redirectInput` function after the PerForm `formTag` and specify your redirect location.
+To override this default behavior, include `redirectInput` function after the PerForm `formTag` and specify your redirect destination.
 
 ```twig
 {# Generate the PerForm form tag #}
@@ -229,45 +217,88 @@ To override this default behavior, simply include `redirectInput` function after
 {{ redirectInput('contact-form/thank-you') }}
 ```
 
-Sometimes it's convenient to retrieve and display the information included in the form submission on the 'thank you' page. The following variables can be used within the URL/path you set:
+Sometimes it's convenient to retrieve and display the information included in the form submission on the 'thank you' page. You can achieve this by setting query string parameters (although, there is a [much better way](#using-flash-messages)). The following variables can be used within the URL/path you set:
 
-- `formHandle`
-- `formTitle`
-- `fields` (use the field handles to retrieve the submitted values)
+- `submissionId` — the ID of the Form Submission. You can use it to retrieve the entire submission content using the `getSubmissionById` plugin variable, however, for security reasons it is not advisable to expose the ID as a query string parameter. There is a [much better way](#using-flash-messages) to do this built into PerForm.
+- `dateCreated` — the date/time when submission was created
+- `dateUpdated` — the date/time when submission was last updated (same as `dateCreated` in this case)
+- `statusType` — new, read, test *(note that since the submission was just submitted, it will be set to either 'new' or 'test' status)*
+- `formHandle` — specified in the *Form Settings*
+- `formTitle` — specified in the *Form Settings*
+- `subject` — the subject generated using the **Form Subject** template specified in the *Form Settings*
+- `replyTo` — the email address extracted based on the **Notification ReplyTo** template specified in the *Form Settings*
+- `recipients` — one or more email addresses as specified in the **Notification Recipients** setting in the *Form Settings*. The values are returned as an *array*.
+- `fields` — the fields included in the form and submitted to PerForm. The values are returned as an *array* and you can use the field handles to retrieve the submitted values and labels.
 
 For example, if your form looks like this:
 
 ```twig
-{{ redirectInput('contact-form/thank-you?name={fields.firstName.value}+{fields.lastName.value}') }}
+{{ redirectInput('contact-form/thank-you?replyTo={replyTo}&firstName={fields.firstName.value}') }}
 
 {# First Name field #}
 <input type="text" id="fields_firstName" name="fields[firstName][value]">
 
 {# Last Name field #}
 <input type="text" id="fields_lastName" name="fields[lastName][value]">
+
+{# Email field #}
+<input type="text" id="fields_email" name="fields[email][value]">
 ```
 
 On your `contact-form/thank-you.html` template, you can access the parameters using the `craft.app.request.getQueryParam()`:
 
 ```twig
-<p>{{ craft.app.request.getParam('name') }}, thank you for submitting your information</p>
+<p>
+	{{ craft.app.request.getParam('firstName') }}, thank you for submitting your information.
+	{% if craft.app.request.getParam('replyTo') is not empty %}
+		<br>
+		We will use the {{ craft.app.request.getParam('replyTo') }} email address to send you a reply.
+	{% endif %}
+</p>
 ```
 
-### Displaying flash messages
+### Using flash messages
 
-When a form submission is processed, PerForm will set a `notice` or `success` flash message on the user session. You can display it in your template.
+When a form submission is successfully processed, PerForm will set a flash message with the **submissionId** key and submission ID as value to indicate that the form submission was successful. In addition to checking whether the form was successfully processed, this also gives you the ability to retrieve the entire submission content using the  `getSubmissionById` plugin variable. The advantage of using this method as opposed to [sending the submissionId as a query parameter](#redirecting-after-submit) is two-fold. First, the actual submission ID cannot be easily extracted from the response, and second, it is no longer available when the page is refreshed (making this approach work very well when redirecting to the same template that includes the form itself).
+
+Using the example from above:
 
 ```twig
-{% if craft.app.session.hasFlash('notice') %}
-    <p class="message notice">{{ craft.app.session.getFlash('notice') }}</p>
+{{ redirectInput('contact-form/thank-you') }}
+
+{# First Name field #}
+<input type="text" id="fields_firstName" name="fields[firstName][value]">
+
+{# Last Name field #}
+<input type="text" id="fields_lastName" name="fields[lastName][value]">
+
+{# Email field #}
+<input type="text" id="fields_email" name="fields[email][value]">
+```
+
+On your `contact-form/thank-you.html` template, you can retrieve the **submissionId** from the session flash and use it to fetch the entire submission content using the `getSubmissionById` plugin variable (here is the [list of all submission variables](#redirecting-after-submit)):
+
+```twig
+{% if craft.app.session.hasFlash('submissionId') %}
+	{% set submissionId = craft.app.session.getFlash('submissionId') %}
+	{% set submission = craft.perForm.getSubmissionById(submissionId) %}
+    <p>
+		{{ submission.fields.firstName.value }}, thank you for submitting your information.
+        {% if submission.replyTo is not empty %}
+            <br>
+            We will use the {{ submission.replyTo }} email address to send you a reply.
+        {% endif %}
+	</p>
 {% elseif craft.app.session.hasFlash('error') %}
     <p class="message error">{{ craft.app.session.getFlash('error') }}</p>
 {% endif %}
 ```
 
+As you can see in the example above, if a flash with the **submissionId** key has not been set, PerForm could not process the form submission and it is likely that an `error` flash message was set instead.
+
 ## Example: Full-featured Complex Form
 
-Sorry, this content is coming soon...
+Content is coming soon...
 
 ## PerForm Widget
 

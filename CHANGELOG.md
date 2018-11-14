@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Added
+
+- `getSubmissionById` plugin variable to retrieve existing Form Submission contents in a template
+- Capture and store the **replyTo** email address (if provided) as a part of the Form Submission
+- Display the **replyTo** email address on the Form Submission detail screen if available
+- Expose the processed Form Submission data as variables for the  `redirectInput` function, which allows them to be used as parameters in the return url
+- After the Form Submission is processed, send the **submissionId** as a flash message so that it can be used on the 'Thank You' page to retrieve the Form Submission contents using the new `getSubmissionId` plugin variable
+
+### Removed
+
+- Redundant *flash* notice that Form Submission was completed
+
 ## 1.0.0 - 2018-11-08
 
 > {note} This is the initial plugin release.
