@@ -186,7 +186,7 @@ And, without any styling, will generate a very simple form.
 
 ![Screenshot](resources/screenshots/perform-simple-form.png)
 
-By default, PerForm will redirect the browser to the **original url** and append a simple query string `?success=✓` which you can test for and display a "Thank You" message for the visitor. So, after filling out and submitting the form, the visitor will see this content in the browser:
+By default, PerForm will redirect the browser to the **original url** and set a flash message with the **submissionId** key ([more details](#redirecting-after-submit) about redirecting and flash messages) which you can test for and display a "Thank You" message for the visitor. So, after filling out and submitting the form, the visitor will see this content in the browser:
 
 ![Screenshot](resources/screenshots/perform-simple-form-success.png)
 
