@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.1.1 - 2019-08-05
+
+### Fixed
+
+- Fixed an issue with invalid `$allowAnonymous` declaration in _Public Controller_
+- Link to documentation was missing on the _Control Panel > Settings > Plugins_ page
+
 ## 1.0.1 - 2018-11-14
 
 ### Added

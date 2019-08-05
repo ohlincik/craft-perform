@@ -38,7 +38,9 @@ class PublicController extends Controller
      *         The actions must be in 'kebab-case'
      * @access public
      */
-    public $allowAnonymous;
+    public $allowAnonymous = [
+        'submit-form',
+    ];
 
     // Public Methods
     // =========================================================================

@@ -2,7 +2,7 @@
     "name": "perfectus/perform",
     "description": "Form handling for Craft developers. Process, test, store, send email notifications, configure client side validation, include powerful spam protection, and more.",
     "type": "craft-plugin",
-    "version": "1.0.1",
+    "version": "1.0.1.1",
     "keywords": [
         "craft",
         "cms",
@@ -34,6 +34,9 @@
         "handle": "perform",
         "hasCpSettings": true,
         "hasCpSection": true,
+        "developer": "Perfectus Digital Solutions",
+        "developerUrl": "https://perfectus.us",
+        "documentationUrl": "https://github.com/ohlincik/craft-perform/blob/master/README.md",
         "changelogUrl": "https://raw.githubusercontent.com/ohlincik/craft-perform/master/CHANGELOG.md",
         "components": {
             "emailService": "perfectus\\perform\\services\\EmailService",
